@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo02 Canvas</title>
+</head>
+<body>
+    <h1> Ejemplo 02 Canvas</h1>
+    <ul>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API">Documentacion</a></li>
+        <li><a href="./ejemplo02_reponsive.html">Regresar</a></li>
+    </ul>
+    <hr>
+    <canvas id="lienzo" width="600px" width="600px"></canvas>
+    <script>
+        const canvas = document.getElementById("lienzo");
+        const ctx = canvas.getContex ("2D")
+        ctx.filiStyle = "greem";
+        ctx.FilRect(0,0,100,100)
+    </script>
+    
+</body>
+</html>

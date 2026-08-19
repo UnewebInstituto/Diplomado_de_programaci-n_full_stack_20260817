@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo02 Canvas</title>
+</head>
+<body>
+    <h1>Ejemplo02 Canvas</h1>
+    <ul>
+        <li><a href="https://developer.mozilla.org/es/docs/Web/API/Canvas_API">Documentación APIs Web</a></li><br>
+        <li><a href="./ejemplo02_responsive.html">Regresar</a></li>
+    </ul>
+    <hr>
+    <canvas id="lienzo" width="600px" width="600px"></canvas>
+    <script>
+        const canvas = document.getElementById("lienzo");
+        const ctx = canvas.getContext("2d");
+
+        ctx.fillStyle = "green";
+        ctx.fillRect(0,0,100,100);
+    </script>
+</body>
+</html>

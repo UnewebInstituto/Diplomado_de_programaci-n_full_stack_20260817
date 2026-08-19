@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- Etiqueta <meta name= content=> permite el diseño responsive-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/2ejemplo02_responsive.css">
+    <title>2Ejemplo02_responsive.html</title>
+</head>
+<body>
+    <header>
+        <h1>APIs Para La Web</h1>
+    </header>
+    <div id="principal">
+        <nav class="col-3 col-s-3">
+            <ul>
+                <li><a href="">Geolocation</a></li>
+                <li><a href="2ejemplo02_canvas.html">Canvas</a></li>
+                <li><a href="">Drag and Drop</a></li>
+                <li><a href="">Web Worker</a></li>
+                <li><a href="https://developer.mozilla.org/en-US/docs/Web/API">APIs Web Documentation</a></li>
+            </ul>
+        </nav>
+        <section class="col-6 col-s-6">
+            <h2>Geolocation API</h2>
+            <p>The Geolocation API allows the user to provide their location to web applications if they so desire. For privacy reasons, the user is asked for permission to report location information.</p>
+            <p>WebExtensions that wish to use the <code>Geolocation</code> object must add the <code>"geolocation"</code> permission to their manifest. The user's operating system will prompt the user to allow location access the first time it is requested.</p>
+        </section>
+        <aside class="col-3 col-s-12">
+            <h2>Concepts and usage</h2>
+            <p>You will often want to retrieve a user's location information in your web app, for example to plot their location on a map, or display personalized information relevant to their location.</p>
+            <p>The Geolocation API is accessed via a call to <code>navigator.geolocation;</code> this will cause the user's browser to ask them for permission to access their location data. If they accept, then the browser will use the best available functionality on the device to access this information (for example, GPS).</p>
+            <p>The developer can now access this location information in a couple of different ways:</p>
+            <ul>
+                <li><code>Geolocation.getCurrentPosition():</code> Retrieves the device's current location.</li>
+                <li><code>Geolocation.watchPosition():</code> Registers a handler function that will be called automatically each time the position of the device changes, returning the updated location.</li>
+            </ul>
+        </aside>
+    </div>
+    
+    <footer>2Ejemplo02 para el diplomado de programación FullStack Uneweb &copy; 2026</footer>
+</body>
+</html>
