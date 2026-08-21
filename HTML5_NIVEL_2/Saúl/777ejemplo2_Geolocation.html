@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo2_geolocation</title>
+</head>
+<body>
+    <h1>Ejemplo 2 geolocation</h1>
+    <ul>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API">Documentacion</a></li>
+        <li><a href="./ejemplo2_responsive.html">Regresar</a></li>
+    </ul>
+    <hr>
+    <button id="findme">Mostrar mi ubicacón</button>
+    <br>
+    <p id="status"></p>
+    <a id="map-link" href="" target="_blank">Ubicación no conocida</a>
+
+<!--
+    <script>
+        function ubicacion(p){
+            const latitude  = p.coords.latitude;
+            const longitude = p.coords.longitud;
+            document.getElementById("resultado").innerHTML = "Latitud: " + latitude + ", Longitud: " + longitude;
+        }
+
+        function error(e){
+            document.getElementById("resultado").innerHTML = "Error al obtener la obicación.";
+        }
+
+        function mostrar(){
+            if(!navigator.geolocation){
+                document.getElementById('resultado').innerHTML = "Error, navegador no soporta geolocalización";
+
+            }else{
+                document.getElementById('resultado').innerHTML = "Procesando geolocalización.";
+                navigator.geolocation.getCurrentPosition(ubicacion, error);
+            }
+        }
+    </script>
+-->
+
+    <script>
+        // geoFindMe Function
+        function geoFindMe() {
+            status = document.querySelector("#status");
+            mapLink = document.querySelector("#map-link");
+
+            mapLink.href = "";
+            mapLink.textContent = "";
+
+            function success(position){
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+
+                document.getElementById("resultado").innerHTML = `Latitud: ${latitude} °, Longitud: ${longitude} °`;
+                
+                status.textContent = "";
+
+                mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
+                mapLink.textContent = `Latitud: ${latitude} °, Longitud: ${longitude} °`;
+            }
+            // - // error Function
+            function error(){
+                status.textContent = "No es posible obtener la ubicación.";
+            }
+
+            // - // Condition IF the browser does not support Geolocation
+            if (!navigator.geolocation) {
+                status.textContent = "Geolocalicación no es soportada por el navegador.";
+            } else {
+                status.textContent = "Localizando…";
+                navigator.geolocation.getCurrentPosition(success, error);
+            }
+        }
+
+        //Variables
+        var status;
+        var mapLink;
+
+        // - // Listener to activate geoFindMe
+        document.querySelector("#findme").addEventListener("click", geoFindMe);
+    </script>
+
+</body>
+</html>

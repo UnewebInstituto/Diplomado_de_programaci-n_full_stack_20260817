@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo02 Geolocation</title>
+</head>
+<body>
+    <h1>Ejemplo02 Geolocation</h1>
+    <ul>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API">Documentación</a></li>
+        <li><a href="./ejemplo02_responsive.html">Regresar</a></li>
+    </ul>
+    <hr>
+    <button id="mostrar" onclick="mostrar()">Mostrar mi ubicación</button>
+    <br>
+    <div id="resultado"></div>
+
+    <script>
+        function ubicacion(p){
+            const latitud = p.coords.latitude;
+            const longitud = p.coords.longitude;
+            document.getElementById("resultado").innerHTML = "Latitud: " + latitud + ", Longitud: " + longitud;
+        }
+
+        function error(e){
+            document.getElementById("resultado").innerHTML = "Error, al obtener la ubicación";
+        }
+
+        function mostrar(){
+            if(!navigator.geolocation){
+                document.getElementById('resultado').innerHTML = "Error, navegador no soporta geolocalización";
+            }else{
+                document.getElementById('resultado').innerHTML = "Procesando geolocalización";
+                navigator.geolocation.getCurrentPosition(ubicacion,error);
+            }
+        }
+
+
+    </script>
+</body>
+</html>
