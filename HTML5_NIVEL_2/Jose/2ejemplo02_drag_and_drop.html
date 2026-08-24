@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2Ejemplo02_drag_and_drop</title>
+    <link rel="stylesheet" href="./css/2ejemplo02_1_drag_and_drop.css">
+</head>
+<body>
+    <h1>2Ejemplo02_drag_and_drop</h1>
+    <ul>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API">Documentation</a></li>
+        <li><a href="./2ejemplo02_responsive.html">REGRESAR</a></li>
+    </ul>
+    <hr>
+    <div id="box1" ondrop="dropHandler(event)" ondragover="dragOverHandler(event)">
+        <img src="./logo/uneweb.png" alt="Logotipo de Uneweb" id="logo" title="Soltar y arrastrar la imagen en el otro cuadro." draggable="true" ondragstart="dragStartHandler(event)">
+    </div>
+
+    <div id="box2" ondrop="dropHandler(event)" ondragover="dragOverHandler(event)"></div>
+
+    <script src="./js/2ejemplo02_2_drag_and_drop.js"></script>
+</body>
+</html>

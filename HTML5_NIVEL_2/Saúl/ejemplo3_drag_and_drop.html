@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo3 Drag and drop</title> <!--Consultar en w3school-->
+    <link rel="stylesheet" href="./css/ejemplo3_drag_and_drop.css"> 
+
+
+</head>
+<body>
+    <h1>Ejemplo 2 geolocation</h1>
+    <ul>
+        <li><a href="https://developer.mozilla.org/es/docs/Web/API/HTML_Drag_and_Drop_API/File_drag_and_drop">Documentacion</a></li>
+        <li><a href="./ejemplo2_responsive.html">Regresar</a></li>
+    </ul>
+    <hr>
+
+    <div id="caja1"
+            ondrop="dropHandler(event)"
+            ondragover="dragOverHandler(event)">
+        <img src="./Logo/uneweb.png" 
+        alt="Logotipo de uneweb" 
+        id="logo"
+        title="Puede arrastrar y soltar la imagen en el otro cuadro"
+        draggable="true"
+        ondragstart="dragStartHandler(event)"></div>
+    
+        <div id="caja2" 
+    ondrop="dropHandler(event)"
+    ondragover="dragOverHandler(event)"></div>
+
+<script src="./js/ejemplo2_drag_and_drop.js"></script>
+</body>
+</html>

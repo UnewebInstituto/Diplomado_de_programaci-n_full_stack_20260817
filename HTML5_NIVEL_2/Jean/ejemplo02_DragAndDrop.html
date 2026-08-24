@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo02 Drag and Drop</title>
+    <link rel="stylesheet" href="./css/ejemplo02_DragAndDrop.css">
+     <!-- https://www.w3schools.com/html/ -->
+    
+</head>
+<body>
+    <h1>Ejemplo02 Drag and Drop</h1>
+    <ul>
+        <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API">Documentación</a></li>
+        <br>
+        <li><a href="./ejemplo02_reponsive.html">Regresar</a></li>
+    </ul>
+    <hr>
+
+    <div id="caja1"
+    ondrop="dropHandler(event)"
+         ondragover="dragOverHandler(event)">
+        <img src="./logo/uneweb.png" alt="Logotipo de Uneweb" id="logo" title="Puede arrastrar y soltar la imagen en el otro cuadro."
+        draggable="true"
+        ondragstart="dragStartHandler(event)">
+        
+    </div>
+    
+    <div id="caja2"   ondrop="dropHandler(event)"
+         ondragover="dragOverHandler(event)"></div>
+
+
+    <script src="./js/ejemplo02_dragAndDrop.js">
+       
+    </script>
+</body>
+</html>

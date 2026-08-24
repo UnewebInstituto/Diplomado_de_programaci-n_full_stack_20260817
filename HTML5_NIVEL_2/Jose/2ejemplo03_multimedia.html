@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2Ejemplo03_multimedia</title>
+    <style>
+        #video1{
+            width: 550px;
+            height: 300px;
+        }
+        video{
+            width: 100%;
+            height: 100%;
+        } 
+    </style>
+</head>
+<body>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/source">Video Documentation</a>
+    <br>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/track"> Track Documentation</a>
+    <br>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/WebVTT_API">VTT File Documentation</a>
+    <hr>
+    <h1>2Ejemplo03_multimedia</h1>
+    <div id="video1">
+        <!-- Primer forma
+        <video src="./video/Red_Science_Tube.mp4" controls></video>
+        -->
+        <video controls>
+            <source src="./video/Red_Science_Tube.mp4" type="video/mp4">
+            <source src="./video/Red_Science_Tube.webm" type="video/webm">
+            <source src="./video/Red_Science_Tube.ogg" type="video/ogg">
+            <track kind="captions" srclang="es" label="Español" src="./track/2ejemplo_multimedia_content_es.vtt"></track>
+        </video>
+    </div>
+</body>
+</html>
