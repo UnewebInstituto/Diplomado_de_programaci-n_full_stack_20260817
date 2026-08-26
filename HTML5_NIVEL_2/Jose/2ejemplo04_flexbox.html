@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2Ejemplo04_flexbox</title>
+    <style>
+
+        /*BOX1*/
+        .box1 {
+            display: flex;
+            flex-direction: ROW; /* ROW . ROW-REVERSE. COLUMN . COLUMN-REVERSE .*/
+        }
+        div{
+            border: 2px solid rgb(255, 0, 0);
+            margin: 10px;
+            padding: 10px;
+        }
+
+        /*BOX2*/
+        .box2 {
+            width: 50%;
+            display: flex;
+            flex-direction: ROW; /* row . row-reverse. column . column-reverse .*/
+            flex-wrap: wrap; /* nowrap . wrap . wrap-reverse */
+        }
+
+        /*BOX3*/
+        .box3 {
+            display: flex;
+        }
+
+        .one {
+        flex: 1 1 auto;
+        }
+
+        .two {
+        flex: 1 1 auto;
+        }
+
+        .three {
+        flex: 1 1 auto;
+        }
+
+        /*BOX4*/
+        .box4 {
+            display: flex;
+            align-items: flex-start; /* flex-start . flex-end*/
+        }
+
+        /*BOX5*/
+        .box5{
+            display: flex;
+            justify-content: flex-start; /* flex-start . flex-end . center . space-between . space-around . */
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Ejemplo de Flexbox</h1>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Flexible_box_layout/Basic_concepts"><h2>Flexbox Documentation</h2></a>
+    <hr>
+    <h2>Ejemplo de Flexbox 1</h2>
+    <div class="box1">
+        <div>ONE</div>
+        <div>TWO</div>
+        <div>THREE
+            <br>has
+            <br>extra
+            <br>text
+        </div>
+        <div>FOUR</div>
+        <div>FIVE</div>
+        <div>SIX</div>
+        <div>SEVEN</div>
+        <div>EIGHT</div>
+        <div>NINE</div>
+        <div>TEN</div>
+    </div>
+    <hr>
+    <h2>Ejemplo de Flexbox 2</h2>
+    <div id="box2" class="box2">
+        <div>ONE </div>
+        <div>TWO</div>
+        <div>THREE
+            <br>has
+            <br>extra
+            <br>text
+        </div>
+        <div>FOUR</div>
+        <div>FIVE</div>
+        <div>SIX</div>
+        <div>SEVEN</div>
+        <div>EIGHT</div>
+        <div>NINE</div>
+        <div>TEN</div>
+    </div>
+    <hr>
+    <h2>Ejemplo de Flexbox 3</h2>
+    <div class="box3">
+        <div class="one">one</div>
+        <div class="two">two</div>
+        <div class="three">three</div>
+    </div>
+    <h2>Ejemplo de Flexbox 4</h2>
+    <div class="box4">
+        <div>ONE</div>
+        <div>TWO</div>
+        <div>THREE
+            <br>has
+            <br>extra
+            <br>text
+        </div>
+    </div>
+    <h2>Ejemplo de Flexbox 5</h2>
+    <div class="box5">
+        <div>ONE</div>
+        <div>TWO</div>
+        <div>THREE
+            <br>has
+            <br>extra
+            <br>text
+        </div>
+        <div>FOUR</div>
+        <div>FIVE</div>
+        <div>SIX</div>
+        <div>SEVEN</div>
+        <div>EIGHT</div>
+        <div>NINE</div>
+        <div>TEN</div>
+    </div>
+</body>
+</html>

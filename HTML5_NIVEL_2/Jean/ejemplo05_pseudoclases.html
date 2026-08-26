@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo05 Pseudoclases</title>
+    <!-- https://htmlcheatsheet.com/ -->
+    <style>
+        /* 
+        Caso 1, propiedades por nombre de etiqueta
+        */
+        #ej01 p{
+            border-style: solid;
+            border-width: 1px;
+            border-color: black;
+        }
+        /*
+        Caso 2, propiedades por nombre de id
+        */
+        #uno{
+            color:green;
+        }
+        #dos{
+            color: blue;
+        }
+        #tres{
+            color: red;
+        }
+        /*
+        Caso 3, propiedades por nombre de clase
+        */
+        .impar{
+            background-color: gray;
+        }
+        .par{
+            background-color: #cccccc;
+        }
+        /*
+        Caso 4,
+            ^= Al inicio
+            *= Contenido
+            $= Al final
+        */
+        /* Todos los párrafos que terminan con el nombre
+        de clase "par" */
+        #ej01 p[class$="par"]{
+            width: 50%;
+        }
+        /* Todos los párrafos que inician con el prefijo
+        de nombre en la clase "par" */
+        #ej01 p[class^="im"]{
+            margin-left: 25%;
+        }
+        /* Todos los párrafos */
+        #ej01 p[class*="mp"]{
+            font-style: italic;
+        }
+
+        /* ----------------------------- */
+        /* 
+            Los selectores "p" contenido en el contenedor
+            cuya identificación es "ej02"
+        */
+        #ej02 > p{
+            width: 70%;
+            margin-left: 15%;
+        }   
+        /*
+            Los selectores "p" contenidos en el contenedor
+            cuya identificación es "ej02", que ocupan posición impar.
+        */
+        #ej02 p:nth-child(odd){
+            color:purple
+        }
+        /*
+            Los selectores "p" contenidos en el contenedor
+            cuya identificación es "ej02", que ocupan posición par.
+        */
+        #ej02 p:nth-child(even){
+            color: orange;
+        }
+
+        /*
+            https://developer.mozilla.org/es/docs/Web/CSS/Reference/Selectors/:nth-child
+
+            El selector "p" número 1 contenido en el contenedor cuya identificación es "ej02".
+        */
+        
+        #ej02 p:nth-child(1){
+            font-style: italic;
+        }
+        /*
+            El selector "p" número 5 contenido en el contenedor cuya identificación es "ej02".
+        */
+        #ej02 p:nth-child(5){
+            font-style: italic;
+        }
+
+        /*
+            Hay prefijos que refieren al nombre del 
+            navegador
+            -o- Opera
+            -ms- Edge
+            -webkit- Safari
+            -moz- Mozilla
+        */
+        #ej03{
+            width: 50%;
+            margin-left: 25%;
+            text-align: center;
+            border-style: solid;
+            border-width: 2px;
+            border-color: black;
+            /*
+            border-radius: 5%;
+            */
+            padding: 50px;
+            color: yellow;
+            background: #1C6EA4;
+            background: linear-gradient(top, #1C6EA4 0%, #2388CB 50%, #144E75 100%);
+            background: -moz-linear-gradient(top, #1C6EA4 0%, #2388CB 50%, #144E75 100%);
+            background: -o-linear-gradient(top, #1C6EA4 0%, #2388CB 50%, #144E75 100%);
+            background: -webkit-linear-gradient(top, #1C6EA4 0%, #2388CB 50%, #144E75 100%);
+            box-shadow: 10px 10px 5px rgb(228, 28, 28);
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Ejemplo05 Pseudoclases</h1>
+    <a href="./">Regresar</a>
+    <hr>
+    <div id="ej01">
+        <p id="uno" class="impar">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Aliquam recusandae quaerat dolorem labore omnis illo praesentium inventore dolores mollitia quasi, molestias vel maiores ipsum aliquid optio suscipit veniam assumenda. At.</p>
+        <p id="dos" class="par">Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum quod praesentium neque cum nesciunt aperiam autem similique nobis. Molestias consequatur reprehenderit obcaecati, deserunt ab aut maiores minima porro ea fuga.</p>
+        <p id="tres" class="impar">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quaerat aliquam eos sunt voluptate optio itaque quas velit, eligendi facere. Laborum nesciunt voluptas suscipit optio enim dolore non facere ad delectus!</p>
+    </div>
+    <hr>
+    <div id="ej02">
+        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Totam fugit debitis, doloribus praesentium ratione dolor perferendis accusantium repudiandae fuga nisi perspiciatis deleniti iure hic minus dolorum odio voluptates? Ipsum, odit?</p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus nam, nemo id neque nihil facilis asperiores eum natus, ea quae voluptatem facere velit perspiciatis, sunt eveniet reiciendis rerum nobis assumenda.</p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem harum, eos ab dicta quos quae minima tenetur provident, eveniet sit, inventore molestiae dignissimos maiores vitae quam voluptate! Facilis, perspiciatis molestiae.</p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. In, nam. Impedit, possimus nostrum debitis eveniet qui laudantium. Repudiandae autem, reprehenderit quam, aperiam perspiciatis deserunt labore, error facere saepe optio ex?</p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Unde, et sequi ducimus pariatur dolor incidunt ex! Pariatur labore, repellendus sed voluptatem dolorem numquam! Explicabo iure aperiam expedita sit voluptas consequuntur!</p>
+    </div>
+    <hr>
+    <div id="ej03">
+        HTML5 NIVEL 2
+    </div>
+</body>
+</html>

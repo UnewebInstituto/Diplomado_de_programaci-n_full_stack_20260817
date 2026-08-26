@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2Ejemplo05_pseudoclases</title>
+    <style>
+        
+        /*Propiedades por nombre de etiqueta*/
+        p {
+            padding: 10px;
+            border-style: solid;
+            border-width: 1px;
+            border-color: black;
+        }
+
+        /*Propiedades por ID*/
+        #one {
+            color: green;
+        }
+        #two {
+            color: blue;
+        }
+        #three {
+            color: red;
+        }
+
+        /*Propiedades por Clase*/
+        .hodd {
+            background-color: silver;
+        }
+        .heven {
+            background-color: gray;
+        }
+
+        /*Propiedades
+            ^= Classes que empiezan con caracteres definidos
+            *= Contenido de caracteres definidos
+            $= classes que terminan con caracteres definidos
+        */
+        #box1 p[class^="he"] {
+            margin-left: 25%;
+        }
+
+        #box1 p[class*="d"] {
+            font-style: italic;
+        }
+
+        #box1 p[class$="odd"] {
+            width: 50%;
+        }
+
+        /* - - - - - */
+
+        /* ID > CLASS = id is the parent, class is the child*/
+        #box2 > p {
+            width: 70%;
+            margin-left: 15%;
+        }
+
+        /*ID CLASS:nth-child (odd and even), detects which <p> units are odd and even and affects them accordingly to their position in the html file*/
+        #box2 p:nth-child(odd){
+            color: purple;
+        }
+        #box2 p:nth-child(even){
+            color: orange;
+        }
+
+        #box2 p:nth-child(1){
+            border: 3px solid rgb(0, 255, 55);
+        }
+        #box2 p:nth-child(5){
+            border: 3px solid rgb(25, 0, 255);
+        }
+
+        /*Prefix that only works with certain browsers
+            -o- Opera
+            -ms - Edge
+            -Webkit- Safari
+            -moz- Mozilla Firefox
+        */
+        #box3{
+            width: 50%;
+            margin-left: 25%;
+            text-align: center;
+            border-style: solid;
+            border-width: 2px;
+            border-color: black;
+            border-radius: 15%;
+            padding: 50px;
+            color: yellow;
+            background: #345fa0;
+            background: linear-gradient(top, #1C6EA4 0%, #2388CB 50%, #144E75 100%);
+            background: -moz-linear-gradient(top, #1C6EA4 0%, #2388CB 50%, #144E75 100%);
+            background: -o-linear-gradient(top, #1C6EA4 0%, #2388CB 50%, #144E75 100%);
+            background: -webkit-linear-gradient(top, #1C6EA4 0%, #2388CB 50%, #144E75 100%);
+            box-shadow: -10px -10px 5px gray;
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Ejemplo de Flexbox</h1>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Selectors/Pseudo-classes"><h2>Pseudo-classes Documentation</h2></a>
+    <hr>
+    <div id="box1">
+        <p id="one" class="hodd">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae non quibusdam, hic maiores ab provident amet optio ipsum assumenda magni eius! Quo adipisci quia modi odio, beatae officiis. Eligendi, molestiae!</p>
+        <p id="two" class="heven">Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium odit incidunt in blanditiis, numquam quaerat vero eaque quidem! Labore, ipsam commodi doloremque ab culpa a excepturi saepe eveniet? Vel, modi.</p>
+        <p id="three" class="hodd">Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse, ratione magni velit facilis laboriosam perferendis, natus odio hic aut, quo rerum minima. Error ut odio quia placeat illo, eum illum!</p>
+        <p id="four" class="heven">Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum nostrum sint enim soluta quas maiores ratione itaque a provident modi deserunt incidunt delectus, perferendis recusandae commodi exercitationem dolorem amet quod?</p>
+    </div>
+    <hr>
+    <div id="box2">
+        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quas voluptate culpa architecto, sit voluptates sed vero exercitationem saepe pariatur consequatur nisi. Sequi aut nihil ipsam sapiente temporibus nulla nostrum rem?</p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt deleniti deserunt vero necessitatibus! Nostrum itaque aperiam perspiciatis, ex consequatur maxime ipsum expedita vero quae cum quibusdam aut pariatur sapiente blanditiis!</p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas dolorum ut eius sequi modi voluptatem distinctio necessitatibus neque officia! Rerum repudiandae distinctio repellendus qui sapiente facere placeat, voluptates ab amet.</p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio recusandae distinctio totam. Nisi voluptates cupiditate voluptatum eius labore rerum, maxime minus error laboriosam sapiente enim repellendus unde sequi laborum! Ea!
+        </p>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nam eligendi, iure quam inventore, consectetur consequatur reprehenderit enim tenetur repudiandae dolorum nulla labore maxime minima quasi quo modi aliquid accusamus esse.</p>
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Beatae quaerat earum quos, quisquam commodi quis cupiditate dolore fugiat illo amet? Earum perferendis neque sed accusantium numquam illum quam laboriosam possimus.</p>
+    </div>
+    <hr>
+    <div id="box3">
+        HTML5 NIVEL 2
+    </div>
+</body>
+</html>

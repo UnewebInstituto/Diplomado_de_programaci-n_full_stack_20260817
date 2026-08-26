@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo05 Pseudoclase</title>
+    <style>
+        #ej_1 p{border-style: solid;
+            border-width: 1px;
+            border-color: black;}
+        
+        #uno{color: green;}
+
+        #dos{color: blue;}
+
+        #tres{color: red;}
+
+        .impar{background-color: gray;}
+
+        .par{background-color: #cccccc;}
+
+        p[class$="par"]{width: 50%;}
+
+        p[class^="im"]{margin-left: 25%;}
+
+        p[class*="mp"]{font-style: italic;}
+
+        #ej_2 > p{width: 70%;
+            margin-left: 15%;}
+        
+        #ej_2 p:nth-child(odd){color: purple;}
+
+        #ej_2 p:nth-child(even){color: orange;}
+
+        #ej_2 p:nth-child(1){font-style: italic;}
+
+        #ej_2 p:nth-child(5){font-style: italic;}
+
+        #ej_3{width: 50%;
+            margin-left: 25%;
+            text-align: center;
+            border-style: solid;
+            border-width: 2px;
+            border-color: black;
+            box-shadow: 10px 10px 5px gray;
+            /*border-radius: 5%;*/
+            padding: 50px;
+            color: yellow;
+            background: #1c6ea4;
+            background: -moz-linear-gradient(top, #1C6EA4 0%, #2388CB 50%, #144E75 100%);
+            background: -o-linear-gradient(top, #1C6EA4 0%, #2388CB 50%, #144E75 100%);
+            background: -webkit-linear-gradient(top, #1C6EA4 0%, #2388CB 50%, #144E75 100%);}
+
+    </style>
+</head>
+<body>
+    <h1>Ejemplo05 Pseudoclase</h1>
+    <ul>
+        <a href="./index.html"><li>Selector de archivos</li></a>
+    </ul><br>
+    <h2>Pseudoclase</h2>
+    <a href="https://developer.mozilla.org/es/docs/Web/CSS/Reference/Selectors/Pseudo-classes">Documentación de Flexbox</a>
+    <hr>
+    <div id="ej_1">
+        <p id="uno" class="impar">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque aliquam ipsum neque error quidem. Veniam, cum commodi quos alias blanditiis ea modi deleniti in dolorem necessitatibus repudiandae qui ab praesentium?</p>
+        <p id="dos" class="par">Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae, at. Minus molestias vel commodi, sequi alias ullam, quisquam eaque dolorum quaerat ut, quia facere nihil ea! Minus similique vel ipsa?</p>
+        <p id="tres" class="impar">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum laboriosam, provident dicta error, vel, delectus exercitationem id rem ea repellendus libero itaque voluptate neque voluptas minus rerum! Quibusdam, asperiores eveniet!</p>
+    </div>
+    <hr>
+    <div id="ej_2">
+        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quasi sed sit asperiores nobis quos id repellendus aperiam velit. Aut itaque explicabo, nisi quaerat magnam at repellendus consequuntur qui quisquam eaque?</p>
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Labore, ipsa tempore? Accusantium aliquam voluptate, est beatae optio ducimus qui aliquid, officia eum reiciendis velit aspernatur laboriosam ullam odit labore a.</p>
+        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequuntur illum, corporis adipisci cupiditate iste blanditiis accusamus, ipsum quae delectus maiores amet assumenda sed accusantium veniam sunt quam deserunt. Nemo, cupiditate!</p>
+        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Harum esse provident deserunt, voluptas, dolores, ad ullam ea possimus eaque sit magni. Culpa quis dolor, natus explicabo voluptatibus unde. Tenetur, magni?</p>
+        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ipsa nulla quia eligendi aperiam veritatis illum eaque! Deserunt animi iusto et, praesentium necessitatibus at, repellendus excepturi velit cumque, hic eligendi itaque.</p>
+    </div>
+    <div id="ej_3">
+        HTML5 Nivel 2
+    </div>
+</body>
+</html>

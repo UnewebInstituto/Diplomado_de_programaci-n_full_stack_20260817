@@ -17,9 +17,26 @@
 </head>
 <body>
     <h1>Ejemplo03 Etiqueta Multimedia</h1>
+    <a href="./">Regresar</a>
     <h2>Video</h2>
     <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/source">Documentación vídeo</a>
     <hr>
+    <h2>Audio</h2>
+    <a href="">Documentación audio</a>
+    <!-- 
+    https://es.wikipedia.org/wiki/Ogg
+    https://es.wikipedia.org/wiki/MP3
+    https://es.wikipedia.org/wiki/Waveform_Audio_Format
+    -->
+    <!-- 1ra. Forma 
+    <audio src="./audio/vsanroses-cortinilla-de-transicion-1-9753.mp3" controls></audio>
+    -->
+    <!-- 2da. Forma -->
+    <audio controls>
+        <source src="./audio/vsanroses-cortinilla-de-transicion-1-9753.mp3" type="audio/mp3">
+        <source src="./audio/vsanroses-cortinilla-de-transicion-1-9753.ogg" type="audio/ogg">
+        <source src="./audio/vsanroses-cortinilla-de-transicion-1-9753.wav" type="audio/wav">
+    </audio>
     <h2>Track</h2>
     <a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/track">Documentación track</a>
     <h2>Archivos VTT</h2>
@@ -27,8 +44,10 @@
     <div id="ej_video">
         <!-- 1ra. Forma 
         <video src="./video/370344_medium.mp4" controls></video>
-        -->
         <video controls>
+        -->
+        <!-- 2da. Forma -->
+         <video controls>
             <source src="./video/370344_medium.mp4" type="video/mp4">
             <source src="./video/370344_medium.webm" type="video/webm">
             <source src="./video/370344_medium.ogg" type="video/ogg">
