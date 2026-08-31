@@ -1,0 +1,97 @@
+Lógica de programación:
+- PSeINT: Es un editor con capacidad de notación de algoritmos y generación de diagramas de flujo.
+Ruta de instalación:
+https://pseint.sourceforge.net/
+
+- Algoritmo: Es un conjunto pasos escrito en lenguaje
+natural de describe la solución a un problema o la realización de una tarea. Debe ser finito, es decir debe tener un inicio y un fin.
+
+- Diagrama de flujo: Es la representación gráfica de lo que se describe en el algoritmo. Se emplean simbolos que representan las acciones, que se ejecutan en cada paso.
+
+Donde la lógica de programación, representa la base del pensamiento estructurado, antes de programar en cualquier lenguaje.
+
+Computadora (máquina)
+* Hardware: Componentes Físicos.
+    Por ejemplo: Monitor, teclado, impresora, CPU (Unidad Central de Procesamiento).
+
+* Software: Componentes Lógicos (intangibles).
+    Por ejemplo: Sistema Operativos, Sistemas Administrativos, Sistemas ofimáticos, Lenguajes de programación, Videojuegos, otros.
+
+CPU (Unidad Central de Procesamiento)
+* ULA: unidad lógica y aritmética
+* UC: unidad de control
+* UM: unidad de memoria
+    |
+    +-> Responsable de administrar los dipositivos
+    de almacenamiento:
+    *> Primarios:
+        ROM (read only memory)
+        RAM (random access memory)
+
+    *> Secuendarios:
+        Disco duro.
+        Memorias SD (estado solido)
+        Cartuchos de cinta magnética
+        Medios de almacenamiento opticos
+
+VARIABLE: Es una locación de memoria, identificada con un nombre, que responde a un tipo de dato y permite guardar temporalmente un valor.
+
+Instalación de software.
+* Arquitectura de 32 bits: Sólo puede acceder a un máximo de 4Gb (Gigabytes) de RAM.
+
+* Arquitectura de 64 bits: Puede acceder más de 4Gb de RAM.
+
+BIT: Digito binario. Mínima unidad de información, que puede ser manejada por el computador. Puede ser 0 o 1.
+
+tabla ASCII.
+https://elcodigoascii.com.ar/
+
+Tipos de dato:
+https://en.wikipedia.org/wiki/Data_type
+
+https://en.wikipedia.org/wiki/C_data_types
+
+
+Declaración de variables en PSeINT 
+
+Definir nombre_variable Como Tipo_de_dato
+
+Inicialización de variables 
+
+nombre_variable <- VALOR_INICIAL
+
+Ejercicio 01
+Desarrollar en PSeINT un algoritmo, donde se 
+soliciten los siguientes datos:
+- nombre
+- apellido
+- correo electronico
+- dirección
+- edad
+Después de cargados los datos, los mismos deben
+ser mostrados en pantalla y si la edad ingresada
+es menor o igual a 18, escribir es menor de edad.
+
+En PSeINT el condicional para el caso de edad
+es:
+
+Si edad < 18 Entonces....
+
+
+ESTRUCTURA DE CONTROL 
+
+1) CONDICIONALES
+    -SIMPLES
+        Si (Condición) Entonces
+            Acción
+                o 
+            Conjunto de Acciones
+        FinSi
+    -COMPUESTAS
+    -MÚLTIPLES
+
+
+
+
+
+
