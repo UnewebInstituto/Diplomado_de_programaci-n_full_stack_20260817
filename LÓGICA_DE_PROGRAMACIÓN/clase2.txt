@@ -1,0 +1,27 @@
+- Condicional múltiple
+- Forma de declaración de variables
+Notaciones:
+- Camel Case
+    nombreDeVariable: El nombre se escribe en minúscula y las 
+    iniciales de cada palabra, van en mayúscula, excepto la de 
+    la primera palabra.
+- Snake Case
+    nombre_de_variable: El nombre se escribe en minúscula y
+    cada palabra, va separada por guiones bajos.
+
+Estilos de notación comunes
+camelCase: La primera letra es minúscula y las siguientes palabras empiezan con mayúscula (ejemplo: nombreUsuario). Muy común para variables locales en lenguajes como JavaScript o Java.
+
+PascalCase: Todas las palabras comienzan con mayúscula (ejemplo: NombreCompleto). Usada habitualmente para clases.
+
+snake_case: Las palabras van en minúsculas separadas por guiones bajos (ejemplo: nombre_usuario). Frecuente en Python o bases de datos.
+
+Notación húngara: Antepone prefijos en minúscula que indican el tipo de dato (ejemplo: strNombre). Actualmente se usa menos gracias a los entornos modernos.
+
+Estructuras de Control Repetitivas.
+- Mientras
+- Repetir
+- Para
+
+
+

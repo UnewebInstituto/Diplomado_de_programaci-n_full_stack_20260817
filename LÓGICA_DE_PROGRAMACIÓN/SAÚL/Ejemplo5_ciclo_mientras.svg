@@ -1,0 +1,17 @@
+Algoritmo Ejemplo5_ciclo_mientras
+	// Esta estructura de control repetitiva
+	// Tiene la particularidad de que la
+	// condición de fin de ciclo es verificada
+	// antes de entrar al conjunto de acciones a realizar
+	// Declaración de variables
+	Definir i Como Entero
+	Definir n Como Entero // representa el contador
+	// Inicialización de variables
+	i <- 0 // representa el número de veces a realizar el ciclo
+	n <- 5
+	// Ejecución del ciclo y estructura de resultados
+	Mientras i<n Hacer
+		Escribir i
+		i <- i+1 // Acción a realizar
+	FinMientras // Incremento de variable de contador
+FinAlgoritmo
