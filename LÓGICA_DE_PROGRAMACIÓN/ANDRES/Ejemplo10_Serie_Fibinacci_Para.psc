@@ -21,3 +21,4 @@ Algoritmo Ejemplo10_Serie_Fibinacci_Para
 		n2 <- suma
 	FinPara
 FinAlgoritmo
+

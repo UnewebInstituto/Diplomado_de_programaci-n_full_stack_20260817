@@ -1,0 +1,71 @@
+ALGEBRA BOOLEANA
+
+CONJUNCIÓN (y):
+p    q  ---> p y q
+V    V         V 
+V    F         F  
+F    V         F 
+F    F         F 
+
+DISYUNCIÓN (o):
+p    q  ---> p o q
+V    V         V 
+V    F         V  
+F    V         V 
+F    F         F 
+
+NEGACIÓN (no) 
+p ---> no p 
+V        F 
+F        V 
+
+ARREGLOS
+
+En estructuras de datos, que se almacena en memoria como una 
+variable, se le asigna un nombre y tiene la particularidad,
+de que almacena multiples valores, los cuales se acceden a 
+través de un índice. Es decir un número, que marca la posición
+en que el valor se encuentra.
+
+A <--- Nombre del arreglo
+ +--- Valores en cada posición
+ |
+ v
+[75|86|97|15|-1|23|-5]
+ 0  1  2  3  4  5  6 
+ ^
+ |
+ +--- Índice de cada posición
+
+
+Matrices: Estructura de datos bidimensional
+
+A <-- nombre de matriz
++-- índice fila
+|
+v 
+      0   1   2   <- índice columnas
+0   | 2 | 4 | 7 |
+1   | 9 | 1 | 5 |
+2   | 3 | 6 | 1 |
+
+
+Funciones:
+- Son parte de los lenguajes de programación.
+- Se les da un nombre.
+- Pueden recibir parámetros a través de argumentos.
+- Pueden retornar un valor.
+
+Tarea:
+Generar un nuevo algoritmo basado en el ejemplo Ejemplo18_Entrada_de_datos_arreglo, que:
+1- Calcule la edad promedio de los valores leídos.
+2- Tomando el siguiente intervalo, indique cantidad
+de valores contenidos en él:
+    * < 11 : Niños
+    * >= 11 y < 18 : Adolescente
+    * >= 18 y < 60 : Adulto
+    * >= 60 : Adulto Mayor
+3- Se debe validar que el ingreso de edad 
+sea >= 0 y <= 120 años.
+
+
