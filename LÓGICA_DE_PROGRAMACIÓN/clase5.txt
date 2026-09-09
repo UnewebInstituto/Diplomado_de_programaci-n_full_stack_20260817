@@ -1,0 +1,181 @@
+1) Acceder a alwaysdata.net
+    - Elegir el plan gratuito.
+
+
+Lenguajes de programación.
+1) Todo Lenguaje de programación, debe cumplir con reglas de sintáxis
+y semántica.
+2) Permiten la declaración de variables y estructuras de datos.
+3) Permiten la declaración de estructuras de control.
+    3.1) Estructuras de control condicional.
+    3.2) Estructuras de control repetitivas.
+4) Permitir la persistencia de datos.
+5) Soportan los paradigmas de programación estructurada y programación 
+orientada a objetos.
+
+
+Microsoft Windows [Versión 
+(c) Microsoft Corporation. ervados.
+
+E:\.PROFESORES\HENRY_DUQUE\ión_full_stack_202cd LÓGICA
+
+E:\.PROFESORES\HENRY_DUQUE\ión_full_stack_20260817\LÓG PROFESOR
+
+E:\.PROFESORES\HENRY_DUQUE\ión_full_stack_20260817\LÓGOFESOR>python --v
+unknown option --v
+usage: python [option] ... e | -] [arg] ...
+Try `python -h' for more in
+
+E:\.PROFESORES\HENRY_DUQUE\ión_full_stack_20260817\LÓGOFESOR>python --version
+Python 3.13.5
+
+E:\.PROFESORES\HENRY_DUQUE\
+
+E:\.PROFESORES\HENRY_DUQUE\ión_full_stack_20260817\LÓGOFESOR>python --version
+Python 3.13.5
+
+E:\.PROFESORES\HENRY_DUQUE\E:\.PROFESORES\HENRY_DUQUE\ión_full_stack_20260817\LÓGOFESOR>python --version
+Python 3.13.5
+
+E:\.PROFESORES\HENRY_DUQUE\OFESOR>python --version
+Python 3.13.5
+
+E:\.PROFESORES\HENRY_DUQUE\Python 3.13.5
+
+E:\.PROFESORES\HENRY_DUQUE\
+
+E:\.PROFESORES\HENRY_DUQUE\E:\.PROFESORES\HENRY_DUQUE\ión_full_stack_20260817\LÓGOFESOR>python -m venv .venv
+
+E:\.PROFESORES\HENRY_DUQUE\ión_full_stack_20260817\LÓGOFESOR>.venv\scripts\activa
+
+ión_full_stack_20260817\LÓGOFESOR>.venv\scripts\activa
+
+
+(.venv) E:\.PROFESORES\HENRrogramación_full_stack_2026(.venv) E:\.PROFESORES\HENRrogramación_full_stack_2026rogramación_full_stack_2026
+ACIÓN\PROFESOR>
+ACIÓN\PROFESOR>
+(.venv) E:\.PROFESORES\HENR
+(.venv) E:\.PROFESORES\HENRci_Mientras.py
+Ingrese el valor del 1er. n
+01
+Ingrese el valor del 2do. n
+ACIÓN\PROFESOR>
+(.venv) E:\.PROFESORES\HENR
+(.venv) E:\.PROFESORES\HENRci_Mientras.py
+Ingrese el valor del 1er. n
+01
+ACIÓN\PROFESOR>
+(.venv) E:\.PROFESORES\HENR
+(.venv) E:\.PROFESORES\HENRci_Mientras.py
+Ingrese el valor del 1er. n
+ACIÓN\PROFESOR>
+(.venv) E:\.PROFESORES\HENR
+(.venv) E:\.PROFESORES\HENRci_Mientras.py
+ACIÓN\PROFESOR>
+(.venv) E:\.PROFESORES\HENR
+(.venv) E:\.PROFESORES\HENRACIÓN\PROFESOR>
+(.venv) E:\.PROFESORES\HENR
+(.venv) E:\.PROFESORES\HENRci_Mientras.py
+Ingrese el valor del 1er. n
+01
+Ingrese el valor del 2do. n
+02
+Ingrese el nÚmero de valore
+010
+0
+0
+Fin del programa
+
+(.venv) E:\.PROFESORES\HENRci_Mientras.py
+Ingrese el valor del 1er. n
+01
+Ingrese el valor del 2do. n
+02
+Ingrese el nÚmero de valore
+010
+0
+0
+Fin del programa
+
+(.venv) E:\.PROFESORES\HENRci_Mientras.py
+Ingrese el valor del 1er. n
+1
+Ingrese el valor del 2do. n
+2
+Ingrese el nÚmero de valore
+10
+1
+2
+Traceback (most recent call
+  File "E:\.PROFESORES\HENRMientras.py", line 34, in <
+    while i < n:
+          ^^^^^
+TypeError: '<' not supporte
+
+(.venv) E:\.PROFESORES\HENRci_Mientras.py
+Ingrese el valor del 1er. n
+1
+Ingrese el valor del 2do. n
+2
+Ingrese el nÚmero de valore
+10
+1.0
+2.0
+2.0
+2.0
+3.0
+5.0
+2.0
+3.0
+5.0
+2.0
+3.0
+2.0
+3.0
+5.0
+8.0
+13.0
+21.0
+34.0
+55.0
+89.0
+Fin del programa
+
+(.venv) E:\.PROFESORES\HENRci_Mientras.py
+Ingrese el valor del 1er. n
+1
+Ingrese el valor del 2do. n
+2
+Ingrese el nÚmero de valore
+10
+1.0
+2.0
+Ingrese el nÚmero de valore
+10
+1.0
+2.0
+1.0
+2.0
+3.0
+5.0
+8.0
+13.0
+13.0
+21.0
+34.0
+34.0
+55.0
+89.0
+Fin del programa
+Fin del programa
+
+(.venv) E:\.PROFESORES\HENRY_DUQUE\Diplomado_de_programación_full_stack_20260817\LÓGICA_DE_PROGRAMACIÓN\PROFESOR>python -m idlelib
+
+
+
+
+
+
+
+
+    
