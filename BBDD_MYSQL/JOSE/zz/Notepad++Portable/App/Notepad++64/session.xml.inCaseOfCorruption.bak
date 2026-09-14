@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<NotepadPlus>
+    <Session activeView="0">
+        <mainView activeIndex="1">
+            <File firstVisibleLine="48" xOffset="0" scrollWidth="1157" startPos="1266" endPos="1266" selMode="0" offset="0" wrapCount="1" lang="None (Normal Text)" encoding="-1" userReadOnly="no" filename="E:\.PROFESORES\HENRY_DUQUE\Diplomado_de_programación_full_stack_20260817\BBDD_MYSQL\JOSE\zz\MySQL part 1.md" backupFilePath="" originalFileLastModifTimestamp="1477166664" originalFileLastModifTimestampHigh="31278163" tabColourId="-1" RTL="no" tabPinned="no" mapFirstVisibleDisplayLine="-1" mapFirstVisibleDocLine="-1" mapLastVisibleDocLine="-1" mapNbLine="-1" mapHigherPos="-1" mapWidth="-1" mapHeight="-1" mapKByteInDoc="512" mapWrapIndentMode="-1" mapIsWrap="no" />
+            <File firstVisibleLine="150" xOffset="0" scrollWidth="1195" startPos="5196" endPos="5113" selMode="0" offset="0" wrapCount="1" lang="SQL" encoding="-1" userReadOnly="no" filename="E:\.PROFESORES\HENRY_DUQUE\Diplomado_de_programación_full_stack_20260817\BBDD_MYSQL\JOSE\zz\clase1.sql" backupFilePath="E:\.PROFESORES\HENRY_DUQUE\Diplomado_de_programación_full_stack_20260817\BBDD_MYSQL\JOSE\zz\Notepad++Portable\App\Notepad++64\backup\clase1.sql@2026-09-14_101527" originalFileLastModifTimestamp="1735505714" originalFileLastModifTimestampHigh="31278163" tabColourId="-1" RTL="no" tabPinned="no" mapFirstVisibleDisplayLine="-1" mapFirstVisibleDocLine="-1" mapLastVisibleDocLine="-1" mapNbLine="-1" mapHigherPos="-1" mapWidth="-1" mapHeight="-1" mapKByteInDoc="512" mapWrapIndentMode="-1" mapIsWrap="no" />
+        </mainView>
+        <subView activeIndex="0" />
+    </Session>
+</NotepadPlus>
