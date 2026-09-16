@@ -1,0 +1,1 @@
+"C:\xampp\mysql\bin\mysqldump" -u root -p db_profesor > ./respaldos/db_ricardo_20260916.sql

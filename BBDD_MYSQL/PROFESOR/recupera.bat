@@ -1,0 +1,1 @@
+"C:\xampp\mysql\bin\mysql" -u root -p db_profesor_tmp < ./respaldos/db_profesor_20260916.sql

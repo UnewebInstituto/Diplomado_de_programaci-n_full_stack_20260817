@@ -1,0 +1,681 @@
+Como experto en MySQL, te comparto los comandos esenciales y más eficientes utilizando las herramientas nativas **mysqldump** (para respaldos) y **mysql** (para restauraciones).
+
+---
+
+### 1. Backup de Base de Datos (Exportar)
+
+Para realizar una copia de seguridad completa de una base de datos en formato SQL, utiliza la herramienta `mysqldump` desde la terminal de tu sistema operativo (no dentro de la consola de MySQL).
+
+```bash
+mysqldump -u [usuario] -p [nombre_base_de_datos] > [ruta_y_nombre_del_archivo.sql]
+
+```
+
+* **Ejemplo práctico:**
+```bash
+mysqldump -u root -p db_prueba > backup_db_prueba.sql
+
+```
+
+
+
+#### Variantes útiles para respaldos:
+
+* **Respaldar todas las bases de datos:**
+```bash
+mysqldump -u root -p --all-databases > todas_las_bbs.sql
+
+```
+
+
+* **Respaldar comprimiendo en GZIP** (ideal para bases de datos grandes):
+```bash
+mysqldump -u root -p db_prueba | gzip > backup_db_prueba.sql.gz
+
+```
+
+
+
+---
+
+### 2. Restore de Base de Datos (Importar)
+
+Para restaurar o importar un archivo SQL en una base de datos, primero debes asegurarte de que la base de datos de destino exista.
+
+#### Paso A: Crear la base de datos (si no existe)
+
+Entra a MySQL y créala:
+
+```sql
+CREATE DATABASE nombre_base_de_datos CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+```
+
+#### Paso B: Ejecutar la restauración desde la terminal
+
+```bash
+mysql -u [usuario] -p [nombre_base_de_datos] < [ruta_y_nombre_del_archivo.sql]
+
+```
+
+* **Ejemplo práctico:**
+```bash
+mysql -u root -p db_prueba < backup_db_prueba.sql
+
+```
+
+
+
+#### Variante si el archivo está comprimido (.gz):
+
+```bash
+gunzip < backup_db_prueba.sql.gz | mysql -u root -p db_prueba
+
+```
+
+---
+
+> **💡 Consejo de experto:** Si trabajas con bases de datos muy voluminosas, es altamente recomendable añadir el parámetro `--single-transaction` en el `mysqldump` para evitar bloqueos en las tablas InnoDB durante el proceso de respaldo.
+
+¿Estás automatizando este proceso mediante algún script o prefieres hacerlo de forma manual?
+
+-- CREACIÓN DE BASE DE DATOS TEMPORAL
+create database db_profesor_tmp;
+
+https://mariadb.com/docs/server/server-usage/storage-engines
+
+https://dev.mysql.com/doc/refman/9.7/en/storage-engines.html
+
+Como experto en MySQL, te presento una descripción breve de los motores de almacenamiento (*storage engines*) más importantes y utilizados en este sistema gestor de bases de datos:
+
+---
+
+### 1. InnoDB (El Estándar y por Defecto)
+
+* **Qué es:** Es el motor predeterminado y el más robusto desde la versión 5.5 en adelante.
+* **Características principales:** Soporta **transacciones ACID** (atomicidad, consistencia, aislamiento y durabilidad), **bloqueo a nivel de fila** (que mejora la concurrencia en altas cargas de escritura/lectura) y **claves foráneas** (*foreign keys*). También ofrece recuperación ante fallos gracias a sus registros de transacciones (*redo logs*).
+* **Cuándo usarlo:** Prácticamente para el 99% de los proyectos web modernos, aplicaciones corporativas y sistemas relacionales estándar.
+
+### 2. MyISAM (El Histórico / Legado)
+
+* **Qué es:** Fue el motor predeterminado en las versiones antiguas de MySQL (anteriores a la 5.5).
+* **Características principales:** Destaca por su alta velocidad en consultas de solo lectura (`SELECT`). Sin embargo, **no soporta transacciones**, carece de integridad referencial (claves foráneas) y utiliza **bloqueo a nivel de tabla**, lo que significa que una operación de escritura bloquea toda la tabla y degrada el rendimiento bajo alta concurrencia.
+* **Cuándo usarlo:** En escenarios específicos de almacenamiento de datos históricos, análisis de registros (*logs*) o entornos donde solo se realicen consultas estáticas de lectura masiva. Hoy en día está prácticamente obsoleto frente a InnoDB.
+
+### 3. Memory (HEAP)
+
+* **Qué es:** Un motor que almacena todos sus datos directamente en la memoria RAM del servidor.
+* **Características principales:** Ofrece una velocidad de lectura y escritura extremadamente rápida. Sin embargo, **los datos son volátiles**: si el servidor MySQL se reinicia o se apaga, toda la información almacenada en estas tablas se pierde (aunque la estructura de la tabla se mantiene).
+* **Cuándo usarlo:** Para tablas temporales, cachés de corta duración o catálogos de referencia muy consultados que necesiten máxima velocidad.
+
+### 4. ARCHIVE
+
+* **Qué es:** Un motor optimizado para el almacenamiento y compresión de grandes volúmenes de datos históricos que cambian poco o nada.
+* **Características principales:** Comprime los datos a medida que se insertan, no soporta índices secundarios (solo permite operaciones `INSERT` y `SELECT`, sin `UPDATE` ni `DELETE` directos).
+* **Cuándo usarlo:** Para auditorías, almacenamiento de registros de actividad (*logs*) y archivos históricos a largo plazo que requieran ahorrar espacio en disco.
+
+---
+
+¿Te interesa profundizar en cómo configurar alguno de estos motores o necesitas optimizar el rendimiento de InnoDB para un proyecto en particular?
+
+
+Setting environment for using XAMPP for Windows.
+PROFESOR@WIN-CMUODTI144V c:\xampp
+# mysql -u root -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 25
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create database db_profesor_tmp;
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [(none)]> show databases like '%tmp%'
+    -> ;
++------------------+
+| Database (%tmp%) |
++------------------+
+| db_andres_tmp    |
+| db_jose_tmp      |
+| db_profesor_tmp  |
+| db_ricardo_tmp   |
++------------------+
+4 rows in set (0.000 sec)
+
+MariaDB [(none)]> use db_profesor_tmp
+Database changed
+MariaDB [db_profesor_tmp]> show tables;
+Empty set (0.001 sec)
+
+MariaDB [db_profesor_tmp]> show tables;
++---------------------------+
+| Tables_in_db_profesor_tmp |
++---------------------------+
+| personas                  |
+| personas1                 |
++---------------------------+
+2 rows in set (0.000 sec)
+
+MariaDB [db_profesor_tmp]> use db_profesor
+Database changed
+MariaDB [db_profesor]> create table personas_con_indice(
+    ->     id int unsigned auto_increment,
+    ->     cedula varchar(10),
+    ->     nombre varchar(30),
+    ->     apellido varchar(30),
+    ->     direccion text,
+    ->     correo_electronico varchar(80),
+    ->     telefono char(20),
+    ->     fecha_de_nacimiento date,
+    ->     edad tinyint unsigned,
+    ->     primary key (id)
+    -> );
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [db_profesor]> show create table personas_con_indice;
++---------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table               | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
++---------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| personas_con_indice | CREATE TABLE `personas_con_indice` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `cedula` varchar(10) DEFAULT NULL,
+  `nombre` varchar(30) DEFAULT NULL,
+  `apellido` varchar(30) DEFAULT NULL,
+  `direccion` text DEFAULT NULL,
+  `correo_electronico` varchar(80) DEFAULT NULL,
+  `telefono` char(20) DEFAULT NULL,
+  `fecha_de_nacimiento` date DEFAULT NULL,
+  `edad` tinyint(3) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci |
++---------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.000 sec)
+
+MariaDB [db_profesor]> INSERT INTO personas_con_indice(cedula, nombre, apellido,
+    -> direccion, correo_electronico, telefono, fecha_de_nacimiento,
+    -> edad) VALUES
+    -> ('V5678','YOLANDA','TORTOZA','CATIA LA MAR', 'yt@gmail.com',
+    -> '2123334455','1975-09-10', 51),
+    -> ('V9012','NELLY','CONTRERAS','LA VEGA', 'nc@gmail.com',
+    -> '2124434930','1968-07-16', 58),
+    -> ('V3456','LIBIA','COLS','GUARENAS', 'lc@gmail.com',
+    -> '2123634106','1975-05-20', 51);
+Query OK, 3 rows affected (0.001 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MariaDB [db_profesor]> select * from personas_con_indice;
++----+--------+---------+-----------+--------------+--------------------+------------+---------------------+------+
+| id | cedula | nombre  | apellido  | direccion    | correo_electronico | telefono   | fecha_de_nacimiento | edad |
++----+--------+---------+-----------+--------------+--------------------+------------+---------------------+------+
+|  1 | V5678  | YOLANDA | TORTOZA   | CATIA LA MAR | yt@gmail.com       | 2123334455 | 1975-09-10          |   51 |
+|  2 | V9012  | NELLY   | CONTRERAS | LA VEGA      | nc@gmail.com       | 2124434930 | 1968-07-16          |   58 |
+|  3 | V3456  | LIBIA   | COLS      | GUARENAS     | lc@gmail.com       | 2123634106 | 1975-05-20          |   51 |
++----+--------+---------+-----------+--------------+--------------------+------------+---------------------+------+
+3 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> show create table personas_con_indice;
++---------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table               | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
++---------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| personas_con_indice | CREATE TABLE `personas_con_indice` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `cedula` varchar(10) DEFAULT NULL,
+  `nombre` varchar(30) DEFAULT NULL,
+  `apellido` varchar(30) DEFAULT NULL,
+  `direccion` text DEFAULT NULL,
+  `correo_electronico` varchar(80) DEFAULT NULL,
+  `telefono` char(20) DEFAULT NULL,
+  `fecha_de_nacimiento` date DEFAULT NULL,
+  `edad` tinyint(3) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci |
++---------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.000 sec)
+
+MariaDB [db_profesor]>
+MariaDB [db_profesor]>
+MariaDB [db_profesor]> select * from personas_con_indice where id = 2;
++----+--------+--------+-----------+-----------+--------------------+------------+---------------------+------+
+| id | cedula | nombre | apellido  | direccion | correo_electronico | telefono   | fecha_de_nacimiento | edad |
++----+--------+--------+-----------+-----------+--------------------+------------+---------------------+------+
+|  2 | V9012  | NELLY  | CONTRERAS | LA VEGA   | nc@gmail.com       | 2124434930 | 1968-07-16          |   58 |
++----+--------+--------+-----------+-----------+--------------------+------------+---------------------+------+
+1 row in set (0.000 sec)
+
+MariaDB [db_profesor]> insert into personas_con_indice(id,cedula, nombre, apellido,
+    -> direccion, correo_electronico, telefono, fecha_de_nacimiento,
+    -> edad) VALUES
+    -> (2,'V9898','MAGDALUZ','MENDOZA','VALLE ABAJO', 'mm@gmail.com',
+    -> '2129871234','1968-01-04', 58);
+ERROR 1062 (23000): Duplicate entry '2' for key 'PRIMARY'
+MariaDB [db_profesor]> create table personas_con_indice_cedula(
+    ->     cedula varchar(10),
+    ->     nombre varchar(30),
+    ->     apellido varchar(30),
+    ->     direccion text,
+    ->     correo_electronico varchar(80),
+    ->     telefono char(20),
+    ->     fecha_de_nacimiento date,
+    ->     edad tinyint unsigned,
+    ->     primary key (cedula)
+    -> );
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [db_profesor]> show create table personas_con_indice_cedula;
++----------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table                      | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
++----------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| personas_con_indice_cedula | CREATE TABLE `personas_con_indice_cedula` (
+  `cedula` varchar(10) NOT NULL,
+  `nombre` varchar(30) DEFAULT NULL,
+  `apellido` varchar(30) DEFAULT NULL,
+  `direccion` text DEFAULT NULL,
+  `correo_electronico` varchar(80) DEFAULT NULL,
+  `telefono` char(20) DEFAULT NULL,
+  `fecha_de_nacimiento` date DEFAULT NULL,
+  `edad` tinyint(3) unsigned DEFAULT NULL,
+  PRIMARY KEY (`cedula`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci |
++----------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.001 sec)
+
+MariaDB [db_profesor]> INSERT INTO personas_con_indice_cedula(cedula, nombre, apellido,
+    -> direccion, correo_electronico, telefono, fecha_de_nacimiento,
+    -> edad) VALUES
+    -> ('V5678','YOLANDA','TORTOZA','CATIA LA MAR', 'yt@gmail.com',
+    -> '2123334455','1975-09-10', 51),
+    -> ('V9012','NELLY','CONTRERAS','LA VEGA', 'nc@gmail.com',
+    -> '2124434930','1968-07-16', 58),
+    -> ('V3456','LIBIA','COLS','GUARENAS', 'lc@gmail.com',
+    -> '2123634106','1975-05-20', 51);
+Query OK, 3 rows affected (0.002 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MariaDB [db_profesor]> select * from personas_con_indice_cedula;
++--------+---------+-----------+--------------+--------------------+------------+---------------------+------+
+| cedula | nombre  | apellido  | direccion    | correo_electronico | telefono   | fecha_de_nacimiento | edad |
++--------+---------+-----------+--------------+--------------------+------------+---------------------+------+
+| V3456  | LIBIA   | COLS      | GUARENAS     | lc@gmail.com       | 2123634106 | 1975-05-20          |   51 |
+| V5678  | YOLANDA | TORTOZA   | CATIA LA MAR | yt@gmail.com       | 2123334455 | 1975-09-10          |   51 |
+| V9012  | NELLY   | CONTRERAS | LA VEGA      | nc@gmail.com       | 2124434930 | 1968-07-16          |   58 |
++--------+---------+-----------+--------------+--------------------+------------+---------------------+------+
+3 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> INSERT INTO personas_con_indice_cedula(cedula, nombre, apellido,
+    -> direccion, correo_electronico, telefono, fecha_de_nacimiento,
+    -> edad) VALUES
+    -> ('V5678','YOLANDA','TORTOZA','CATIA LA MAR', 'yt@gmail.com',
+    -> '2123334455','1975-09-10', 51);
+ERROR 1062 (23000): Duplicate entry 'V5678' for key 'PRIMARY'
+MariaDB [db_profesor]> create table personas_con_indice_cedula_correo(
+    ->     cedula varchar(10),
+    ->     nombre varchar(30),
+    ->     apellido varchar(30),
+    ->     direccion text,
+    ->     correo_electronico varchar(80),
+    ->     telefono char(20),
+    ->     fecha_de_nacimiento date,
+    ->     edad tinyint unsigned,
+    ->     primary key (cedula, correo_electronico)
+    -> );
+Query OK, 0 rows affected (0.009 sec)
+
+MariaDB [db_profesor]> INSERT INTO personas_con_indice_cedula_correo(cedula, nombre, apellido,
+    -> direccion, correo_electronico, telefono, fecha_de_nacimiento,
+    -> edad) VALUES
+    -> ('V5678','YOLANDA','TORTOZA','CATIA LA MAR', 'yt@gmail.com',
+    -> '2123334455','1975-09-10', 51),
+    -> ('V9012','NELLY','CONTRERAS','LA VEGA', 'nc@gmail.com',
+    -> '2124434930','1968-07-16', 58),
+    -> ('V3456','LIBIA','COLS','GUARENAS', 'lc@gmail.com',
+    -> '2123634106','1975-05-20', 51);
+Query OK, 3 rows affected (0.002 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MariaDB [db_profesor]> INSERT INTO personas_con_indice_cedula_correo(cedula, nombre, apellido,
+    -> direccion, correo_electronico, telefono, fecha_de_nacimiento,
+    -> edad) VALUES
+    -> ('V5678','YOLANDA','TORTOZA','CATIA LA MAR', 'yt1@gmail.com',
+    -> '2123334455','1975-09-10', 51),
+    -> ('V56781','YOLANDA','TORTOZA','CATIA LA MAR', 'yt@gmail.com',
+    -> '2123334455','1975-09-10', 51);
+Query OK, 2 rows affected (0.001 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+MariaDB [db_profesor]> select * from personas_con_indice_cedula_correo;
++--------+---------+-----------+--------------+--------------------+------------+---------------------+------+
+| cedula | nombre  | apellido  | direccion    | correo_electronico | telefono   | fecha_de_nacimiento | edad |
++--------+---------+-----------+--------------+--------------------+------------+---------------------+------+
+| V3456  | LIBIA   | COLS      | GUARENAS     | lc@gmail.com       | 2123634106 | 1975-05-20          |   51 |
+| V5678  | YOLANDA | TORTOZA   | CATIA LA MAR | yt1@gmail.com      | 2123334455 | 1975-09-10          |   51 |
+| V5678  | YOLANDA | TORTOZA   | CATIA LA MAR | yt@gmail.com       | 2123334455 | 1975-09-10          |   51 |
+| V56781 | YOLANDA | TORTOZA   | CATIA LA MAR | yt@gmail.com       | 2123334455 | 1975-09-10          |   51 |
+| V9012  | NELLY   | CONTRERAS | LA VEGA      | nc@gmail.com       | 2124434930 | 1968-07-16          |   58 |
++--------+---------+-----------+--------------+--------------------+------------+---------------------+------+
+5 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> INSERT INTO personas_con_indice_cedula_correo(cedula, nombre, apellido,
+    -> direccion, correo_electronico, telefono, fecha_de_nacimiento,
+    -> edad) VALUES
+    -> ('V5678','YOLANDA','TORTOZA','CATIA LA MAR', 'yt@gmail.com',
+    -> '2123334455','1975-09-10', 51);
+ERROR 1062 (23000): Duplicate entry 'V5678-yt@gmail.com' for key 'PRIMARY'
+MariaDB [db_profesor]>
+MariaDB [db_profesor]> create table proveedores(
+    ->     id int unsigned auto_increment,
+    ->     nombre varchar(30),
+    ->     direccion text,
+    ->     telefono char(20),
+    ->     correo_electronico varchar(80),
+    ->     primary key (id),
+    ->     unique (correo_electronico)
+    -> );
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [db_profesor]> create table productos(
+    ->     id int unsigned auto_increment,
+    ->     proveedor_id int unsigned,
+    ->     nombre varchar(30),
+    ->     cantidad int unsigned,
+    ->     precio numeric(13,2),
+    ->     primary key (id),
+    ->     foreign key (proveedor_id) references proveedores(id)
+    -> );
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [db_profesor]> show create table proveedores;
++-------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table       | Create Table                                                                                                                                                                                                                                                                                                                                                                               |
++-------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| proveedores | CREATE TABLE `proveedores` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(30) DEFAULT NULL,
+  `direccion` text DEFAULT NULL,
+  `telefono` char(20) DEFAULT NULL,
+  `correo_electronico` varchar(80) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `correo_electronico` (`correo_electronico`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci |
++-------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.001 sec)
+
+MariaDB [db_profesor]> show create table productos;
++-----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table     | Create Table                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
++-----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| productos | CREATE TABLE `productos` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `proveedor_id` int(10) unsigned DEFAULT NULL,
+  `nombre` varchar(30) DEFAULT NULL,
+  `cantidad` int(10) unsigned DEFAULT NULL,
+  `precio` decimal(13,2) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `proveedor_id` (`proveedor_id`),
+  CONSTRAINT `productos_ibfk_1` FOREIGN KEY (`proveedor_id`) REFERENCES `proveedores` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci |
++-----------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.000 sec)
+
+MariaDB [db_profesor]>
+MariaDB [db_profesor]>
+MariaDB [db_profesor]>
+MariaDB [db_profesor]> INSERT INTO proveedores(nombre, direccion, telefono, correo_electronico) VALUES
+    -> ('GENERAL ELECTRIC','AV. LECUNA','2121112233','info@ge.com'),
+    -> ('LG','AV. ROMULO GALLEGOS','2121112277','info@lg.com'),
+    -> ('MABE','AV. FCO. DE MIRANDA','2123334455','info@mabe.com');
+Query OK, 3 rows affected (0.001 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MariaDB [db_profesor]> INSERT INTO productos(proveedor_id, nombre, cantidad, precio) VALUES
+    -> (1,'NEVERA',6,500.25),
+    -> (1,'COCINA',3,300.75),
+    -> (2,'LAVADORA',2,800.50),
+    -> (3,'AIRE ACONDICIONADO',4,600.75),
+    -> (3,'TELEVISOR',7,400.00),
+    -> (3,'LAPTOP',5,1200.00),
+    -> (2,'MICROONDAS',8,150.25),
+    -> (1,'LICUADORA',12,100.00),
+    -> (2,'PLANCHA',12,75.50),
+    -> (3,'VENTILADOR',12,50.00),
+    -> (1,'HORNO A GAS',6,450.00),
+    -> (2,'CAFETERA',12,250.00),
+    -> (3,'TOSTADORA',12,80.00);
+Query OK, 13 rows affected (0.002 sec)
+Records: 13  Duplicates: 0  Warnings: 0
+
+MariaDB [db_profesor]> select * from proveedores;
++----+------------------+---------------------+------------+--------------------+
+| id | nombre           | direccion           | telefono   | correo_electronico |
++----+------------------+---------------------+------------+--------------------+
+|  1 | GENERAL ELECTRIC | AV. LECUNA          | 2121112233 | info@ge.com        |
+|  2 | LG               | AV. ROMULO GALLEGOS | 2121112277 | info@lg.com        |
+|  3 | MABE             | AV. FCO. DE MIRANDA | 2123334455 | info@mabe.com      |
++----+------------------+---------------------+------------+--------------------+
+3 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select * from productos;
++----+--------------+--------------------+----------+---------+
+| id | proveedor_id | nombre             | cantidad | precio  |
++----+--------------+--------------------+----------+---------+
+|  1 |            1 | NEVERA             |        6 |  500.25 |
+|  2 |            1 | COCINA             |        3 |  300.75 |
+|  3 |            2 | LAVADORA           |        2 |  800.50 |
+|  4 |            3 | AIRE ACONDICIONADO |        4 |  600.75 |
+|  5 |            3 | TELEVISOR          |        7 |  400.00 |
+|  6 |            3 | LAPTOP             |        5 | 1200.00 |
+|  7 |            2 | MICROONDAS         |        8 |  150.25 |
+|  8 |            1 | LICUADORA          |       12 |  100.00 |
+|  9 |            2 | PLANCHA            |       12 |   75.50 |
+| 10 |            3 | VENTILADOR         |       12 |   50.00 |
+| 11 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 12 |            2 | CAFETERA           |       12 |  250.00 |
+| 13 |            3 | TOSTADORA          |       12 |   80.00 |
++----+--------------+--------------------+----------+---------+
+13 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> ----------------+------------+--------------------+
+MariaDB [db_profesor]> \c
+MariaDB [db_profesor]> INSERT INTO productos(proveedor_id, nombre, cantidad, precio) VALUES
+    -> (4,'OLLA DE PRESIÓN',10,200.00);
+ERROR 1452 (23000): Cannot add or update a child row: a foreign key constraint fails (`db_profesor`.`productos`, CONSTRAINT `productos_ibfk_1` FOREIGN KEY (`proveedor_id`) REFERENCES `proveedores` (`id`))
+MariaDB [db_profesor]> delete from proveedores where id = 1;
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`db_profesor`.`productos`, CONSTRAINT `productos_ibfk_1` FOREIGN KEY (`proveedor_id`) REFERENCES `proveedores` (`id`))
+MariaDB [db_profesor]> delete from proveedores where id = 1;
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`db_profesor`.`productos`, CONSTRAINT `productos_ibfk_1` FOREIGN KEY (`proveedor_id`) REFERENCES `proveedores` (`id`))
+MariaDB [db_profesor]> update proveedores set id = 4 where id = 1;
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`db_profesor`.`productos`, CONSTRAINT `productos_ibfk_1` FOREIGN KEY (`proveedor_id`) REFERENCES `proveedores` (`id`))
+MariaDB [db_profesor]> select * from productos;
++----+--------------+--------------------+----------+---------+
+| id | proveedor_id | nombre             | cantidad | precio  |
++----+--------------+--------------------+----------+---------+
+|  1 |            1 | NEVERA             |        6 |  500.25 |
+|  2 |            1 | COCINA             |        3 |  300.75 |
+|  3 |            2 | LAVADORA           |        2 |  800.50 |
+|  4 |            3 | AIRE ACONDICIONADO |        4 |  600.75 |
+|  5 |            3 | TELEVISOR          |        7 |  400.00 |
+|  6 |            3 | LAPTOP             |        5 | 1200.00 |
+|  7 |            2 | MICROONDAS         |        8 |  150.25 |
+|  8 |            1 | LICUADORA          |       12 |  100.00 |
+|  9 |            2 | PLANCHA            |       12 |   75.50 |
+| 10 |            3 | VENTILADOR         |       12 |   50.00 |
+| 11 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 12 |            2 | CAFETERA           |       12 |  250.00 |
+| 13 |            3 | TOSTADORA          |       12 |   80.00 |
++----+--------------+--------------------+----------+---------+
+13 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> delete from productos where proveedor_id = 3;
+Query OK, 5 rows affected (0.001 sec)
+
+MariaDB [db_profesor]> select * from productos;
++----+--------------+-------------+----------+--------+
+| id | proveedor_id | nombre      | cantidad | precio |
++----+--------------+-------------+----------+--------+
+|  1 |            1 | NEVERA      |        6 | 500.25 |
+|  2 |            1 | COCINA      |        3 | 300.75 |
+|  3 |            2 | LAVADORA    |        2 | 800.50 |
+|  7 |            2 | MICROONDAS  |        8 | 150.25 |
+|  8 |            1 | LICUADORA   |       12 | 100.00 |
+|  9 |            2 | PLANCHA     |       12 |  75.50 |
+| 11 |            1 | HORNO A GAS |        6 | 450.00 |
+| 12 |            2 | CAFETERA    |       12 | 250.00 |
++----+--------------+-------------+----------+--------+
+8 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select * from proveedores;
++----+------------------+---------------------+------------+--------------------+
+| id | nombre           | direccion           | telefono   | correo_electronico |
++----+------------------+---------------------+------------+--------------------+
+|  1 | GENERAL ELECTRIC | AV. LECUNA          | 2121112233 | info@ge.com        |
+|  2 | LG               | AV. ROMULO GALLEGOS | 2121112277 | info@lg.com        |
+|  3 | MABE             | AV. FCO. DE MIRANDA | 2123334455 | info@mabe.com      |
++----+------------------+---------------------+------------+--------------------+
+3 rows in set (0.001 sec)
+
+MariaDB [db_profesor]> delete from proveedores where id = 1;
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`db_profesor`.`productos`, CONSTRAINT `productos_ibfk_1` FOREIGN KEY (`proveedor_id`) REFERENCES `proveedores` (`id`))
+MariaDB [db_profesor]> delete from proveedores where id = 2;
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`db_profesor`.`productos`, CONSTRAINT `productos_ibfk_1` FOREIGN KEY (`proveedor_id`) REFERENCES `proveedores` (`id`))
+MariaDB [db_profesor]> delete from proveedores where id = 3;
+Query OK, 1 row affected (0.008 sec)
+
+MariaDB [db_profesor]> update proveedores set id = 5 where id = 1;
+ERROR 1451 (23000): Cannot delete or update a parent row: a foreign key constraint fails (`db_profesor`.`productos`, CONSTRAINT `productos_ibfk_1` FOREIGN KEY (`proveedor_id`) REFERENCES `proveedores` (`id`))
+MariaDB [db_profesor]> create table proveedores_cascade(
+    ->     id int unsigned auto_increment,
+    ->     nombre varchar(30),
+    ->     direccion text,
+    ->     telefono char(20),
+    ->     correo_electronico varchar(80),
+    ->     primary key (id),
+    ->     unique (correo_electronico)
+    -> );
+Query OK, 0 rows affected (0.008 sec)
+
+MariaDB [db_profesor]> create table productos_cascade(
+    ->     id int unsigned auto_increment,
+    ->     proveedor_id int unsigned,
+    ->     nombre varchar(30),
+    ->     cantidad int unsigned,
+    ->     precio numeric(13,2),
+    ->     primary key (id),
+    ->     foreign key (proveedor_id) references proveedores_cascade(id) on delete cascade on update cascade
+    -> );
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [db_profesor]> -- Carga de datos en la tabla proveedores.
+MariaDB [db_profesor]> INSERT INTO proveedores_cascade(nombre, direccion, telefono, correo_electronico) VALUES
+    -> ('GENERAL ELECTRIC','AV. LECUNA','2121112233','info@ge.com'),
+    -> ('LG','AV. ROMULO GALLEGOS','2121112277','info@lg.com'),
+    -> ('MABE','AV. FCO. DE MIRANDA','2123334455','info@mabe.com');
+Query OK, 3 rows affected (0.002 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MariaDB [db_profesor]> INSERT INTO productos_cascade(proveedor_id, nombre, cantidad, precio) VALUES
+    -> (1,'NEVERA',6,500.25),
+    -> (1,'COCINA',3,300.75),
+    -> (2,'LAVADORA',2,800.50),
+    -> (3,'AIRE ACONDICIONADO',4,600.75),
+    -> (3,'TELEVISOR',7,400.00),
+    -> (3,'LAPTOP',5,1200.00),
+    -> (2,'MICROONDAS',8,150.25),
+    -> (1,'LICUADORA',12,100.00),
+    -> (2,'PLANCHA',12,75.50),
+    -> (3,'VENTILADOR',12,50.00),
+    -> (1,'HORNO A GAS',6,450.00),
+    -> (2,'CAFETERA',12,250.00),
+    -> (3,'TOSTADORA',12,80.00);
+Query OK, 13 rows affected (0.004 sec)
+Records: 13  Duplicates: 0  Warnings: 0
+
+MariaDB [db_profesor]>
+MariaDB [db_profesor]> select * from productos_cascade;
++----+--------------+--------------------+----------+---------+
+| id | proveedor_id | nombre             | cantidad | precio  |
++----+--------------+--------------------+----------+---------+
+|  1 |            1 | NEVERA             |        6 |  500.25 |
+|  2 |            1 | COCINA             |        3 |  300.75 |
+|  3 |            2 | LAVADORA           |        2 |  800.50 |
+|  4 |            3 | AIRE ACONDICIONADO |        4 |  600.75 |
+|  5 |            3 | TELEVISOR          |        7 |  400.00 |
+|  6 |            3 | LAPTOP             |        5 | 1200.00 |
+|  7 |            2 | MICROONDAS         |        8 |  150.25 |
+|  8 |            1 | LICUADORA          |       12 |  100.00 |
+|  9 |            2 | PLANCHA            |       12 |   75.50 |
+| 10 |            3 | VENTILADOR         |       12 |   50.00 |
+| 11 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 12 |            2 | CAFETERA           |       12 |  250.00 |
+| 13 |            3 | TOSTADORA          |       12 |   80.00 |
++----+--------------+--------------------+----------+---------+
+13 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select * from proveedores_cascade;
++----+------------------+---------------------+------------+--------------------+
+| id | nombre           | direccion           | telefono   | correo_electronico |
++----+------------------+---------------------+------------+--------------------+
+|  1 | GENERAL ELECTRIC | AV. LECUNA          | 2121112233 | info@ge.com        |
+|  2 | LG               | AV. ROMULO GALLEGOS | 2121112277 | info@lg.com        |
+|  3 | MABE             | AV. FCO. DE MIRANDA | 2123334455 | info@mabe.com      |
++----+------------------+---------------------+------------+--------------------+
+3 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> delete from proveedores_cascade where id = 3;
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [db_profesor]> select * from proveedores_cascade;
++----+------------------+---------------------+------------+--------------------+
+| id | nombre           | direccion           | telefono   | correo_electronico |
++----+------------------+---------------------+------------+--------------------+
+|  1 | GENERAL ELECTRIC | AV. LECUNA          | 2121112233 | info@ge.com        |
+|  2 | LG               | AV. ROMULO GALLEGOS | 2121112277 | info@lg.com        |
++----+------------------+---------------------+------------+--------------------+
+2 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select * from productos_cascade;
++----+--------------+-------------+----------+--------+
+| id | proveedor_id | nombre      | cantidad | precio |
++----+--------------+-------------+----------+--------+
+|  1 |            1 | NEVERA      |        6 | 500.25 |
+|  2 |            1 | COCINA      |        3 | 300.75 |
+|  3 |            2 | LAVADORA    |        2 | 800.50 |
+|  7 |            2 | MICROONDAS  |        8 | 150.25 |
+|  8 |            1 | LICUADORA   |       12 | 100.00 |
+|  9 |            2 | PLANCHA     |       12 |  75.50 |
+| 11 |            1 | HORNO A GAS |        6 | 450.00 |
+| 12 |            2 | CAFETERA    |       12 | 250.00 |
++----+--------------+-------------+----------+--------+
+8 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> update proveedores_cascade set id = 4 where id = 2;
+Query OK, 1 row affected (0.002 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [db_profesor]> select * from proveedores_cascade;
++----+------------------+---------------------+------------+--------------------+
+| id | nombre           | direccion           | telefono   | correo_electronico |
++----+------------------+---------------------+------------+--------------------+
+|  1 | GENERAL ELECTRIC | AV. LECUNA          | 2121112233 | info@ge.com        |
+|  4 | LG               | AV. ROMULO GALLEGOS | 2121112277 | info@lg.com        |
++----+------------------+---------------------+------------+--------------------+
+2 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select * from productos_cascade;
++----+--------------+-------------+----------+--------+
+| id | proveedor_id | nombre      | cantidad | precio |
++----+--------------+-------------+----------+--------+
+|  1 |            1 | NEVERA      |        6 | 500.25 |
+|  2 |            1 | COCINA      |        3 | 300.75 |
+|  3 |            4 | LAVADORA    |        2 | 800.50 |
+|  7 |            4 | MICROONDAS  |        8 | 150.25 |
+|  8 |            1 | LICUADORA   |       12 | 100.00 |
+|  9 |            4 | PLANCHA     |       12 |  75.50 |
+| 11 |            1 | HORNO A GAS |        6 | 450.00 |
+| 12 |            4 | CAFETERA    |       12 | 250.00 |
++----+--------------+-------------+----------+--------+
+8 rows in set (0.000 sec)
+
+MariaDB [db_profesor]>
