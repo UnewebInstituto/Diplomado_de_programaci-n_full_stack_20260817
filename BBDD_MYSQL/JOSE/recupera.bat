@@ -1,1 +1,1 @@
-"c:\xampp\mysql\bin\mysql" -u root -p db_jose_tmp < ./respaldos/db_jose_20260916.sql
+"c:\xampp\mysql\bin\mysql" -u root -p db_jose_tmp < ./respaldos/db_jose_20260918.sql

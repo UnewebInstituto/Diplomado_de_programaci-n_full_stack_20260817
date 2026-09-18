@@ -1,0 +1,2195 @@
+
+Setting environment for using XAMPP for Windows.
+PROFESOR@WIN-CMUODTI144V c:\xampp
+# mysql -u root -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 45
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> use db_profesor;
+Database changed
+MariaDB [db_profesor]> create table estudiantes(
+    ->     id integer unsigned,
+    ->     nombre varchar(40),
+    ->     apellido varchar(40),
+    ->     primary key(id)
+    -> );
+Query OK, 0 rows affected (0.010 sec)
+
+MariaDB [db_profesor]> create table asignaturas(
+    ->     id integer unsigned,
+    ->     nombre varchar(40),
+    ->     area text,
+    ->     primary key(id)
+    -> );
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [db_profesor]> create table estudiantes_asignaturas(
+    ->     estudiante_id integer unsigned,
+    ->     asignatura_id integer unsigned,
+    ->     periodo_del_curso integer(4) unsigned,
+    ->     nota integer(2) unsigned,
+    ->     primary key(estudiante_id, asignatura_id, periodo_del_curso),
+    ->     foreign key(estudiante_id) references estudiantes(id) on update cascade,
+    ->     foreign key(asignatura_id) references asignaturas(id) on update cascade
+    -> );
+Query OK, 0 rows affected (0.011 sec)
+
+MariaDB [db_profesor]> alter table estudiantes modify id integer unsigned auto_increment;
+Query OK, 0 rows affected (0.023 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [db_profesor]> alter table asignaturas modify id integer unsigned auto_increment;
+Query OK, 0 rows affected (0.023 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [db_profesor]> describe estudiantes;
++----------+------------------+------+-----+---------+----------------+
+| Field    | Type             | Null | Key | Default | Extra          |
++----------+------------------+------+-----+---------+----------------+
+| id       | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| nombre   | varchar(40)      | YES  |     | NULL    |                |
+| apellido | varchar(40)      | YES  |     | NULL    |                |
++----------+------------------+------+-----+---------+----------------+
+3 rows in set (0.002 sec)
+
+MariaDB [db_profesor]> insert into estudiantes(nombre, apellido)
+    -> values
+    -> ('JOSE', 'MEDINA'),
+    -> ('RICARDO', 'SILVA'),
+    -> ('ANDRES', 'FRANCO');
+Query OK, 3 rows affected (0.002 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MariaDB [db_profesor]> insert into asignaturas(nombre, area)
+    -> values
+    -> ('LÓGICA DE PROGRAMACIÓN', 'PROGRAMACIÓN')
+    -> ('MYSQL', 'BASES DE DATOS'),
+    -> ('POSTGRESQL', 'BASES DE DATOS'),
+    -> ('HTML', 'DESARROLLO WEB'),
+    -> ('JAVASCRIPT', 'DESARROLLO WEB'),
+    -> ('PHP', 'DESARROLLO WEB'),
+    -> ('PYTHON', 'PROGRAMACIÓN');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '('MYSQL', 'BASES DE DATOS'),
+('POSTGRESQL', 'BASES DE DATOS'),
+('HTML', 'DESA...' at line 4
+MariaDB [db_profesor]> insert into asignaturas(nombre, area) values
+    -> ('LÓGICA DE PROGRAMACIÓN', 'PROGRAMACIÓN'),
+    -> ('MYSQL', 'BASES DE DATOS'),
+    -> ('POSTGRESQL', 'BASES DE DATOS'),
+    -> ('HTML', 'DESARROLLO WEB'),
+    -> ('JAVASCRIPT', 'DESARROLLO WEB'),
+    -> ('PHP', 'DESARROLLO WEB'),
+    -> ('PYTHON', 'PROGRAMACIÓN');
+Query OK, 7 rows affected, 3 warnings (0.003 sec)
+Records: 7  Duplicates: 0  Warnings: 3
+
+MariaDB [db_profesor]> SELECT * FROM ASIGNATURAS;
++----+------------------------+----------------+
+| id | nombre                 | area           |
++----+------------------------+----------------+
+|  1 | L?GICA DE PROGRAMACI?N | PROGRAMACI?N   |
+|  2 | MYSQL                  | BASES DE DATOS |
+|  3 | POSTGRESQL             | BASES DE DATOS |
+|  4 | HTML                   | DESARROLLO WEB |
+|  5 | JAVASCRIPT             | DESARROLLO WEB |
+|  6 | PHP                    | DESARROLLO WEB |
+|  7 | PYTHON                 | PROGRAMACI?N   |
++----+------------------------+----------------+
+7 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> SELECT * FROM ESTUDIANTES;
++----+---------+----------+
+| id | nombre  | apellido |
++----+---------+----------+
+|  1 | JOSE    | MEDINA   |
+|  2 | RICARDO | SILVA    |
+|  3 | ANDRES  | FRANCO   |
++----+---------+----------+
+3 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> alter table estudiantes_asignaturas modify nota integer(3) unsigned;
+Query OK, 0 rows affected (0.003 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [db_profesor]> describe estudiantes_asignaturas;
++-------------------+------------------+------+-----+---------+-------+
+| Field             | Type             | Null | Key | Default | Extra |
++-------------------+------------------+------+-----+---------+-------+
+| estudiante_id     | int(10) unsigned | NO   | PRI | NULL    |       |
+| asignatura_id     | int(10) unsigned | NO   | PRI | NULL    |       |
+| periodo_del_curso | int(4) unsigned  | NO   | PRI | NULL    |       |
+| nota              | int(3) unsigned  | YES  |     | NULL    |       |
++-------------------+------------------+------+-----+---------+-------+
+4 rows in set (0.002 sec)
+
+MariaDB [db_profesor]> INSERT INTO estudiantes_asignaturas(estudiante_id, asignatura_id, periodo_del_curso, nota)
+    -> (1,1,2025,80),
+    -> (1,2,2026,100),
+    -> (1,4,2025,90),
+    -> (2,1,2025,90),
+    -> (2,2,2026,85),
+    -> (2,4,2025,100),
+    -> (3,1,2025,95),
+    -> (3,2,2026,100),
+    -> (3,4,2025,100);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '1,1,2025,80),
+(1,2,2026,100),
+(1,4,2025,90),
+(2,1,2025,90),
+(2,2,2026,85),
+(2...' at line 2
+MariaDB [db_profesor]> INSERT INTO estudiantes_asignaturas(estudiante_id, asignatura_id, periodo_del_curso, nota) values
+    -> (1,1,2025,80),
+    -> (1,2,2026,100),
+    -> (1,4,2025,90),
+    -> (2,1,2025,90),
+    -> (2,2,2026,85),
+    -> (2,4,2025,100),
+    -> (3,1,2025,95),
+    -> (3,2,2026,100),
+    -> (3,4,2025,100);
+Query OK, 9 rows affected (0.005 sec)
+Records: 9  Duplicates: 0  Warnings: 0
+
+MariaDB [db_profesor]> DECRIBE PROVEEDORES;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DECRIBE PROVEEDORES' at line 1
+MariaDB [db_profesor]> DESCRIBE PROVEEDORES;
++--------------------+------------------+------+-----+---------+----------------+
+| Field              | Type             | Null | Key | Default | Extra          |
++--------------------+------------------+------+-----+---------+----------------+
+| id                 | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| nombre             | varchar(30)      | YES  |     | NULL    |                |
+| direccion          | text             | YES  |     | NULL    |                |
+| telefono           | char(20)         | YES  |     | NULL    |                |
+| correo_electronico | varchar(80)      | YES  | UNI | NULL    |                |
++--------------------+------------------+------+-----+---------+----------------+
+5 rows in set (0.002 sec)
+
+MariaDB [db_profesor]> DESCRIBE PRODUCTOS;
++--------------+------------------+------+-----+---------+----------------+
+| Field        | Type             | Null | Key | Default | Extra          |
++--------------+------------------+------+-----+---------+----------------+
+| id           | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| proveedor_id | int(10) unsigned | YES  | MUL | NULL    |                |
+| nombre       | varchar(30)      | YES  |     | NULL    |                |
+| cantidad     | int(10) unsigned | YES  |     | NULL    |                |
+| precio       | decimal(13,2)    | YES  |     | NULL    |                |
++--------------+------------------+------+-----+---------+----------------+
+5 rows in set (0.002 sec)
+
+MariaDB [db_profesor]> SELECT PROVEEDORES.NOMBRE AS proveedor,
+    ->        PRODUCTOS.NOMBRE AS producto,
+    ->        PRODUCTOS.CANTIDAD,
+    ->        PRODUCTOS.PRECIO
+    -> FROM PROVEEDORES, PRODUCTOS
+    -> WHERE PROVEEDORES.ID = PRODUCTOS.PROVEEDOR_ID;
++------------------+-------------+----------+--------+
+| proveedor        | producto    | CANTIDAD | PRECIO |
++------------------+-------------+----------+--------+
+| GENERAL ELECTRIC | NEVERA      |        6 | 500.25 |
+| GENERAL ELECTRIC | COCINA      |        3 | 300.75 |
+| LG               | LAVADORA    |        2 | 800.50 |
+| LG               | MICROONDAS  |        8 | 150.25 |
+| GENERAL ELECTRIC | LICUADORA   |       12 | 100.00 |
+| LG               | PLANCHA     |       12 |  75.50 |
+| GENERAL ELECTRIC | HORNO A GAS |        6 | 450.00 |
+| LG               | CAFETERA    |       12 | 250.00 |
++------------------+-------------+----------+--------+
+8 rows in set (0.002 sec)
+
+MariaDB [db_profesor]> SELECT A.NOMBRE AS PROVEEDOR,
+    ->        B.NOMBRE AS PRODUCTO,
+    ->        B.CANTIDAD,
+    ->        B.PRECIO
+    -> FROM PROVEEDORES AS A, PRODUCTOS AS B
+    -> WHERE A.ID = B.PROVEEDOR_ID;
++------------------+-------------+----------+--------+
+| PROVEEDOR        | PRODUCTO    | CANTIDAD | PRECIO |
++------------------+-------------+----------+--------+
+| GENERAL ELECTRIC | NEVERA      |        6 | 500.25 |
+| GENERAL ELECTRIC | COCINA      |        3 | 300.75 |
+| LG               | LAVADORA    |        2 | 800.50 |
+| LG               | MICROONDAS  |        8 | 150.25 |
+| GENERAL ELECTRIC | LICUADORA   |       12 | 100.00 |
+| LG               | PLANCHA     |       12 |  75.50 |
+| GENERAL ELECTRIC | HORNO A GAS |        6 | 450.00 |
+| LG               | CAFETERA    |       12 | 250.00 |
++------------------+-------------+----------+--------+
+8 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> SELECT A.NOMBRE AS NOMBRE_ESTUDIANTE,
+    ->        A.APELLIDO AS APELLIDO_ESTUDIANTE,
+    ->        B.NOMBRE AS NOMBRE_ASIGNATURA,
+    ->        C.PERIODO_DEL_CURSO AS PERIODO,
+    ->        C.NOTA AS NOTA
+    -> FROM ESTUDIANTES AS A,
+    ->     ASIGNATURAS AS B,
+    ->     ESTUDIANTES_ASIGNATURAS AS C;
++-------------------+---------------------+------------------------+---------+------+
+| NOMBRE_ESTUDIANTE | APELLIDO_ESTUDIANTE | NOMBRE_ASIGNATURA      | PERIODO | NOTA |
++-------------------+---------------------+------------------------+---------+------+
+| JOSE              | MEDINA              | L?GICA DE PROGRAMACI?N |    2025 |   80 |
+| RICARDO           | SILVA               | L?GICA DE PROGRAMACI?N |    2025 |   80 |
+| ANDRES            | FRANCO              | L?GICA DE PROGRAMACI?N |    2025 |   80 |
+| JOSE              | MEDINA              | MYSQL                  |    2025 |   80 |
+| RICARDO           | SILVA               | MYSQL                  |    2025 |   80 |
+| ANDRES            | FRANCO              | MYSQL                  |    2025 |   80 |
+| JOSE              | MEDINA              | POSTGRESQL             |    2025 |   80 |
+| RICARDO           | SILVA               | POSTGRESQL             |    2025 |   80 |
+| ANDRES            | FRANCO              | POSTGRESQL             |    2025 |   80 |
+| JOSE              | MEDINA              | HTML                   |    2025 |   80 |
+| RICARDO           | SILVA               | HTML                   |    2025 |   80 |
+| ANDRES            | FRANCO              | HTML                   |    2025 |   80 |
+| JOSE              | MEDINA              | JAVASCRIPT             |    2025 |   80 |
+| RICARDO           | SILVA               | JAVASCRIPT             |    2025 |   80 |
+| ANDRES            | FRANCO              | JAVASCRIPT             |    2025 |   80 |
+| JOSE              | MEDINA              | PHP                    |    2025 |   80 |
+| RICARDO           | SILVA               | PHP                    |    2025 |   80 |
+| ANDRES            | FRANCO              | PHP                    |    2025 |   80 |
+| JOSE              | MEDINA              | PYTHON                 |    2025 |   80 |
+| RICARDO           | SILVA               | PYTHON                 |    2025 |   80 |
+| ANDRES            | FRANCO              | PYTHON                 |    2025 |   80 |
+| JOSE              | MEDINA              | L?GICA DE PROGRAMACI?N |    2026 |  100 |
+| RICARDO           | SILVA               | L?GICA DE PROGRAMACI?N |    2026 |  100 |
+| ANDRES            | FRANCO              | L?GICA DE PROGRAMACI?N |    2026 |  100 |
+| JOSE              | MEDINA              | MYSQL                  |    2026 |  100 |
+| RICARDO           | SILVA               | MYSQL                  |    2026 |  100 |
+| ANDRES            | FRANCO              | MYSQL                  |    2026 |  100 |
+| JOSE              | MEDINA              | POSTGRESQL             |    2026 |  100 |
+| RICARDO           | SILVA               | POSTGRESQL             |    2026 |  100 |
+| ANDRES            | FRANCO              | POSTGRESQL             |    2026 |  100 |
+| JOSE              | MEDINA              | HTML                   |    2026 |  100 |
+| RICARDO           | SILVA               | HTML                   |    2026 |  100 |
+| ANDRES            | FRANCO              | HTML                   |    2026 |  100 |
+| JOSE              | MEDINA              | JAVASCRIPT             |    2026 |  100 |
+| RICARDO           | SILVA               | JAVASCRIPT             |    2026 |  100 |
+| ANDRES            | FRANCO              | JAVASCRIPT             |    2026 |  100 |
+| JOSE              | MEDINA              | PHP                    |    2026 |  100 |
+| RICARDO           | SILVA               | PHP                    |    2026 |  100 |
+| ANDRES            | FRANCO              | PHP                    |    2026 |  100 |
+| JOSE              | MEDINA              | PYTHON                 |    2026 |  100 |
+| RICARDO           | SILVA               | PYTHON                 |    2026 |  100 |
+| ANDRES            | FRANCO              | PYTHON                 |    2026 |  100 |
+| JOSE              | MEDINA              | L?GICA DE PROGRAMACI?N |    2025 |   90 |
+| RICARDO           | SILVA               | L?GICA DE PROGRAMACI?N |    2025 |   90 |
+| ANDRES            | FRANCO              | L?GICA DE PROGRAMACI?N |    2025 |   90 |
+| JOSE              | MEDINA              | MYSQL                  |    2025 |   90 |
+| RICARDO           | SILVA               | MYSQL                  |    2025 |   90 |
+| ANDRES            | FRANCO              | MYSQL                  |    2025 |   90 |
+| JOSE              | MEDINA              | POSTGRESQL             |    2025 |   90 |
+| RICARDO           | SILVA               | POSTGRESQL             |    2025 |   90 |
+| ANDRES            | FRANCO              | POSTGRESQL             |    2025 |   90 |
+| JOSE              | MEDINA              | HTML                   |    2025 |   90 |
+| RICARDO           | SILVA               | HTML                   |    2025 |   90 |
+| ANDRES            | FRANCO              | HTML                   |    2025 |   90 |
+| JOSE              | MEDINA              | JAVASCRIPT             |    2025 |   90 |
+| RICARDO           | SILVA               | JAVASCRIPT             |    2025 |   90 |
+| ANDRES            | FRANCO              | JAVASCRIPT             |    2025 |   90 |
+| JOSE              | MEDINA              | PHP                    |    2025 |   90 |
+| RICARDO           | SILVA               | PHP                    |    2025 |   90 |
+| ANDRES            | FRANCO              | PHP                    |    2025 |   90 |
+| JOSE              | MEDINA              | PYTHON                 |    2025 |   90 |
+| RICARDO           | SILVA               | PYTHON                 |    2025 |   90 |
+| ANDRES            | FRANCO              | PYTHON                 |    2025 |   90 |
+| JOSE              | MEDINA              | L?GICA DE PROGRAMACI?N |    2025 |   90 |
+| RICARDO           | SILVA               | L?GICA DE PROGRAMACI?N |    2025 |   90 |
+| ANDRES            | FRANCO              | L?GICA DE PROGRAMACI?N |    2025 |   90 |
+| JOSE              | MEDINA              | MYSQL                  |    2025 |   90 |
+| RICARDO           | SILVA               | MYSQL                  |    2025 |   90 |
+| ANDRES            | FRANCO              | MYSQL                  |    2025 |   90 |
+| JOSE              | MEDINA              | POSTGRESQL             |    2025 |   90 |
+| RICARDO           | SILVA               | POSTGRESQL             |    2025 |   90 |
+| ANDRES            | FRANCO              | POSTGRESQL             |    2025 |   90 |
+| JOSE              | MEDINA              | HTML                   |    2025 |   90 |
+| RICARDO           | SILVA               | HTML                   |    2025 |   90 |
+| ANDRES            | FRANCO              | HTML                   |    2025 |   90 |
+| JOSE              | MEDINA              | JAVASCRIPT             |    2025 |   90 |
+| RICARDO           | SILVA               | JAVASCRIPT             |    2025 |   90 |
+| ANDRES            | FRANCO              | JAVASCRIPT             |    2025 |   90 |
+| JOSE              | MEDINA              | PHP                    |    2025 |   90 |
+| RICARDO           | SILVA               | PHP                    |    2025 |   90 |
+| ANDRES            | FRANCO              | PHP                    |    2025 |   90 |
+| JOSE              | MEDINA              | PYTHON                 |    2025 |   90 |
+| RICARDO           | SILVA               | PYTHON                 |    2025 |   90 |
+| ANDRES            | FRANCO              | PYTHON                 |    2025 |   90 |
+| JOSE              | MEDINA              | L?GICA DE PROGRAMACI?N |    2026 |   85 |
+| RICARDO           | SILVA               | L?GICA DE PROGRAMACI?N |    2026 |   85 |
+| ANDRES            | FRANCO              | L?GICA DE PROGRAMACI?N |    2026 |   85 |
+| JOSE              | MEDINA              | MYSQL                  |    2026 |   85 |
+| RICARDO           | SILVA               | MYSQL                  |    2026 |   85 |
+| ANDRES            | FRANCO              | MYSQL                  |    2026 |   85 |
+| JOSE              | MEDINA              | POSTGRESQL             |    2026 |   85 |
+| RICARDO           | SILVA               | POSTGRESQL             |    2026 |   85 |
+| ANDRES            | FRANCO              | POSTGRESQL             |    2026 |   85 |
+| JOSE              | MEDINA              | HTML                   |    2026 |   85 |
+| RICARDO           | SILVA               | HTML                   |    2026 |   85 |
+| ANDRES            | FRANCO              | HTML                   |    2026 |   85 |
+| JOSE              | MEDINA              | JAVASCRIPT             |    2026 |   85 |
+| RICARDO           | SILVA               | JAVASCRIPT             |    2026 |   85 |
+| ANDRES            | FRANCO              | JAVASCRIPT             |    2026 |   85 |
+| JOSE              | MEDINA              | PHP                    |    2026 |   85 |
+| RICARDO           | SILVA               | PHP                    |    2026 |   85 |
+| ANDRES            | FRANCO              | PHP                    |    2026 |   85 |
+| JOSE              | MEDINA              | PYTHON                 |    2026 |   85 |
+| RICARDO           | SILVA               | PYTHON                 |    2026 |   85 |
+| ANDRES            | FRANCO              | PYTHON                 |    2026 |   85 |
+| JOSE              | MEDINA              | L?GICA DE PROGRAMACI?N |    2025 |  100 |
+| RICARDO           | SILVA               | L?GICA DE PROGRAMACI?N |    2025 |  100 |
+| ANDRES            | FRANCO              | L?GICA DE PROGRAMACI?N |    2025 |  100 |
+| JOSE              | MEDINA              | MYSQL                  |    2025 |  100 |
+| RICARDO           | SILVA               | MYSQL                  |    2025 |  100 |
+| ANDRES            | FRANCO              | MYSQL                  |    2025 |  100 |
+| JOSE              | MEDINA              | POSTGRESQL             |    2025 |  100 |
+| RICARDO           | SILVA               | POSTGRESQL             |    2025 |  100 |
+| ANDRES            | FRANCO              | POSTGRESQL             |    2025 |  100 |
+| JOSE              | MEDINA              | HTML                   |    2025 |  100 |
+| RICARDO           | SILVA               | HTML                   |    2025 |  100 |
+| ANDRES            | FRANCO              | HTML                   |    2025 |  100 |
+| JOSE              | MEDINA              | JAVASCRIPT             |    2025 |  100 |
+| RICARDO           | SILVA               | JAVASCRIPT             |    2025 |  100 |
+| ANDRES            | FRANCO              | JAVASCRIPT             |    2025 |  100 |
+| JOSE              | MEDINA              | PHP                    |    2025 |  100 |
+| RICARDO           | SILVA               | PHP                    |    2025 |  100 |
+| ANDRES            | FRANCO              | PHP                    |    2025 |  100 |
+| JOSE              | MEDINA              | PYTHON                 |    2025 |  100 |
+| RICARDO           | SILVA               | PYTHON                 |    2025 |  100 |
+| ANDRES            | FRANCO              | PYTHON                 |    2025 |  100 |
+| JOSE              | MEDINA              | L?GICA DE PROGRAMACI?N |    2025 |   95 |
+| RICARDO           | SILVA               | L?GICA DE PROGRAMACI?N |    2025 |   95 |
+| ANDRES            | FRANCO              | L?GICA DE PROGRAMACI?N |    2025 |   95 |
+| JOSE              | MEDINA              | MYSQL                  |    2025 |   95 |
+| RICARDO           | SILVA               | MYSQL                  |    2025 |   95 |
+| ANDRES            | FRANCO              | MYSQL                  |    2025 |   95 |
+| JOSE              | MEDINA              | POSTGRESQL             |    2025 |   95 |
+| RICARDO           | SILVA               | POSTGRESQL             |    2025 |   95 |
+| ANDRES            | FRANCO              | POSTGRESQL             |    2025 |   95 |
+| JOSE              | MEDINA              | HTML                   |    2025 |   95 |
+| RICARDO           | SILVA               | HTML                   |    2025 |   95 |
+| ANDRES            | FRANCO              | HTML                   |    2025 |   95 |
+| JOSE              | MEDINA              | JAVASCRIPT             |    2025 |   95 |
+| RICARDO           | SILVA               | JAVASCRIPT             |    2025 |   95 |
+| ANDRES            | FRANCO              | JAVASCRIPT             |    2025 |   95 |
+| JOSE              | MEDINA              | PHP                    |    2025 |   95 |
+| RICARDO           | SILVA               | PHP                    |    2025 |   95 |
+| ANDRES            | FRANCO              | PHP                    |    2025 |   95 |
+| JOSE              | MEDINA              | PYTHON                 |    2025 |   95 |
+| RICARDO           | SILVA               | PYTHON                 |    2025 |   95 |
+| ANDRES            | FRANCO              | PYTHON                 |    2025 |   95 |
+| JOSE              | MEDINA              | L?GICA DE PROGRAMACI?N |    2026 |  100 |
+| RICARDO           | SILVA               | L?GICA DE PROGRAMACI?N |    2026 |  100 |
+| ANDRES            | FRANCO              | L?GICA DE PROGRAMACI?N |    2026 |  100 |
+| JOSE              | MEDINA              | MYSQL                  |    2026 |  100 |
+| RICARDO           | SILVA               | MYSQL                  |    2026 |  100 |
+| ANDRES            | FRANCO              | MYSQL                  |    2026 |  100 |
+| JOSE              | MEDINA              | POSTGRESQL             |    2026 |  100 |
+| RICARDO           | SILVA               | POSTGRESQL             |    2026 |  100 |
+| ANDRES            | FRANCO              | POSTGRESQL             |    2026 |  100 |
+| JOSE              | MEDINA              | HTML                   |    2026 |  100 |
+| RICARDO           | SILVA               | HTML                   |    2026 |  100 |
+| ANDRES            | FRANCO              | HTML                   |    2026 |  100 |
+| JOSE              | MEDINA              | JAVASCRIPT             |    2026 |  100 |
+| RICARDO           | SILVA               | JAVASCRIPT             |    2026 |  100 |
+| ANDRES            | FRANCO              | JAVASCRIPT             |    2026 |  100 |
+| JOSE              | MEDINA              | PHP                    |    2026 |  100 |
+| RICARDO           | SILVA               | PHP                    |    2026 |  100 |
+| ANDRES            | FRANCO              | PHP                    |    2026 |  100 |
+| JOSE              | MEDINA              | PYTHON                 |    2026 |  100 |
+| RICARDO           | SILVA               | PYTHON                 |    2026 |  100 |
+| ANDRES            | FRANCO              | PYTHON                 |    2026 |  100 |
+| JOSE              | MEDINA              | L?GICA DE PROGRAMACI?N |    2025 |  100 |
+| RICARDO           | SILVA               | L?GICA DE PROGRAMACI?N |    2025 |  100 |
+| ANDRES            | FRANCO              | L?GICA DE PROGRAMACI?N |    2025 |  100 |
+| JOSE              | MEDINA              | MYSQL                  |    2025 |  100 |
+| RICARDO           | SILVA               | MYSQL                  |    2025 |  100 |
+| ANDRES            | FRANCO              | MYSQL                  |    2025 |  100 |
+| JOSE              | MEDINA              | POSTGRESQL             |    2025 |  100 |
+| RICARDO           | SILVA               | POSTGRESQL             |    2025 |  100 |
+| ANDRES            | FRANCO              | POSTGRESQL             |    2025 |  100 |
+| JOSE              | MEDINA              | HTML                   |    2025 |  100 |
+| RICARDO           | SILVA               | HTML                   |    2025 |  100 |
+| ANDRES            | FRANCO              | HTML                   |    2025 |  100 |
+| JOSE              | MEDINA              | JAVASCRIPT             |    2025 |  100 |
+| RICARDO           | SILVA               | JAVASCRIPT             |    2025 |  100 |
+| ANDRES            | FRANCO              | JAVASCRIPT             |    2025 |  100 |
+| JOSE              | MEDINA              | PHP                    |    2025 |  100 |
+| RICARDO           | SILVA               | PHP                    |    2025 |  100 |
+| ANDRES            | FRANCO              | PHP                    |    2025 |  100 |
+| JOSE              | MEDINA              | PYTHON                 |    2025 |  100 |
+| RICARDO           | SILVA               | PYTHON                 |    2025 |  100 |
+| ANDRES            | FRANCO              | PYTHON                 |    2025 |  100 |
++-------------------+---------------------+------------------------+---------+------+
+189 rows in set (0.001 sec)
+
+MariaDB [db_profesor]> SELECT A.NOMBRE AS NOMBRE_ESTUDIANTE,
+    ->        A.APELLIDO AS APELLIDO_ESTUDIANTE,
+    ->        B.NOMBRE AS NOMBRE_ASIGNATURA,
+    ->        C.PERIODO_DEL_CURSO AS PERIODO,
+    ->        C.NOTA AS NOTA
+    -> FROM ESTUDIANTES AS A,
+    ->     ASIGNATURAS AS B,
+    ->     ESTUDIANTES_ASIGNATURAS AS C
+    ->     WHERE A.ID = C.ESTUIANTE_ID AND
+    ->           B.ID = C.ASIGNATURA_ID;
+ERROR 1054 (42S22): Unknown column 'C.ESTUIANTE_ID' in 'where clause'
+MariaDB [db_profesor]> SELECT A.NOMBRE AS NOMBRE_ESTUDIANTE,
+    ->        A.APELLIDO AS APELLIDO_ESTUDIANTE,
+    ->        B.NOMBRE AS NOMBRE_ASIGNATURA,
+    ->        C.PERIODO_DEL_CURSO AS PERIODO,
+    ->        C.NOTA AS NOTA
+    -> FROM ESTUDIANTES AS A,
+    ->     ASIGNATURAS AS B,
+    ->     ESTUDIANTES_ASIGNATURAS AS C
+    ->     WHERE A.ID = C.ESTUDIANTE_ID AND
+    ->           B.ID = C.ASIGNATURA_ID;
++-------------------+---------------------+------------------------+---------+------+
+| NOMBRE_ESTUDIANTE | APELLIDO_ESTUDIANTE | NOMBRE_ASIGNATURA      | PERIODO | NOTA |
++-------------------+---------------------+------------------------+---------+------+
+| JOSE              | MEDINA              | L?GICA DE PROGRAMACI?N |    2025 |   80 |
+| JOSE              | MEDINA              | MYSQL                  |    2026 |  100 |
+| JOSE              | MEDINA              | HTML                   |    2025 |   90 |
+| RICARDO           | SILVA               | L?GICA DE PROGRAMACI?N |    2025 |   90 |
+| RICARDO           | SILVA               | MYSQL                  |    2026 |   85 |
+| RICARDO           | SILVA               | HTML                   |    2025 |  100 |
+| ANDRES            | FRANCO              | L?GICA DE PROGRAMACI?N |    2025 |   95 |
+| ANDRES            | FRANCO              | MYSQL                  |    2026 |  100 |
+| ANDRES            | FRANCO              | HTML                   |    2025 |  100 |
++-------------------+---------------------+------------------------+---------+------+
+9 rows in set (0.000 sec)
+
+MariaDB [db_profesor]>
+MariaDB [db_profesor]> INSERT INTO estudiantes_asignaturas(estudiante_id, asignatura_id, periodo_del_curso, nota) values
+    -> (1,1,2025,100);
+ERROR 1062 (23000): Duplicate entry '1-1-2025' for key 'PRIMARY'
+MariaDB [db_profesor]> INSERT INTO estudiantes_asignaturas(estudiante_id, asignatura_id, periodo_del_curso, nota) values
+    -> (1,1,2025,45);
+ERROR 1062 (23000): Duplicate entry '1-1-2025' for key 'PRIMARY'
+MariaDB [db_profesor]>
+MariaDB [db_profesor]> INSERT INTO estudiantes_asignaturas(estudiante_id, asignatura_id, periodo_del_curso, nota) values
+    -> (1,1,2026,90);
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [db_profesor]> SELECT A.NOMBRE AS NOMBRE_ESTUDIANTE,
+    ->        A.APELLIDO AS APELLIDO_ESTUDIANTE,
+    ->        B.NOMBRE AS NOMBRE_ASIGNATURA,
+    ->        C.PERIODO_DEL_CURSO AS PERIODO,
+    ->        C.NOTA AS NOTA
+    -> FROM ESTUDIANTES AS A,
+    ->     ASIGNATURAS AS B,
+    ->     ESTUDIANTES_ASIGNATURAS AS C
+    ->     WHERE A.ID = C.ESTUDIANTE_ID AND
+    ->           B.ID = C.ASIGNATURA_ID;
++-------------------+---------------------+------------------------+---------+------+
+| NOMBRE_ESTUDIANTE | APELLIDO_ESTUDIANTE | NOMBRE_ASIGNATURA      | PERIODO | NOTA |
++-------------------+---------------------+------------------------+---------+------+
+| JOSE              | MEDINA              | L?GICA DE PROGRAMACI?N |    2025 |   80 |
+| JOSE              | MEDINA              | L?GICA DE PROGRAMACI?N |    2026 |   90 |
+| JOSE              | MEDINA              | MYSQL                  |    2026 |  100 |
+| JOSE              | MEDINA              | HTML                   |    2025 |   90 |
+| RICARDO           | SILVA               | L?GICA DE PROGRAMACI?N |    2025 |   90 |
+| RICARDO           | SILVA               | MYSQL                  |    2026 |   85 |
+| RICARDO           | SILVA               | HTML                   |    2025 |  100 |
+| ANDRES            | FRANCO              | L?GICA DE PROGRAMACI?N |    2025 |   95 |
+| ANDRES            | FRANCO              | MYSQL                  |    2026 |  100 |
+| ANDRES            | FRANCO              | HTML                   |    2025 |  100 |
++-------------------+---------------------+------------------------+---------+------+
+10 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> CREATE VIEW vista_estudiantes_asignaturas AS
+    -> SELECT A.NOMBRE AS NOMBRE_ESTUDIANTE,
+    ->        A.APELLIDO AS APELLIDO_ESTUDIANTE,
+    ->        B.NOMBRE AS NOMBRE_ASIGNATURA,
+    ->        C.PERIODO_DEL_CURSO AS PERIODO,
+    ->        C.NOTA AS NOTA
+    -> FROM ESTUDIANTES AS A,
+    ->     ASIGNATURAS AS B,
+    ->     ESTUDIANTES_ASIGNATURAS AS C
+    ->     WHERE A.ID = C.ESTUDIANTE_ID AND
+    ->           B.ID = C.ASIGNATURA_ID;
+Query OK, 0 rows affected (0.002 sec)
+
+MariaDB [db_profesor]> SHOW TABLES;
++-----------------------------------+
+| Tables_in_db_profesor             |
++-----------------------------------+
+| asignaturas                       |
+| estudiantes                       |
+| estudiantes_asignaturas           |
+| personas                          |
+| personas1                         |
+| personas_con_indice               |
+| personas_con_indice_cedula        |
+| personas_con_indice_cedula_correo |
+| productos                         |
+| productos_cascade                 |
+| proveedores                       |
+| proveedores_cascade               |
+| vista_estudiantes_asignaturas     |
++-----------------------------------+
+13 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> SHOW CREATE VIEW VISTA_ESTUDIANTES_ASIGNATURAS;
++-------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------+----------------------+
+| View                          | Create View                                                                                                                                                                                                                                                                                                                                                                                                                                                      | character_set_client | collation_connection |
++-------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------+----------------------+
+| vista_estudiantes_asignaturas | CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `vista_estudiantes_asignaturas` AS select `a`.`nombre` AS `NOMBRE_ESTUDIANTE`,`a`.`apellido` AS `APELLIDO_ESTUDIANTE`,`b`.`nombre` AS `NOMBRE_ASIGNATURA`,`c`.`periodo_del_curso` AS `PERIODO`,`c`.`nota` AS `NOTA` from ((`estudiantes` `a` join `asignaturas` `b`) join `estudiantes_asignaturas` `c`) where `a`.`id` = `c`.`estudiante_id` and `b`.`id` = `c`.`asignatura_id` | utf8mb4              | utf8mb4_general_ci   |
++-------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+----------------------+----------------------+
+1 row in set (0.000 sec)
+
+MariaDB [db_profesor]>
+MariaDB [db_profesor]>
+MariaDB [db_profesor]> SELECT PROVEEDORES.NOMBRE AS PROVEEDOR,
+    ->        PRODUCTOS.NOMBRE AS PRODUCTO,
+    ->        PRODUCTOS.CANTIDAD,
+    ->        PRODUCTOS.PRECIO
+    -> FROM PROVEEDORES
+    -> INNER JOIN PRODUCTOS ON PROVEEDORES.ID = PRODUCTOS.PROVEEDOR_ID;
++------------------+-------------+----------+--------+
+| PROVEEDOR        | PRODUCTO    | CANTIDAD | PRECIO |
++------------------+-------------+----------+--------+
+| GENERAL ELECTRIC | NEVERA      |        6 | 500.25 |
+| GENERAL ELECTRIC | COCINA      |        3 | 300.75 |
+| LG               | LAVADORA    |        2 | 800.50 |
+| LG               | MICROONDAS  |        8 | 150.25 |
+| GENERAL ELECTRIC | LICUADORA   |       12 | 100.00 |
+| LG               | PLANCHA     |       12 |  75.50 |
+| GENERAL ELECTRIC | HORNO A GAS |        6 | 450.00 |
+| LG               | CAFETERA    |       12 | 250.00 |
++------------------+-------------+----------+--------+
+8 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> CREATE VIEW vista_inner_join_proveedores_productos AS
+    -> SELECT PROVEEDORES.NOMBRE AS PROVEEDOR,
+    ->        PRODUCTOS.NOMBRE AS PRODUCTO,
+    ->        PRODUCTOS.CANTIDAD,
+    ->        PRODUCTOS.PRECIO
+    -> FROM PROVEEDORES
+    -> INNER JOIN PRODUCTOS ON PROVEEDORES.ID = PRODUCTOS.PROVEEDOR_ID;
+Query OK, 0 rows affected (0.002 sec)
+
+MariaDB [db_profesor]> show tables;
++----------------------------------------+
+| Tables_in_db_profesor                  |
++----------------------------------------+
+| asignaturas                            |
+| estudiantes                            |
+| estudiantes_asignaturas                |
+| personas                               |
+| personas1                              |
+| personas_con_indice                    |
+| personas_con_indice_cedula             |
+| personas_con_indice_cedula_correo      |
+| productos                              |
+| productos_cascade                      |
+| proveedores                            |
+| proveedores_cascade                    |
+| vista_estudiantes_asignaturas          |
+| vista_inner_join_proveedores_productos |
++----------------------------------------+
+14 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> show views;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'views' at line 1
+MariaDB [db_profesor]> show tables;
++----------------------------------------+
+| Tables_in_db_profesor                  |
++----------------------------------------+
+| asignaturas                            |
+| estudiantes                            |
+| estudiantes_asignaturas                |
+| personas                               |
+| personas1                              |
+| personas_con_indice                    |
+| personas_con_indice_cedula             |
+| personas_con_indice_cedula_correo      |
+| productos                              |
+| productos_cascade                      |
+| proveedores                            |
+| proveedores_cascade                    |
+| vista_estudiantes_asignaturas          |
+| vista_inner_join_proveedores_productos |
++----------------------------------------+
+14 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select * from proveedores;
++----+------------------+---------------------+------------+--------------------+
+| id | nombre           | direccion           | telefono   | correo_electronico |
++----+------------------+---------------------+------------+--------------------+
+|  1 | GENERAL ELECTRIC | AV. LECUNA          | 2121112233 | info@ge.com        |
+|  2 | LG               | AV. ROMULO GALLEGOS | 2121112277 | info@lg.com        |
++----+------------------+---------------------+------------+--------------------+
+2 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select * from productos;
++----+--------------+-------------+----------+--------+
+| id | proveedor_id | nombre      | cantidad | precio |
++----+--------------+-------------+----------+--------+
+|  1 |            1 | NEVERA      |        6 | 500.25 |
+|  2 |            1 | COCINA      |        3 | 300.75 |
+|  3 |            2 | LAVADORA    |        2 | 800.50 |
+|  7 |            2 | MICROONDAS  |        8 | 150.25 |
+|  8 |            1 | LICUADORA   |       12 | 100.00 |
+|  9 |            2 | PLANCHA     |       12 |  75.50 |
+| 11 |            1 | HORNO A GAS |        6 | 450.00 |
+| 12 |            2 | CAFETERA    |       12 | 250.00 |
++----+--------------+-------------+----------+--------+
+8 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> INSERT INTO PROVEEDORES(NOMBRE, DIRECCION, TELEFONO, CORREO_ELECTRONICO) VALUES
+    -> ('PHILIPS', 'PLAZA VENEZUELA', '2125673421', 'info@philips.com'),
+    -> ('SAMSUNG', 'BOLEITA NORTES', '2129872323', 'info@samsung.com'),
+    -> ('WHIRLPOOL', 'LA CALIFORNIA', '2124417889', 'info@whirlpool.com');
+Query OK, 3 rows affected (0.002 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MariaDB [db_profesor]> SELECT * FROM PROVEEDORES;
++----+------------------+---------------------+------------+--------------------+
+| id | nombre           | direccion           | telefono   | correo_electronico |
++----+------------------+---------------------+------------+--------------------+
+|  1 | GENERAL ELECTRIC | AV. LECUNA          | 2121112233 | info@ge.com        |
+|  2 | LG               | AV. ROMULO GALLEGOS | 2121112277 | info@lg.com        |
+|  4 | PHILIPS          | PLAZA VENEZUELA     | 2125673421 | info@philips.com   |
+|  5 | SAMSUNG          | BOLEITA NORTES      | 2129872323 | info@samsung.com   |
+|  6 | WHIRLPOOL        | LA CALIFORNIA       | 2124417889 | info@whirlpool.com |
++----+------------------+---------------------+------------+--------------------+
+5 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> SELECT PROVEEDORES.NOMBRE AS PROVEEDOR,
+    ->        PRODUCTOS.NOMBRE AS PRODUCTO,
+    ->        PRODUCTOS.CANTIDAD,
+    ->        PRODUCTOS.PRECIO
+    -> FROM PROVEEDORES
+    -> LEFT JOIN PRODUCTOS ON PROVEEDORES.ID = PRODUCTOS.PROVEEDOR_ID;
++------------------+-------------+----------+--------+
+| PROVEEDOR        | PRODUCTO    | CANTIDAD | PRECIO |
++------------------+-------------+----------+--------+
+| GENERAL ELECTRIC | NEVERA      |        6 | 500.25 |
+| GENERAL ELECTRIC | COCINA      |        3 | 300.75 |
+| LG               | LAVADORA    |        2 | 800.50 |
+| LG               | MICROONDAS  |        8 | 150.25 |
+| GENERAL ELECTRIC | LICUADORA   |       12 | 100.00 |
+| LG               | PLANCHA     |       12 |  75.50 |
+| GENERAL ELECTRIC | HORNO A GAS |        6 | 450.00 |
+| LG               | CAFETERA    |       12 | 250.00 |
+| PHILIPS          | NULL        |     NULL |   NULL |
+| SAMSUNG          | NULL        |     NULL |   NULL |
+| WHIRLPOOL        | NULL        |     NULL |   NULL |
++------------------+-------------+----------+--------+
+11 rows in set (0.001 sec)
+
+MariaDB [db_profesor]> CREATE VIEW vista_left_join_proveedores_productos AS
+    -> SELECT PROVEEDORES.NOMBRE AS PROVEEDOR,
+    ->        PRODUCTOS.NOMBRE AS PRODUCTO,
+    ->        PRODUCTOS.CANTIDAD,
+    ->        PRODUCTOS.PRECIO
+    -> FROM PROVEEDORES
+    -> LEFT JOIN PRODUCTOS ON PROVEEDORES.ID = PRODUCTOS.PROVEEDOR_ID;
+Query OK, 0 rows affected (0.002 sec)
+
+MariaDB [db_profesor]> SHOW TABLES;
++----------------------------------------+
+| Tables_in_db_profesor                  |
++----------------------------------------+
+| asignaturas                            |
+| estudiantes                            |
+| estudiantes_asignaturas                |
+| personas                               |
+| personas1                              |
+| personas_con_indice                    |
+| personas_con_indice_cedula             |
+| personas_con_indice_cedula_correo      |
+| productos                              |
+| productos_cascade                      |
+| proveedores                            |
+| proveedores_cascade                    |
+| vista_estudiantes_asignaturas          |
+| vista_inner_join_proveedores_productos |
+| vista_left_join_proveedores_productos  |
++----------------------------------------+
+15 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> SELECT PROVEEDORES.NOMBRE AS PROVEEDOR,
+    ->        PRODUCTOS.NOMBRE AS PRODUCTO,
+    ->        PRODUCTOS.CANTIDAD,
+    ->        PRODUCTOS.PRECIO
+    -> FROM PROVEEDORES
+    -> RIGHT JOIN PRODUCTOS ON PROVEEDORES.ID = PRODUCTOS.PROVEEDOR_ID;
++------------------+-------------+----------+--------+
+| PROVEEDOR        | PRODUCTO    | CANTIDAD | PRECIO |
++------------------+-------------+----------+--------+
+| GENERAL ELECTRIC | NEVERA      |        6 | 500.25 |
+| GENERAL ELECTRIC | COCINA      |        3 | 300.75 |
+| LG               | LAVADORA    |        2 | 800.50 |
+| LG               | MICROONDAS  |        8 | 150.25 |
+| GENERAL ELECTRIC | LICUADORA   |       12 | 100.00 |
+| LG               | PLANCHA     |       12 |  75.50 |
+| GENERAL ELECTRIC | HORNO A GAS |        6 | 450.00 |
+| LG               | CAFETERA    |       12 | 250.00 |
++------------------+-------------+----------+--------+
+8 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> CREATE TABLE PROVEEDORES_SECUENCIAL(
+    ->     ID INTEGER UNSIGNED AUTO_INCREMENT,
+    ->     NOMBRE VARCHAR(40),
+    ->     DIRECCION VARCHAR(100),
+    ->     TELEFONO VARCHAR(20),
+    ->     CORREO_ELECTRONICO VARCHAR(50),
+    ->     PRIMARY KEY(ID)
+    -> );
+Query OK, 0 rows affected (0.010 sec)
+
+MariaDB [db_profesor]>
+MariaDB [db_profesor]> CREATE TABLE PRODUCTOS_SECUENCIAL(
+    ->     ID INTEGER UNSIGNED AUTO_INCREMENT,
+    ->     NOMBRE VARCHAR(40),
+    ->     CANTIDAD INTEGER UNSIGNED,
+    ->     PRECIO DECIMAL(10,2),
+    ->     PROVEEDOR_ID INTEGER UNSIGNED,
+    ->     PRIMARY KEY(ID),
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ')' at line 8
+MariaDB [db_profesor]>
+MariaDB [db_profesor]> CREATE TABLE PRODUCTOS_SECUENCIAL(
+    ->     ID INTEGER UNSIGNED AUTO_INCREMENT,
+    ->     NOMBRE VARCHAR(40),
+    ->     CANTIDAD INTEGER UNSIGNED,
+    ->     PRECIO DECIMAL(10,2),
+    ->     PROVEEDOR_ID INTEGER UNSIGNED,
+    ->     PRIMARY KEY(ID)
+    -> );
+Query OK, 0 rows affected (0.005 sec)
+
+MariaDB [db_profesor]> INSERT INTO productos_secuencial(nombre, cantidad, precio, proveedor_id) VALUES
+    -> (1,'NEVERA',6,500.25),
+    -> (1,'COCINA',3,300.75),
+    -> (2,'LAVADORA',2,800.50),
+    -> (3,'AIRE ACONDICIONADO',4,600.75),
+    -> (3,'TELEVISOR',7,400.00),
+    -> (3,'LAPTOP',5,1200.00),
+    -> (2,'MICROONDAS',8,150.25),
+    -> (1,'LICUADORA',12,100.00),
+    -> (2,'PLANCHA',12,75.50),
+    -> (3,'VENTILADOR',12,50.00),
+    -> (1,'HORNO A GAS',6,450.00),
+    -> (2,'CAFETERA',12,250.00),
+    -> (3,'TOSTADORA',12,80.00),
+    -> (15,'SECADORA',5,300.00),
+    -> (15,'TELEVISOR 4K',3,1200.00),
+    -> (15,'LAVAVAJILLAS',4,700.00),
+    -> (16,'TELEVISOR CURVO',2,1500.00),
+    -> (16,'AURICULARES',10,200.00),
+    -> (16,'TABLET',6,400.00),
+    -> (17,'LAVADORA INDUSTRIAL',1,2500.00),
+    -> (17,'SECADORA INDUSTRIAL',1,2000.00),
+    -> (17,'REFRIGERADOR INDUSTRIAL',1,3000.00);
+Query OK, 22 rows affected, 22 warnings (0.003 sec)
+Records: 22  Duplicates: 0  Warnings: 22
+
+MariaDB [db_profesor]> SELECT * FROM PROVEEDORES;
++----+------------------+---------------------+------------+--------------------+
+| id | nombre           | direccion           | telefono   | correo_electronico |
++----+------------------+---------------------+------------+--------------------+
+|  1 | GENERAL ELECTRIC | AV. LECUNA          | 2121112233 | info@ge.com        |
+|  2 | LG               | AV. ROMULO GALLEGOS | 2121112277 | info@lg.com        |
+|  4 | PHILIPS          | PLAZA VENEZUELA     | 2125673421 | info@philips.com   |
+|  5 | SAMSUNG          | BOLEITA NORTES      | 2129872323 | info@samsung.com   |
+|  6 | WHIRLPOOL        | LA CALIFORNIA       | 2124417889 | info@whirlpool.com |
++----+------------------+---------------------+------------+--------------------+
+5 rows in set (0.001 sec)
+
+MariaDB [db_profesor]> SELECT * FROM PRODUCTOS_SECUENCIAL;
++----+--------+----------+--------+--------------+
+| ID | NOMBRE | CANTIDAD | PRECIO | PROVEEDOR_ID |
++----+--------+----------+--------+--------------+
+|  1 | 1      |        0 |   6.00 |          500 |
+|  2 | 1      |        0 |   3.00 |          301 |
+|  3 | 2      |        0 |   2.00 |          801 |
+|  4 | 3      |        0 |   4.00 |          601 |
+|  5 | 3      |        0 |   7.00 |          400 |
+|  6 | 3      |        0 |   5.00 |         1200 |
+|  7 | 2      |        0 |   8.00 |          150 |
+|  8 | 1      |        0 |  12.00 |          100 |
+|  9 | 2      |        0 |  12.00 |           76 |
+| 10 | 3      |        0 |  12.00 |           50 |
+| 11 | 1      |        0 |   6.00 |          450 |
+| 12 | 2      |        0 |  12.00 |          250 |
+| 13 | 3      |        0 |  12.00 |           80 |
+| 14 | 15     |        0 |   5.00 |          300 |
+| 15 | 15     |        0 |   3.00 |         1200 |
+| 16 | 15     |        0 |   4.00 |          700 |
+| 17 | 16     |        0 |   2.00 |         1500 |
+| 18 | 16     |        0 |  10.00 |          200 |
+| 19 | 16     |        0 |   6.00 |          400 |
+| 20 | 17     |        0 |   1.00 |         2500 |
+| 21 | 17     |        0 |   1.00 |         2000 |
+| 22 | 17     |        0 |   1.00 |         3000 |
++----+--------+----------+--------+--------------+
+22 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> DROP TABLE PRODUCTOS_SECUENCIAL;
+Query OK, 0 rows affected (0.004 sec)
+
+MariaDB [db_profesor]> CREATE TABLE PRODUCTOS_SECUENCIAL(
+    ->     ID INTEGER UNSIGNED AUTO_INCREMENT,
+    ->     PROVEEDOR_ID INTEGER UNSIGNED,
+    ->     NOMBRE VARCHAR(40),
+    ->     CANTIDAD INTEGER UNSIGNED,
+    ->     PRECIO DECIMAL(10,2),
+    ->     PRIMARY KEY(ID)
+    -> );
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [db_profesor]> INSERT INTO productos_secuencial(proveedor_id, nombre, cantidad, precio) VALUES
+    -> (1,'NEVERA',6,500.25),
+    -> (1,'COCINA',3,300.75),
+    -> (2,'LAVADORA',2,800.50),
+    -> (3,'AIRE ACONDICIONADO',4,600.75),
+    -> (3,'TELEVISOR',7,400.00),
+    -> (3,'LAPTOP',5,1200.00),
+    -> (2,'MICROONDAS',8,150.25),
+    -> (1,'LICUADORA',12,100.00),
+    -> (2,'PLANCHA',12,75.50),
+    -> (3,'VENTILADOR',12,50.00),
+    -> (1,'HORNO A GAS',6,450.00),
+    -> (2,'CAFETERA',12,250.00),
+    -> (3,'TOSTADORA',12,80.00),
+    -> (15,'SECADORA',5,300.00),
+    -> (15,'TELEVISOR 4K',3,1200.00),
+    -> (15,'LAVAVAJILLAS',4,700.00),
+    -> (16,'TELEVISOR CURVO',2,1500.00),
+    -> (16,'AURICULARES',10,200.00),
+    -> (16,'TABLET',6,400.00),
+    -> (17,'LAVADORA INDUSTRIAL',1,2500.00),
+    -> (17,'SECADORA INDUSTRIAL',1,2000.00),
+    -> (17,'REFRIGERADOR INDUSTRIAL',1,3000.00);
+Query OK, 22 rows affected (0.002 sec)
+Records: 22  Duplicates: 0  Warnings: 0
+
+MariaDB [db_profesor]> select * from productos_secuencial;
++----+--------------+-------------------------+----------+---------+
+| ID | PROVEEDOR_ID | NOMBRE                  | CANTIDAD | PRECIO  |
++----+--------------+-------------------------+----------+---------+
+|  1 |            1 | NEVERA                  |        6 |  500.25 |
+|  2 |            1 | COCINA                  |        3 |  300.75 |
+|  3 |            2 | LAVADORA                |        2 |  800.50 |
+|  4 |            3 | AIRE ACONDICIONADO      |        4 |  600.75 |
+|  5 |            3 | TELEVISOR               |        7 |  400.00 |
+|  6 |            3 | LAPTOP                  |        5 | 1200.00 |
+|  7 |            2 | MICROONDAS              |        8 |  150.25 |
+|  8 |            1 | LICUADORA               |       12 |  100.00 |
+|  9 |            2 | PLANCHA                 |       12 |   75.50 |
+| 10 |            3 | VENTILADOR              |       12 |   50.00 |
+| 11 |            1 | HORNO A GAS             |        6 |  450.00 |
+| 12 |            2 | CAFETERA                |       12 |  250.00 |
+| 13 |            3 | TOSTADORA               |       12 |   80.00 |
+| 14 |           15 | SECADORA                |        5 |  300.00 |
+| 15 |           15 | TELEVISOR 4K            |        3 | 1200.00 |
+| 16 |           15 | LAVAVAJILLAS            |        4 |  700.00 |
+| 17 |           16 | TELEVISOR CURVO         |        2 | 1500.00 |
+| 18 |           16 | AURICULARES             |       10 |  200.00 |
+| 19 |           16 | TABLET                  |        6 |  400.00 |
+| 20 |           17 | LAVADORA INDUSTRIAL     |        1 | 2500.00 |
+| 21 |           17 | SECADORA INDUSTRIAL     |        1 | 2000.00 |
+| 22 |           17 | REFRIGERADOR INDUSTRIAL |        1 | 3000.00 |
++----+--------------+-------------------------+----------+---------+
+22 rows in set (0.001 sec)
+
+MariaDB [db_profesor]> SELECT PROVEEDORES.NOMBRE AS PROVEEDOR,
+    ->        PRODUCTOS.NOMBRE AS PRODUCTO,
+    ->        PRODUCTOS.CANTIDAD,
+    ->        PRODUCTOS.PRECIO
+    -> FROM PROVEEDORES
+    -> RIGHT JOIN PRODUCTOS ON PROVEEDORES.ID = PRODUCTOS.PROVEEDOR_ID;
++------------------+-------------+----------+--------+
+| PROVEEDOR        | PRODUCTO    | CANTIDAD | PRECIO |
++------------------+-------------+----------+--------+
+| GENERAL ELECTRIC | NEVERA      |        6 | 500.25 |
+| GENERAL ELECTRIC | COCINA      |        3 | 300.75 |
+| LG               | LAVADORA    |        2 | 800.50 |
+| LG               | MICROONDAS  |        8 | 150.25 |
+| GENERAL ELECTRIC | LICUADORA   |       12 | 100.00 |
+| LG               | PLANCHA     |       12 |  75.50 |
+| GENERAL ELECTRIC | HORNO A GAS |        6 | 450.00 |
+| LG               | CAFETERA    |       12 | 250.00 |
++------------------+-------------+----------+--------+
+8 rows in set (0.001 sec)
+
+MariaDB [db_profesor]> SELECT PROVEEDORES_SECUENCIAL.NOMBRE AS PROVEEDOR,
+    ->        PRODUCTOS_SECUENCIAL.NOMBRE AS PRODUCTO,
+    ->        PRODUCTOS_SECUENCIAL.CANTIDAD,
+    ->        PRODUCTOS_SECUENCIAL.PRECIO
+    -> FROM PROVEEDORES_SECUENCIAL
+    -> RIGHT JOIN PRODUCTOS_SECUENCIAL ON PROVEEDORES_SECUENCIAL.ID = PRODUCTOS_SECUENCIAL.PROVEEDOR_ID;
++-----------+-------------------------+----------+---------+
+| PROVEEDOR | PRODUCTO                | CANTIDAD | PRECIO  |
++-----------+-------------------------+----------+---------+
+| NULL      | NEVERA                  |        6 |  500.25 |
+| NULL      | COCINA                  |        3 |  300.75 |
+| NULL      | LAVADORA                |        2 |  800.50 |
+| NULL      | AIRE ACONDICIONADO      |        4 |  600.75 |
+| NULL      | TELEVISOR               |        7 |  400.00 |
+| NULL      | LAPTOP                  |        5 | 1200.00 |
+| NULL      | MICROONDAS              |        8 |  150.25 |
+| NULL      | LICUADORA               |       12 |  100.00 |
+| NULL      | PLANCHA                 |       12 |   75.50 |
+| NULL      | VENTILADOR              |       12 |   50.00 |
+| NULL      | HORNO A GAS             |        6 |  450.00 |
+| NULL      | CAFETERA                |       12 |  250.00 |
+| NULL      | TOSTADORA               |       12 |   80.00 |
+| NULL      | SECADORA                |        5 |  300.00 |
+| NULL      | TELEVISOR 4K            |        3 | 1200.00 |
+| NULL      | LAVAVAJILLAS            |        4 |  700.00 |
+| NULL      | TELEVISOR CURVO         |        2 | 1500.00 |
+| NULL      | AURICULARES             |       10 |  200.00 |
+| NULL      | TABLET                  |        6 |  400.00 |
+| NULL      | LAVADORA INDUSTRIAL     |        1 | 2500.00 |
+| NULL      | SECADORA INDUSTRIAL     |        1 | 2000.00 |
+| NULL      | REFRIGERADOR INDUSTRIAL |        1 | 3000.00 |
++-----------+-------------------------+----------+---------+
+22 rows in set (0.001 sec)
+
+MariaDB [db_profesor]>
+MariaDB [db_profesor]>
+MariaDB [db_profesor]> SELECT * FROM PROVEEDORES_SECUENCIAL;
+Empty set (0.000 sec)
+
+MariaDB [db_profesor]> SELECT * FROM PROVEEDORES;
++----+------------------+---------------------+------------+--------------------+
+| id | nombre           | direccion           | telefono   | correo_electronico |
++----+------------------+---------------------+------------+--------------------+
+|  1 | GENERAL ELECTRIC | AV. LECUNA          | 2121112233 | info@ge.com        |
+|  2 | LG               | AV. ROMULO GALLEGOS | 2121112277 | info@lg.com        |
+|  4 | PHILIPS          | PLAZA VENEZUELA     | 2125673421 | info@philips.com   |
+|  5 | SAMSUNG          | BOLEITA NORTES      | 2129872323 | info@samsung.com   |
+|  6 | WHIRLPOOL        | LA CALIFORNIA       | 2124417889 | info@whirlpool.com |
++----+------------------+---------------------+------------+--------------------+
+5 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> SHOW CREATE TABLE PROVEEDORES_SECUENCIAL;
++------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table                  | Create Table                                                                                                                                                                                                                                                                                                                                           |
++------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| PROVEEDORES_SECUENCIAL | CREATE TABLE `proveedores_secuencial` (
+  `ID` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `NOMBRE` varchar(40) DEFAULT NULL,
+  `DIRECCION` varchar(100) DEFAULT NULL,
+  `TELEFONO` varchar(20) DEFAULT NULL,
+  `CORREO_ELECTRONICO` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci |
++------------------------+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.000 sec)
+
+MariaDB [db_profesor]> INSERT INTO proveedores_secuencial(nombre, direccion, telefono, correo_electronico) VALUES
+    -> ('GENERAL ELECTRIC','AV. LECUNA','2121112233','info@ge.com'),
+    -> ('LG','AV. ROMULO GALLEGOS','2121112277','info@lg.com'),
+    -> ('MABE','AV. FCO. DE MIRANDA','2123334455','info@mabe.com'),
+    -> ('PHILIPS', 'PLAZA VENEZUELA', '2125673421', 'info@philips.com'),
+    -> ('SAMSUNG', 'BOLEITA NORTES', '2129872323', 'info@samsung.com'),
+    -> ('WHIRLPOOL', 'LA CALIFORNIA', '2124417889', 'info@whirlpool.com');
+Query OK, 6 rows affected (0.002 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+MariaDB [db_profesor]> SELECT * FROM PROVEEDORES_SECUENCIAL;
++----+------------------+---------------------+------------+--------------------+
+| ID | NOMBRE           | DIRECCION           | TELEFONO   | CORREO_ELECTRONICO |
++----+------------------+---------------------+------------+--------------------+
+|  1 | GENERAL ELECTRIC | AV. LECUNA          | 2121112233 | info@ge.com        |
+|  2 | LG               | AV. ROMULO GALLEGOS | 2121112277 | info@lg.com        |
+|  3 | MABE             | AV. FCO. DE MIRANDA | 2123334455 | info@mabe.com      |
+|  4 | PHILIPS          | PLAZA VENEZUELA     | 2125673421 | info@philips.com   |
+|  5 | SAMSUNG          | BOLEITA NORTES      | 2129872323 | info@samsung.com   |
+|  6 | WHIRLPOOL        | LA CALIFORNIA       | 2124417889 | info@whirlpool.com |
++----+------------------+---------------------+------------+--------------------+
+6 rows in set (0.000 sec)
+
+MariaDB [db_profesor]>
+MariaDB [db_profesor]> SELECT PROVEEDORES_SECUENCIAL.NOMBRE AS PROVEEDOR,
+    ->        PRODUCTOS_SECUENCIAL.NOMBRE AS PRODUCTO,
+    ->        PRODUCTOS_SECUENCIAL.CANTIDAD,
+    ->        PRODUCTOS_SECUENCIAL.PRECIO
+    -> FROM PROVEEDORES_SECUENCIAL
+    -> RIGHT JOIN PRODUCTOS_SECUENCIAL ON PROVEEDORES_SECUENCIAL.ID = PRODUCTOS_SECUENCIAL.PROVEEDOR_ID;
++------------------+-------------------------+----------+---------+
+| PROVEEDOR        | PRODUCTO                | CANTIDAD | PRECIO  |
++------------------+-------------------------+----------+---------+
+| GENERAL ELECTRIC | NEVERA                  |        6 |  500.25 |
+| GENERAL ELECTRIC | COCINA                  |        3 |  300.75 |
+| LG               | LAVADORA                |        2 |  800.50 |
+| MABE             | AIRE ACONDICIONADO      |        4 |  600.75 |
+| MABE             | TELEVISOR               |        7 |  400.00 |
+| MABE             | LAPTOP                  |        5 | 1200.00 |
+| LG               | MICROONDAS              |        8 |  150.25 |
+| GENERAL ELECTRIC | LICUADORA               |       12 |  100.00 |
+| LG               | PLANCHA                 |       12 |   75.50 |
+| MABE             | VENTILADOR              |       12 |   50.00 |
+| GENERAL ELECTRIC | HORNO A GAS             |        6 |  450.00 |
+| LG               | CAFETERA                |       12 |  250.00 |
+| MABE             | TOSTADORA               |       12 |   80.00 |
+| NULL             | SECADORA                |        5 |  300.00 |
+| NULL             | TELEVISOR 4K            |        3 | 1200.00 |
+| NULL             | LAVAVAJILLAS            |        4 |  700.00 |
+| NULL             | TELEVISOR CURVO         |        2 | 1500.00 |
+| NULL             | AURICULARES             |       10 |  200.00 |
+| NULL             | TABLET                  |        6 |  400.00 |
+| NULL             | LAVADORA INDUSTRIAL     |        1 | 2500.00 |
+| NULL             | SECADORA INDUSTRIAL     |        1 | 2000.00 |
+| NULL             | REFRIGERADOR INDUSTRIAL |        1 | 3000.00 |
++------------------+-------------------------+----------+---------+
+22 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> SELECT PROVEEDORES_SECUENCIAL.NOMBRE AS PROVEEDOR,
+    ->        PRODUCTOS_SECUENCIAL.NOMBRE AS PRODUCTO,
+    ->        PRODUCTOS_SECUENCIAL.CANTIDAD,
+    ->        PRODUCTOS_SECUENCIAL.PRECIO
+    -> FROM PROVEEDORES_SECUENCIAL
+    -> FULL OUTER JOIN PRODUCTOS_SECUENCIAL ON PROVEEDORES_SECUENCIAL.ID = PRODUCTOS_SECUENCIAL.PROVEEDOR_ID;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'OUTER JOIN PRODUCTOS_SECUENCIAL ON PROVEEDORES_SECUENCIAL.ID = PRODUCTOS_SECU...' at line 6
+MariaDB [db_profesor]> SELECT PROVEEDORES_SECUENCIAL.NOMBRE AS PROVEEDOR,
+    ->        PRODUCTOS_SECUENCIAL.NOMBRE AS PRODUCTO,
+    ->        PRODUCTOS_SECUENCIAL.CANTIDAD,
+    ->        PRODUCTOS_SECUENCIAL.PRECIO
+    -> FROM PROVEEDORES_SECUENCIAL
+    -> LEFT JOIN PRODUCTOS_SECUENCIAL ON PROVEEDORES_SECUENCIAL.ID = PRODUCTOS_SECUENCIAL.PROVEEDOR_ID
+    -> UNION -- UNION ALL
+    -> SELECT PROVEEDORES_SECUENCIAL.NOMBRE AS PROVEEDOR,
+    ->        PRODUCTOS_SECUENCIAL.NOMBRE AS PRODUCTO,
+    ->        PRODUCTOS_SECUENCIAL.CANTIDAD,
+    ->        PRODUCTOS_SECUENCIAL.PRECIO
+    -> FROM PROVEEDORES_SECUENCIAL
+    -> RIGHT JOIN PRODUCTOS_SECUENCIAL ON PROVEEDORES_SECUENCIAL.ID = PRODUCTOS_SECUENCIAL.PROVEEDOR_ID;
++------------------+-------------------------+----------+---------+
+| PROVEEDOR        | PRODUCTO                | CANTIDAD | PRECIO  |
++------------------+-------------------------+----------+---------+
+| GENERAL ELECTRIC | NEVERA                  |        6 |  500.25 |
+| GENERAL ELECTRIC | COCINA                  |        3 |  300.75 |
+| LG               | LAVADORA                |        2 |  800.50 |
+| MABE             | AIRE ACONDICIONADO      |        4 |  600.75 |
+| MABE             | TELEVISOR               |        7 |  400.00 |
+| MABE             | LAPTOP                  |        5 | 1200.00 |
+| LG               | MICROONDAS              |        8 |  150.25 |
+| GENERAL ELECTRIC | LICUADORA               |       12 |  100.00 |
+| LG               | PLANCHA                 |       12 |   75.50 |
+| MABE             | VENTILADOR              |       12 |   50.00 |
+| GENERAL ELECTRIC | HORNO A GAS             |        6 |  450.00 |
+| LG               | CAFETERA                |       12 |  250.00 |
+| MABE             | TOSTADORA               |       12 |   80.00 |
+| PHILIPS          | NULL                    |     NULL |    NULL |
+| SAMSUNG          | NULL                    |     NULL |    NULL |
+| WHIRLPOOL        | NULL                    |     NULL |    NULL |
+| NULL             | SECADORA                |        5 |  300.00 |
+| NULL             | TELEVISOR 4K            |        3 | 1200.00 |
+| NULL             | LAVAVAJILLAS            |        4 |  700.00 |
+| NULL             | TELEVISOR CURVO         |        2 | 1500.00 |
+| NULL             | AURICULARES             |       10 |  200.00 |
+| NULL             | TABLET                  |        6 |  400.00 |
+| NULL             | LAVADORA INDUSTRIAL     |        1 | 2500.00 |
+| NULL             | SECADORA INDUSTRIAL     |        1 | 2000.00 |
+| NULL             | REFRIGERADOR INDUSTRIAL |        1 | 3000.00 |
++------------------+-------------------------+----------+---------+
+25 rows in set (0.001 sec)
+
+MariaDB [db_profesor]>
+MariaDB [db_profesor]> CREATE VIEW vista_right_join_proveedores_productos AS
+    -> SELECT PROVEEDORES_SECUENCIAL.NOMBRE AS PROVEEDOR,
+    ->        PRODUCTOS_SECUENCIAL.NOMBRE AS PRODUCTO,
+    ->        PRODUCTOS_SECUENCIAL.CANTIDAD,
+    ->        PRODUCTOS_SECUENCIAL.PRECIO
+    -> FROM PROVEEDORES_SECUENCIAL
+    -> RIGHT JOIN PRODUCTOS_SECUENCIAL ON PROVEEDORES_SECUENCIAL.ID = PRODUCTOS_SECUENCIAL.PROVEEDOR_ID;
+Query OK, 0 rows affected (0.002 sec)
+
+MariaDB [db_profesor]> CREATE VIEW vista_full_join_proveedores_productos AS
+    -> SELECT PROVEEDORES_SECUENCIAL.NOMBRE AS PROVEEDOR,
+    ->        PRODUCTOS_SECUENCIAL.NOMBRE AS PRODUCTO,
+    ->        PRODUCTOS_SECUENCIAL.CANTIDAD,
+    ->        PRODUCTOS_SECUENCIAL.PRECIO
+    -> FROM PROVEEDORES_SECUENCIAL
+    -> LEFT JOIN PRODUCTOS_SECUENCIAL ON PROVEEDORES.ID = PRODUCTOS_SECUENCIAL.PROVEEDOR_ID
+    -> UNION
+    -> SELECT PROVEEDORES_SECUENCIAL.NOMBRE AS PROVEEDOR,
+    ->        PRODUCTOS_SECUENCIAL.NOMBRE AS PRODUCTO,
+    ->        PRODUCTOS_SECUENCIAL.CANTIDAD,
+    ->        PRODUCTOS_SECUENCIAL.PRECIO
+    -> FROM PROVEEDORES_SECUENCIAL
+    -> RIGHT JOIN PRODUCTOS_SECUENCIAL ON PROVEEDORES_SECUENCIAL.ID = PRODUCTOS_SECUENCIAL.PROVEEDOR_ID;
+ERROR 1054 (42S22): Unknown column 'PROVEEDORES.ID' in 'on clause'
+MariaDB [db_profesor]> SHOW TABLES;
++----------------------------------------+
+| Tables_in_db_profesor                  |
++----------------------------------------+
+| asignaturas                            |
+| estudiantes                            |
+| estudiantes_asignaturas                |
+| personas                               |
+| personas1                              |
+| personas_con_indice                    |
+| personas_con_indice_cedula             |
+| personas_con_indice_cedula_correo      |
+| productos                              |
+| productos_cascade                      |
+| productos_secuencial                   |
+| proveedores                            |
+| proveedores_cascade                    |
+| proveedores_secuencial                 |
+| vista_estudiantes_asignaturas          |
+| vista_inner_join_proveedores_productos |
+| vista_left_join_proveedores_productos  |
+| vista_right_join_proveedores_productos |
++----------------------------------------+
+18 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> CREATE VIEW vista_full_join_proveedores_productos AS
+    -> SELECT PROVEEDORES_SECUENCIAL.NOMBRE AS PROVEEDOR,
+    ->        PRODUCTOS_SECUENCIAL.NOMBRE AS PRODUCTO,
+    ->        PRODUCTOS_SECUENCIAL.CANTIDAD,
+    ->        PRODUCTOS_SECUENCIAL.PRECIO
+    -> FROM PROVEEDORES_SECUENCIAL
+    -> LEFT JOIN PRODUCTOS_SECUENCIAL ON PROVEEDORES.ID = PRODUCTOS_SECUENCIAL.PROVEEDOR_ID
+    -> UNION
+    -> SELECT PROVEEDORES_SECUENCIAL.NOMBRE AS PROVEEDOR,
+    ->        PRODUCTOS_SECUENCIAL.NOMBRE AS PRODUCTO,
+    ->        PRODUCTOS_SECUENCIAL.CANTIDAD,
+    ->        PRODUCTOS_SECUENCIAL.PRECIO
+    -> FROM PROVEEDORES_SECUENCIAL
+    -> RIGHT JOIN PRODUCTOS_SECUENCIAL ON PROVEEDORES_SECUENCIAL.ID = PRODUCTOS_SECUENCIAL.PROVEEDOR_ID;
+ERROR 1054 (42S22): Unknown column 'PROVEEDORES.ID' in 'on clause'
+MariaDB [db_profesor]> SELECT PROVEEDORES_SECUENCIAL.NOMBRE AS PROVEEDOR,
+    ->        PRODUCTOS_SECUENCIAL.NOMBRE AS PRODUCTO,
+    ->        PRODUCTOS_SECUENCIAL.CANTIDAD,
+    ->        PRODUCTOS_SECUENCIAL.PRECIO
+    -> FROM PROVEEDORES_SECUENCIAL
+    -> LEFT JOIN PRODUCTOS_SECUENCIAL ON PROVEEDORES_SECUENCIAL.ID = PRODUCTOS_SECUENCIAL.PROVEEDOR_ID
+    -> UNION
+    -> SELECT PROVEEDORES_SECUENCIAL.NOMBRE AS PROVEEDOR,
+    ->        PRODUCTOS_SECUENCIAL.NOMBRE AS PRODUCTO,
+    ->        PRODUCTOS_SECUENCIAL.CANTIDAD,
+    ->        PRODUCTOS_SECUENCIAL.PRECIO
+    -> FROM PROVEEDORES_SECUENCIAL
+    -> RIGHT JOIN PRODUCTOS_SECUENCIAL ON PROVEEDORES_SECUENCIAL.ID = PRODUCTOS_SECUENCIAL.PROVEEDOR_ID;
++------------------+-------------------------+----------+---------+
+| PROVEEDOR        | PRODUCTO                | CANTIDAD | PRECIO  |
++------------------+-------------------------+----------+---------+
+| GENERAL ELECTRIC | NEVERA                  |        6 |  500.25 |
+| GENERAL ELECTRIC | COCINA                  |        3 |  300.75 |
+| LG               | LAVADORA                |        2 |  800.50 |
+| MABE             | AIRE ACONDICIONADO      |        4 |  600.75 |
+| MABE             | TELEVISOR               |        7 |  400.00 |
+| MABE             | LAPTOP                  |        5 | 1200.00 |
+| LG               | MICROONDAS              |        8 |  150.25 |
+| GENERAL ELECTRIC | LICUADORA               |       12 |  100.00 |
+| LG               | PLANCHA                 |       12 |   75.50 |
+| MABE             | VENTILADOR              |       12 |   50.00 |
+| GENERAL ELECTRIC | HORNO A GAS             |        6 |  450.00 |
+| LG               | CAFETERA                |       12 |  250.00 |
+| MABE             | TOSTADORA               |       12 |   80.00 |
+| PHILIPS          | NULL                    |     NULL |    NULL |
+| SAMSUNG          | NULL                    |     NULL |    NULL |
+| WHIRLPOOL        | NULL                    |     NULL |    NULL |
+| NULL             | SECADORA                |        5 |  300.00 |
+| NULL             | TELEVISOR 4K            |        3 | 1200.00 |
+| NULL             | LAVAVAJILLAS            |        4 |  700.00 |
+| NULL             | TELEVISOR CURVO         |        2 | 1500.00 |
+| NULL             | AURICULARES             |       10 |  200.00 |
+| NULL             | TABLET                  |        6 |  400.00 |
+| NULL             | LAVADORA INDUSTRIAL     |        1 | 2500.00 |
+| NULL             | SECADORA INDUSTRIAL     |        1 | 2000.00 |
+| NULL             | REFRIGERADOR INDUSTRIAL |        1 | 3000.00 |
++------------------+-------------------------+----------+---------+
+25 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> CREATE VIEW vista_full_join_proveedores_productos AS
+    -> SELECT PROVEEDORES_SECUENCIAL.NOMBRE AS PROVEEDOR,
+    ->        PRODUCTOS_SECUENCIAL.NOMBRE AS PRODUCTO,
+    ->        PRODUCTOS_SECUENCIAL.CANTIDAD,
+    ->        PRODUCTOS_SECUENCIAL.PRECIO
+    -> FROM PROVEEDORES_SECUENCIAL
+    -> LEFT JOIN PRODUCTOS_SECUENCIAL ON PROVEEDORES_SECUENCIAL.ID = PRODUCTOS_SECUENCIAL.PROVEEDOR_ID
+    -> UNION
+    -> SELECT PROVEEDORES_SECUENCIAL.NOMBRE AS PROVEEDOR,
+    ->        PRODUCTOS_SECUENCIAL.NOMBRE AS PRODUCTO,
+    ->        PRODUCTOS_SECUENCIAL.CANTIDAD,
+    ->        PRODUCTOS_SECUENCIAL.PRECIO
+    -> FROM PROVEEDORES_SECUENCIAL
+    -> RIGHT JOIN PRODUCTOS_SECUENCIAL ON PROVEEDORES_SECUENCIAL.ID = PRODUCTOS_SECUENCIAL.PROVEEDOR_ID;
+Query OK, 0 rows affected (0.003 sec)
+
+MariaDB [db_profesor]> SHOW TABLES;
++----------------------------------------+
+| Tables_in_db_profesor                  |
++----------------------------------------+
+| asignaturas                            |
+| estudiantes                            |
+| estudiantes_asignaturas                |
+| personas                               |
+| personas1                              |
+| personas_con_indice                    |
+| personas_con_indice_cedula             |
+| personas_con_indice_cedula_correo      |
+| productos                              |
+| productos_cascade                      |
+| productos_secuencial                   |
+| proveedores                            |
+| proveedores_cascade                    |
+| proveedores_secuencial                 |
+| vista_estudiantes_asignaturas          |
+| vista_full_join_proveedores_productos  |
+| vista_inner_join_proveedores_productos |
+| vista_left_join_proveedores_productos  |
+| vista_right_join_proveedores_productos |
++----------------------------------------+
+19 rows in set (0.001 sec)
+
+MariaDB [db_profesor]> SELECT * FROM VISTA_FULL_JOIN_PROVEEDORES_PRODUCTOS;
++------------------+-------------------------+----------+---------+
+| PROVEEDOR        | PRODUCTO                | CANTIDAD | PRECIO  |
++------------------+-------------------------+----------+---------+
+| GENERAL ELECTRIC | NEVERA                  |        6 |  500.25 |
+| GENERAL ELECTRIC | COCINA                  |        3 |  300.75 |
+| LG               | LAVADORA                |        2 |  800.50 |
+| MABE             | AIRE ACONDICIONADO      |        4 |  600.75 |
+| MABE             | TELEVISOR               |        7 |  400.00 |
+| MABE             | LAPTOP                  |        5 | 1200.00 |
+| LG               | MICROONDAS              |        8 |  150.25 |
+| GENERAL ELECTRIC | LICUADORA               |       12 |  100.00 |
+| LG               | PLANCHA                 |       12 |   75.50 |
+| MABE             | VENTILADOR              |       12 |   50.00 |
+| GENERAL ELECTRIC | HORNO A GAS             |        6 |  450.00 |
+| LG               | CAFETERA                |       12 |  250.00 |
+| MABE             | TOSTADORA               |       12 |   80.00 |
+| PHILIPS          | NULL                    |     NULL |    NULL |
+| SAMSUNG          | NULL                    |     NULL |    NULL |
+| WHIRLPOOL        | NULL                    |     NULL |    NULL |
+| NULL             | SECADORA                |        5 |  300.00 |
+| NULL             | TELEVISOR 4K            |        3 | 1200.00 |
+| NULL             | LAVAVAJILLAS            |        4 |  700.00 |
+| NULL             | TELEVISOR CURVO         |        2 | 1500.00 |
+| NULL             | AURICULARES             |       10 |  200.00 |
+| NULL             | TABLET                  |        6 |  400.00 |
+| NULL             | LAVADORA INDUSTRIAL     |        1 | 2500.00 |
+| NULL             | SECADORA INDUSTRIAL     |        1 | 2000.00 |
+| NULL             | REFRIGERADOR INDUSTRIAL |        1 | 3000.00 |
++------------------+-------------------------+----------+---------+
+25 rows in set (0.001 sec)
+
+MariaDB [db_profesor]>
+MariaDB [db_profesor]>
+MariaDB [db_profesor]> SELECT COUNT(PROVEEDOR) FROM vista_full_join_proveedores_productos
+    -> ;
++------------------+
+| COUNT(PROVEEDOR) |
++------------------+
+|               16 |
++------------------+
+1 row in set (0.001 sec)
+
+MariaDB [db_profesor]> SELECT COUNT(*) FROM vista_full_join_proveedores_productos;
++----------+
+| COUNT(*) |
++----------+
+|       25 |
++----------+
+1 row in set (0.000 sec)
+
+MariaDB [db_profesor]> SELECT SUM(CANTIDAD) FROM vista_full_join_proveedores_productos;
++---------------+
+| SUM(CANTIDAD) |
++---------------+
+|           134 |
++---------------+
+1 row in set (0.001 sec)
+
+MariaDB [db_profesor]>
+MariaDB [db_profesor]>
+MariaDB [db_profesor]> SELECT MIN(PRECIO) FROM vista_full_join_proveedores_productos;
++-------------+
+| MIN(PRECIO) |
++-------------+
+|       50.00 |
++-------------+
+1 row in set (0.001 sec)
+
+MariaDB [db_profesor]> SELECT MAX(PRECIO) FROM vista_full_join_proveedores_productos;
++-------------+
+| MAX(PRECIO) |
++-------------+
+|     3000.00 |
++-------------+
+1 row in set (0.001 sec)
+
+MariaDB [db_profesor]> SELECT AVG(PRECIO) FROM vista_full_join_proveedores_productos;
++-------------+
+| AVG(PRECIO) |
++-------------+
+|  761.727273 |
++-------------+
+1 row in set (0.001 sec)
+
+MariaDB [db_profesor]> HELP FUNCTION;
+
+Nothing found
+Please try to run 'help contents' for a list of all accessible topics
+
+MariaDB [db_profesor]> HELP FUNCTIONS;
+You asked for help about help category: "Functions"
+For more information, type 'help <item>', where <item> is one of the following
+categories:
+   Bit Functions
+   Comparison Operators
+   Control Flow Functions
+   Date and Time Functions
+   Dynamic Column Functions
+   Encryption Functions
+   Information Functions
+   JSON Functions
+   Logical Operators
+   Miscellaneous Functions
+   Numeric Functions
+   Spider Functions
+   String Functions
+   Window Functions
+
+MariaDB [db_profesor]> HELP NUMERIC FUNCTIONS;
+You asked for help about help category: "Numeric Functions"
+For more information, type 'help <item>', where <item> is one of the following
+topics:
+   ABS
+   ACOS
+   ASIN
+   ATAN
+   ATAN2
+   Addition Operator (+)
+   CEIL
+   CEILING
+   CONV
+   COS
+   COT
+   CRC32
+   DEGREES
+   DIV
+   Division Operator (/)
+   EXP
+   FLOOR
+   LN
+   LOG
+   LOG10
+   LOG2
+   MOD
+   Modulo Operator (%)
+   Multiplication Operator (*)
+   OCT
+   PI
+   POW
+   POWER
+   RADIANS
+   RAND
+   ROUND
+   SIGN
+   SIN
+   SQRT
+   Subtraction Operator (-)
+   TAN
+   TRUNCATE
+
+MariaDB [db_profesor]>
+MariaDB [db_profesor]>
+MariaDB [db_profesor]>
+MariaDB [db_profesor]> HELP NUMERIC FUNCTIONS;
+You asked for help about help category: "Numeric Functions"
+For more information, type 'help <item>', where <item> is one of the following
+topics:
+   ABS
+   ACOS
+   ASIN
+   ATAN
+   ATAN2
+   Addition Operator (+)
+   CEIL
+   CEILING
+   CONV
+   COS
+   COT
+   CRC32
+   DEGREES
+   DIV
+   Division Operator (/)
+   EXP
+   FLOOR
+   LN
+   LOG
+   LOG10
+   LOG2
+   MOD
+   Modulo Operator (%)
+   Multiplication Operator (*)
+   OCT
+   PI
+   POW
+   POWER
+   RADIANS
+   RAND
+   ROUND
+   SIGN
+   SIN
+   SQRT
+   Subtraction Operator (-)
+   TAN
+   TRUNCATE
+
+MariaDB [db_profesor]>    RAND
+    -> \c
+MariaDB [db_profesor]> SELECT ROUND(AVG(PRECIO),2) FROM vista_full_join_proveedores_productos;
++----------------------+
+| ROUND(AVG(PRECIO),2) |
++----------------------+
+|               761.73 |
++----------------------+
+1 row in set (0.000 sec)
+
+MariaDB [db_profesor]>
+MariaDB [db_profesor]> SELECT SQRT(81);
++----------+
+| SQRT(81) |
++----------+
+|        9 |
++----------+
+1 row in set (0.000 sec)
+
+MariaDB [db_profesor]> SELECT PI()
+    -> ;
++----------+
+| PI()     |
++----------+
+| 3.141593 |
++----------+
+1 row in set (0.000 sec)
+
+MariaDB [db_profesor]> SELECT SIN(PI()/2);
++-------------+
+| SIN(PI()/2) |
++-------------+
+|           1 |
++-------------+
+1 row in set (0.000 sec)
+
+MariaDB [db_profesor]> SELECT LOG(10,2);
++---------------------+
+| LOG(10,2)           |
++---------------------+
+| 0.30102999566398114 |
++---------------------+
+1 row in set (0.000 sec)
+
+MariaDB [db_profesor]> SELECT LOG(2,10);
++--------------------+
+| LOG(2,10)          |
++--------------------+
+| 3.3219280948873626 |
++--------------------+
+1 row in set (0.000 sec)
+
+MariaDB [db_profesor]> SELECT POW(2,3)
+    -> ;
++----------+
+| POW(2,3) |
++----------+
+|        8 |
++----------+
+1 row in set (0.000 sec)
+
+MariaDB [db_profesor]> SELECT LOG(8,2)
+    -> ;
++---------------------+
+| LOG(8,2)            |
++---------------------+
+| 0.33333333333333337 |
++---------------------+
+1 row in set (0.000 sec)
+
+MariaDB [db_profesor]> SELECT LOG(2,8)
+    -> ;
++----------+
+| LOG(2,8) |
++----------+
+|        3 |
++----------+
+1 row in set (0.000 sec)
+
+MariaDB [db_profesor]> HELP FUNCTIONS;
+You asked for help about help category: "Functions"
+For more information, type 'help <item>', where <item> is one of the following
+categories:
+   Bit Functions
+   Comparison Operators
+   Control Flow Functions
+   Date and Time Functions
+   Dynamic Column Functions
+   Encryption Functions
+   Information Functions
+   JSON Functions
+   Logical Operators
+   Miscellaneous Functions
+   Numeric Functions
+   Spider Functions
+   String Functions
+   Window Functions
+
+MariaDB [db_profesor]> HELP Encryption Functions;
+You asked for help about help category: "Encryption Functions"
+For more information, type 'help <item>', where <item> is one of the following
+topics:
+   AES_DECRYPT
+   AES_ENCRYPT
+   COMPRESS
+   DECODE
+   DES_DECRYPT
+   DES_ENCRYPT
+   ENCODE
+   ENCRYPT
+   MD5
+   OLD_PASSWORD
+   PASSWORD
+   SHA1
+   SHA2
+   UNCOMPRESS
+   UNCOMPRESSED_LENGTH
+
+MariaDB [db_profesor]> SELECT MD5('SECRETO');
++----------------------------------+
+| MD5('SECRETO')                   |
++----------------------------------+
+| c09660c77b9001eba75564781567fadb |
++----------------------------------+
+1 row in set (0.000 sec)
+
+MariaDB [db_profesor]> HELP DES_ENCRYPT;
+Name: 'DES_ENCRYPT'
+Description:
+Syntax
+------
+DES_ENCRYPT(str[,{key_num|key_str}])
+
+Description
+-----------
+Encrypts the string with the given key using the Triple-DES
+algorithm.
+
+This function works only if MariaDB has been configured with
+TLS support.
+
+The encryption key to use is chosen based on the second
+argument to
+DES_ENCRYPT(), if one was given. With no argument, the first
+key from
+the DES key file is used. With a key_num argument, the given
+key
+number (0-9) from the DES key file is used. With a key_str
+argument,
+the given key string is used to encrypt str.
+
+The key file can be specified with the --des-key-file server
+option.
+
+The return string is a binary string where the first
+character is
+CHAR(128 | key_num). If an error occurs, DES_ENCRYPT()
+returns NULL.
+
+The 128 is added to make it easier to recognize an encrypted
+key. If
+you use a string key, key_num is 127.
+
+The string length for the result is given by this formula:
+
+new_len = orig_len + (8 - (orig_len % 8)) + 1
+
+Each line in the DES key file has the following format:
+
+key_num des_key_str
+
+Each key_num value must be a number in the range from 0 to
+9. Lines in
+the file may be in any order. des_key_str is the string that
+is used
+to encrypt the message. There should be at least one space
+between the
+number and the key. The first key is the default key that is
+used if
+you do not specify any key argument to DES_ENCRYPT().
+
+You can tell MariaDB to read new key values from the key
+file with the
+FLUSH DES_KEY_FILE statement. This requires the RELOAD
+privilege.
+
+One benefit of having a set of default keys is that it gives
+applications a way to check for the existence of encrypted
+column
+values, without giving the end user the right to decrypt
+those values.
+
+Examples
+--------
+SELECT customer_address FROM customer_table
+ WHERE crypted_credit_card =
+DES_ENCRYPT('credit_card_number');
+
+
+
+URL: https://mariadb.com/kb/en/des_encrypt/
+MariaDB [db_profesor]>
+MariaDB [db_profesor]>
+MariaDB [db_profesor]> HELP DES_ENCRYPT;
+Name: 'DES_ENCRYPT'
+Description:
+Syntax
+------
+DES_ENCRYPT(str[,{key_num|key_str}])
+
+Description
+-----------
+Encrypts the string with the given key using the Triple-DES
+algorithm.
+
+This function works only if MariaDB has been configured with
+TLS support.
+
+The encryption key to use is chosen based on the second
+argument to
+DES_ENCRYPT(), if one was given. With no argument, the first
+key from
+the DES key file is used. With a key_num argument, the given
+key
+number (0-9) from the DES key file is used. With a key_str
+argument,
+the given key string is used to encrypt str.
+
+The key file can be specified with the --des-key-file server
+option.
+
+The return string is a binary string where the first
+character is
+CHAR(128 | key_num). If an error occurs, DES_ENCRYPT()
+returns NULL.
+
+The 128 is added to make it easier to recognize an encrypted
+key. If
+you use a string key, key_num is 127.
+
+The string length for the result is given by this formula:
+
+new_len = orig_len + (8 - (orig_len % 8)) + 1
+
+Each line in the DES key file has the following format:
+
+key_num des_key_str
+
+Each key_num value must be a number in the range from 0 to
+9. Lines in
+the file may be in any order. des_key_str is the string that
+is used
+to encrypt the message. There should be at least one space
+between the
+number and the key. The first key is the default key that is
+used if
+you do not specify any key argument to DES_ENCRYPT().
+
+You can tell MariaDB to read new key values from the key
+file with the
+FLUSH DES_KEY_FILE statement. This requires the RELOAD
+privilege.
+
+One benefit of having a set of default keys is that it gives
+applications a way to check for the existence of encrypted
+column
+values, without giving the end user the right to decrypt
+those values.
+
+Examples
+--------
+SELECT customer_address FROM customer_table
+ WHERE crypted_credit_card =
+DES_ENCRYPT('credit_card_number');
+
+
+
+URL: https://mariadb.com/kb/en/des_encrypt/
+MariaDB [db_profesor]>
+MariaDB [db_profesor]>
+MariaDB [db_profesor]> HELP DES_ENCRYPT;
+Name: 'DES_ENCRYPT'
+Description:
+Syntax
+------
+DES_ENCRYPT(str[,{key_num|key_str}])
+
+Description
+-----------
+Encrypts the string with the given key using the Triple-DES
+algorithm.
+
+This function works only if MariaDB has been configured with
+TLS support.
+
+The encryption key to use is chosen based on the second
+argument to
+DES_ENCRYPT(), if one was given. With no argument, the first
+key from
+the DES key file is used. With a key_num argument, the given
+key
+number (0-9) from the DES key file is used. With a key_str
+argument,
+the given key string is used to encrypt str.
+
+The key file can be specified with the --des-key-file server
+option.
+
+The return string is a binary string where the first
+character is
+CHAR(128 | key_num). If an error occurs, DES_ENCRYPT()
+returns NULL.
+
+The 128 is added to make it easier to recognize an encrypted
+key. If
+you use a string key, key_num is 127.
+
+The string length for the result is given by this formula:
+
+new_len = orig_len + (8 - (orig_len % 8)) + 1
+
+Each line in the DES key file has the following format:
+
+key_num des_key_str
+
+Each key_num value must be a number in the range from 0 to
+9. Lines in
+the file may be in any order. des_key_str is the string that
+is used
+to encrypt the message. There should be at least one space
+between the
+number and the key. The first key is the default key that is
+used if
+you do not specify any key argument to DES_ENCRYPT().
+
+You can tell MariaDB to read new key values from the key
+file with the
+FLUSH DES_KEY_FILE statement. This requires the RELOAD
+privilege.
+
+One benefit of having a set of default keys is that it gives
+applications a way to check for the existence of encrypted
+column
+values, without giving the end user the right to decrypt
+those values.
+
+Examples
+--------
+SELECT customer_address FROM customer_table
+ WHERE crypted_credit_card =
+DES_ENCRYPT('credit_card_number');
+
+
+
+URL: https://mariadb.com/kb/en/des_encrypt/
+MariaDB [db_profesor]>
+MariaDB [db_profesor]>
+MariaDB [db_profesor]>
+MariaDB [db_profesor]> SELECT DES_ENCRYPT('SECRETO','0123456789ABCDEF'|'111111');
++----------------------------------------------------+
+| DES_ENCRYPT('SECRETO','0123456789ABCDEF'|'111111') |
++----------------------------------------------------+
+| NULL                                               |
++----------------------------------------------------+
+1 row in set, 2 warnings (0.000 sec)
+
+MariaDB [db_profesor]> SELECT DES_ENCRYPT('SECRETO','0123456789ABCDEF');
++-------------------------------------------+
+| DES_ENCRYPT('SECRETO','0123456789ABCDEF') |
++-------------------------------------------+
+|  ♠╣ÄËêË«\                                      |
++-------------------------------------------+
+1 row in set (0.003 sec)
+
+MariaDB [db_profesor]> HELP Encryption Functions;
+You asked for help about help category: "Encryption Functions"
+For more information, type 'help <item>', where <item> is one of the following
+topics:
+   AES_DECRYPT
+   AES_ENCRYPT
+   COMPRESS
+   DECODE
+   DES_DECRYPT
+   DES_ENCRYPT
+   ENCODE
+   ENCRYPT
+   MD5
+   OLD_PASSWORD
+   PASSWORD
+   SHA1
+   SHA2
+   UNCOMPRESS
+   UNCOMPRESSED_LENGTH
+
+MariaDB [db_profesor]> HELP DES_DECRYPT;
+Name: 'DES_DECRYPT'
+Description:
+Syntax
+------
+DES_DECRYPT(crypt_str[,key_str])
+
+Description
+-----------
+Decrypts a string encrypted with DES_ENCRYPT(). If an error
+occurs,
+this function returns NULL.
+
+This function works only if MariaDB has been configured with
+TLS
+support.
+
+If no key_str argument is given, DES_DECRYPT() examines the
+first byte
+of the encrypted string to determine the DES key number that
+was used
+to encrypt the original string, and then reads the key from
+the DES
+key file to decrypt the message. For this to work, the user
+must have
+the SUPER privilege. The key file can be specified with the
+--des-key-file server option.
+
+If you pass this function a key_str argument, that string is
+used as
+the key for decrypting the message.
+
+If the crypt_str argument does not appear to be an encrypted
+string,
+MariaDB returns the given crypt_str.
+
+
+
+
+
+
+
+
+
+
+URL: https://mariadb.com/kb/en/des_decrypt/
+MariaDB [db_profesor]>
+MariaDB [db_profesor]> SELECT DES_DECRYPT('SECRETO','0123456789ABCDEF');
++-------------------------------------------+
+| DES_DECRYPT('SECRETO','0123456789ABCDEF') |
++-------------------------------------------+
+| SECRETO                                   |
++-------------------------------------------+
+1 row in set (0.000 sec)
+
+MariaDB [db_profesor]> SELECT DES_DECRYPT('♠╣ÄËêË«\','0123456789ABCDEF');
+    '> ;
+    '> ';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '');
+;
+'' at line 1
+MariaDB [db_profesor]> SELECT DES_DECRYPT('♠╣ÄËêË«','0123456789ABCDEF');
++-------------------------------------------------+
+| DES_DECRYPT('♠\xB9\x8EËêË«','0123456789ABCDEF')   |
++-------------------------------------------------+
+| ♠╣ÄËêË«                                             |
++-------------------------------------------------+
+1 row in set (0.000 sec)
+
+MariaDB [db_profesor]> SELECT DES_DECRYPT(♠╣ÄËêË«,'0123456789ABCDEF');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '♠??ËêË«,'0123456789ABCDEF')' at line 1
+MariaDB [db_profesor]> SELECT DES_DECRYPT('♠╣ÄËêË«','0123456789ABCDEF');
++-------------------------------------------------+
+| DES_DECRYPT('♠\xB9\x8EËêË«','0123456789ABCDEF')   |
++-------------------------------------------------+
+| ♠╣ÄËêË«                                             |
++-------------------------------------------------+
+1 row in set (0.000 sec)
+
+MariaDB [db_profesor]> SELECT DES_DECRYPT('\♠╣ÄËêË«','0123456789ABCDEF');
++--------------------------------------------------+
+| DES_DECRYPT('\♠\xB9\x8EËêË«','0123456789ABCDEF')   |
++--------------------------------------------------+
+| ♠╣ÄËêË«                                              |
++--------------------------------------------------+
+1 row in set (0.000 sec)
+
+MariaDB [db_profesor]> SELECT * FROM vista_proveedores_productos ORDER BY PROVEEDOR ASC;
+ERROR 1146 (42S02): Table 'db_profesor.vista_proveedores_productos' doesn't exist
+MariaDB [db_profesor]> SHOW TABLES;
++----------------------------------------+
+| Tables_in_db_profesor                  |
++----------------------------------------+
+| asignaturas                            |
+| estudiantes                            |
+| estudiantes_asignaturas                |
+| personas                               |
+| personas1                              |
+| personas_con_indice                    |
+| personas_con_indice_cedula             |
+| personas_con_indice_cedula_correo      |
+| productos                              |
+| productos_cascade                      |
+| productos_secuencial                   |
+| proveedores                            |
+| proveedores_cascade                    |
+| proveedores_secuencial                 |
+| vista_estudiantes_asignaturas          |
+| vista_full_join_proveedores_productos  |
+| vista_inner_join_proveedores_productos |
+| vista_left_join_proveedores_productos  |
+| vista_right_join_proveedores_productos |
++----------------------------------------+
+19 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> SELECT * FROM vista_inner_join_proveedores_productos
+    -> ORDER BY PROVEEDOR ASC;
++------------------+-------------+----------+--------+
+| PROVEEDOR        | PRODUCTO    | CANTIDAD | PRECIO |
++------------------+-------------+----------+--------+
+| GENERAL ELECTRIC | NEVERA      |        6 | 500.25 |
+| GENERAL ELECTRIC | COCINA      |        3 | 300.75 |
+| GENERAL ELECTRIC | LICUADORA   |       12 | 100.00 |
+| GENERAL ELECTRIC | HORNO A GAS |        6 | 450.00 |
+| LG               | LAVADORA    |        2 | 800.50 |
+| LG               | MICROONDAS  |        8 | 150.25 |
+| LG               | PLANCHA     |       12 |  75.50 |
+| LG               | CAFETERA    |       12 | 250.00 |
++------------------+-------------+----------+--------+
+8 rows in set (0.001 sec)
+
+MariaDB [db_profesor]> SELECT * FROM vista_inner_join_proveedores_productos
+    -> ORDER BY PROVEEDOR DESC;
++------------------+-------------+----------+--------+
+| PROVEEDOR        | PRODUCTO    | CANTIDAD | PRECIO |
++------------------+-------------+----------+--------+
+| LG               | LAVADORA    |        2 | 800.50 |
+| LG               | MICROONDAS  |        8 | 150.25 |
+| LG               | PLANCHA     |       12 |  75.50 |
+| LG               | CAFETERA    |       12 | 250.00 |
+| GENERAL ELECTRIC | NEVERA      |        6 | 500.25 |
+| GENERAL ELECTRIC | COCINA      |        3 | 300.75 |
+| GENERAL ELECTRIC | LICUADORA   |       12 | 100.00 |
+| GENERAL ELECTRIC | HORNO A GAS |        6 | 450.00 |
++------------------+-------------+----------+--------+
+8 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> SELECT * FROM vista_full_join_proveedores_productos
+    -> ORDER BY CANTIDAD, PRECIO ASC;
++------------------+-------------------------+----------+---------+
+| PROVEEDOR        | PRODUCTO                | CANTIDAD | PRECIO  |
++------------------+-------------------------+----------+---------+
+| SAMSUNG          | NULL                    |     NULL |    NULL |
+| WHIRLPOOL        | NULL                    |     NULL |    NULL |
+| PHILIPS          | NULL                    |     NULL |    NULL |
+| NULL             | SECADORA INDUSTRIAL     |        1 | 2000.00 |
+| NULL             | LAVADORA INDUSTRIAL     |        1 | 2500.00 |
+| NULL             | REFRIGERADOR INDUSTRIAL |        1 | 3000.00 |
+| LG               | LAVADORA                |        2 |  800.50 |
+| NULL             | TELEVISOR CURVO         |        2 | 1500.00 |
+| GENERAL ELECTRIC | COCINA                  |        3 |  300.75 |
+| NULL             | TELEVISOR 4K            |        3 | 1200.00 |
+| MABE             | AIRE ACONDICIONADO      |        4 |  600.75 |
+| NULL             | LAVAVAJILLAS            |        4 |  700.00 |
+| NULL             | SECADORA                |        5 |  300.00 |
+| MABE             | LAPTOP                  |        5 | 1200.00 |
+| NULL             | TABLET                  |        6 |  400.00 |
+| GENERAL ELECTRIC | HORNO A GAS             |        6 |  450.00 |
+| GENERAL ELECTRIC | NEVERA                  |        6 |  500.25 |
+| MABE             | TELEVISOR               |        7 |  400.00 |
+| LG               | MICROONDAS              |        8 |  150.25 |
+| NULL             | AURICULARES             |       10 |  200.00 |
+| MABE             | VENTILADOR              |       12 |   50.00 |
+| LG               | PLANCHA                 |       12 |   75.50 |
+| MABE             | TOSTADORA               |       12 |   80.00 |
+| GENERAL ELECTRIC | LICUADORA               |       12 |  100.00 |
+| LG               | CAFETERA                |       12 |  250.00 |
++------------------+-------------------------+----------+---------+
+25 rows in set (0.000 sec)
+
+MariaDB [db_profesor]>
+MariaDB [db_profesor]>
+MariaDB [db_profesor]> SELECT * FROM vista_full_join_proveedores_productos
+    -> ORDER BY CANTIDAD, PRECIO DESC;
++------------------+-------------------------+----------+---------+
+| PROVEEDOR        | PRODUCTO                | CANTIDAD | PRECIO  |
++------------------+-------------------------+----------+---------+
+| SAMSUNG          | NULL                    |     NULL |    NULL |
+| WHIRLPOOL        | NULL                    |     NULL |    NULL |
+| PHILIPS          | NULL                    |     NULL |    NULL |
+| NULL             | REFRIGERADOR INDUSTRIAL |        1 | 3000.00 |
+| NULL             | LAVADORA INDUSTRIAL     |        1 | 2500.00 |
+| NULL             | SECADORA INDUSTRIAL     |        1 | 2000.00 |
+| NULL             | TELEVISOR CURVO         |        2 | 1500.00 |
+| LG               | LAVADORA                |        2 |  800.50 |
+| NULL             | TELEVISOR 4K            |        3 | 1200.00 |
+| GENERAL ELECTRIC | COCINA                  |        3 |  300.75 |
+| NULL             | LAVAVAJILLAS            |        4 |  700.00 |
+| MABE             | AIRE ACONDICIONADO      |        4 |  600.75 |
+| MABE             | LAPTOP                  |        5 | 1200.00 |
+| NULL             | SECADORA                |        5 |  300.00 |
+| GENERAL ELECTRIC | NEVERA                  |        6 |  500.25 |
+| GENERAL ELECTRIC | HORNO A GAS             |        6 |  450.00 |
+| NULL             | TABLET                  |        6 |  400.00 |
+| MABE             | TELEVISOR               |        7 |  400.00 |
+| LG               | MICROONDAS              |        8 |  150.25 |
+| NULL             | AURICULARES             |       10 |  200.00 |
+| LG               | CAFETERA                |       12 |  250.00 |
+| GENERAL ELECTRIC | LICUADORA               |       12 |  100.00 |
+| MABE             | TOSTADORA               |       12 |   80.00 |
+| LG               | PLANCHA                 |       12 |   75.50 |
+| MABE             | VENTILADOR              |       12 |   50.00 |
++------------------+-------------------------+----------+---------+
+25 rows in set (0.000 sec)
+
+MariaDB [db_profesor]>
+MariaDB [db_profesor]>
+MariaDB [db_profesor]> SELECT * FROM vista_full_join_proveedores_productos
+    -> ORDER BY CANTIDAD DESC;
++------------------+-------------------------+----------+---------+
+| PROVEEDOR        | PRODUCTO                | CANTIDAD | PRECIO  |
++------------------+-------------------------+----------+---------+
+| GENERAL ELECTRIC | LICUADORA               |       12 |  100.00 |
+| LG               | CAFETERA                |       12 |  250.00 |
+| LG               | PLANCHA                 |       12 |   75.50 |
+| MABE             | TOSTADORA               |       12 |   80.00 |
+| MABE             | VENTILADOR              |       12 |   50.00 |
+| NULL             | AURICULARES             |       10 |  200.00 |
+| LG               | MICROONDAS              |        8 |  150.25 |
+| MABE             | TELEVISOR               |        7 |  400.00 |
+| NULL             | TABLET                  |        6 |  400.00 |
+| GENERAL ELECTRIC | NEVERA                  |        6 |  500.25 |
+| GENERAL ELECTRIC | HORNO A GAS             |        6 |  450.00 |
+| MABE             | LAPTOP                  |        5 | 1200.00 |
+| NULL             | SECADORA                |        5 |  300.00 |
+| NULL             | LAVAVAJILLAS            |        4 |  700.00 |
+| MABE             | AIRE ACONDICIONADO      |        4 |  600.75 |
+| GENERAL ELECTRIC | COCINA                  |        3 |  300.75 |
+| NULL             | TELEVISOR 4K            |        3 | 1200.00 |
+| LG               | LAVADORA                |        2 |  800.50 |
+| NULL             | TELEVISOR CURVO         |        2 | 1500.00 |
+| NULL             | SECADORA INDUSTRIAL     |        1 | 2000.00 |
+| NULL             | REFRIGERADOR INDUSTRIAL |        1 | 3000.00 |
+| NULL             | LAVADORA INDUSTRIAL     |        1 | 2500.00 |
+| SAMSUNG          | NULL                    |     NULL |    NULL |
+| WHIRLPOOL        | NULL                    |     NULL |    NULL |
+| PHILIPS          | NULL                    |     NULL |    NULL |
++------------------+-------------------------+----------+---------+
+25 rows in set (0.000 sec)
+
+MariaDB [db_profesor]>
+MariaDB [db_profesor]>
+MariaDB [db_profesor]>
+MariaDB [db_profesor]>
+MariaDB [db_profesor]> SELECT * FROM vista_full_join_proveedores_productos
+    -> ORDER BY CANTIDAD, PRECIO DESC;
++------------------+-------------------------+----------+---------+
+| PROVEEDOR        | PRODUCTO                | CANTIDAD | PRECIO  |
++------------------+-------------------------+----------+---------+
+| SAMSUNG          | NULL                    |     NULL |    NULL |
+| WHIRLPOOL        | NULL                    |     NULL |    NULL |
+| PHILIPS          | NULL                    |     NULL |    NULL |
+| NULL             | REFRIGERADOR INDUSTRIAL |        1 | 3000.00 |
+| NULL             | LAVADORA INDUSTRIAL     |        1 | 2500.00 |
+| NULL             | SECADORA INDUSTRIAL     |        1 | 2000.00 |
+| NULL             | TELEVISOR CURVO         |        2 | 1500.00 |
+| LG               | LAVADORA                |        2 |  800.50 |
+| NULL             | TELEVISOR 4K            |        3 | 1200.00 |
+| GENERAL ELECTRIC | COCINA                  |        3 |  300.75 |
+| NULL             | LAVAVAJILLAS            |        4 |  700.00 |
+| MABE             | AIRE ACONDICIONADO      |        4 |  600.75 |
+| MABE             | LAPTOP                  |        5 | 1200.00 |
+| NULL             | SECADORA                |        5 |  300.00 |
+| GENERAL ELECTRIC | NEVERA                  |        6 |  500.25 |
+| GENERAL ELECTRIC | HORNO A GAS             |        6 |  450.00 |
+| NULL             | TABLET                  |        6 |  400.00 |
+| MABE             | TELEVISOR               |        7 |  400.00 |
+| LG               | MICROONDAS              |        8 |  150.25 |
+| NULL             | AURICULARES             |       10 |  200.00 |
+| LG               | CAFETERA                |       12 |  250.00 |
+| GENERAL ELECTRIC | LICUADORA               |       12 |  100.00 |
+| MABE             | TOSTADORA               |       12 |   80.00 |
+| LG               | PLANCHA                 |       12 |   75.50 |
+| MABE             | VENTILADOR              |       12 |   50.00 |
++------------------+-------------------------+----------+---------+
+25 rows in set (0.000 sec)
+
+MariaDB [db_profesor]>
+MariaDB [db_profesor]>
+MariaDB [db_profesor]> SELECT * FROM vista_full_join_proveedores_productos
+    -> ORDER BY CANTIDAD ASC, PRECIO ASC;
++------------------+-------------------------+----------+---------+
+| PROVEEDOR        | PRODUCTO                | CANTIDAD | PRECIO  |
++------------------+-------------------------+----------+---------+
+| SAMSUNG          | NULL                    |     NULL |    NULL |
+| WHIRLPOOL        | NULL                    |     NULL |    NULL |
+| PHILIPS          | NULL                    |     NULL |    NULL |
+| NULL             | SECADORA INDUSTRIAL     |        1 | 2000.00 |
+| NULL             | LAVADORA INDUSTRIAL     |        1 | 2500.00 |
+| NULL             | REFRIGERADOR INDUSTRIAL |        1 | 3000.00 |
+| LG               | LAVADORA                |        2 |  800.50 |
+| NULL             | TELEVISOR CURVO         |        2 | 1500.00 |
+| GENERAL ELECTRIC | COCINA                  |        3 |  300.75 |
+| NULL             | TELEVISOR 4K            |        3 | 1200.00 |
+| MABE             | AIRE ACONDICIONADO      |        4 |  600.75 |
+| NULL             | LAVAVAJILLAS            |        4 |  700.00 |
+| NULL             | SECADORA                |        5 |  300.00 |
+| MABE             | LAPTOP                  |        5 | 1200.00 |
+| NULL             | TABLET                  |        6 |  400.00 |
+| GENERAL ELECTRIC | HORNO A GAS             |        6 |  450.00 |
+| GENERAL ELECTRIC | NEVERA                  |        6 |  500.25 |
+| MABE             | TELEVISOR               |        7 |  400.00 |
+| LG               | MICROONDAS              |        8 |  150.25 |
+| NULL             | AURICULARES             |       10 |  200.00 |
+| MABE             | VENTILADOR              |       12 |   50.00 |
+| LG               | PLANCHA                 |       12 |   75.50 |
+| MABE             | TOSTADORA               |       12 |   80.00 |
+| GENERAL ELECTRIC | LICUADORA               |       12 |  100.00 |
+| LG               | CAFETERA                |       12 |  250.00 |
++------------------+-------------------------+----------+---------+
+25 rows in set (0.001 sec)
+
+MariaDB [db_profesor]>
+MariaDB [db_profesor]>
+MariaDB [db_profesor]> SELECT * FROM vista_full_join_proveedores_productos
+    -> ORDER BY CANTIDAD DESC, PRECIO DESC;
++------------------+-------------------------+----------+---------+
+| PROVEEDOR        | PRODUCTO                | CANTIDAD | PRECIO  |
++------------------+-------------------------+----------+---------+
+| LG               | CAFETERA                |       12 |  250.00 |
+| GENERAL ELECTRIC | LICUADORA               |       12 |  100.00 |
+| MABE             | TOSTADORA               |       12 |   80.00 |
+| LG               | PLANCHA                 |       12 |   75.50 |
+| MABE             | VENTILADOR              |       12 |   50.00 |
+| NULL             | AURICULARES             |       10 |  200.00 |
+| LG               | MICROONDAS              |        8 |  150.25 |
+| MABE             | TELEVISOR               |        7 |  400.00 |
+| GENERAL ELECTRIC | NEVERA                  |        6 |  500.25 |
+| GENERAL ELECTRIC | HORNO A GAS             |        6 |  450.00 |
+| NULL             | TABLET                  |        6 |  400.00 |
+| MABE             | LAPTOP                  |        5 | 1200.00 |
+| NULL             | SECADORA                |        5 |  300.00 |
+| NULL             | LAVAVAJILLAS            |        4 |  700.00 |
+| MABE             | AIRE ACONDICIONADO      |        4 |  600.75 |
+| NULL             | TELEVISOR 4K            |        3 | 1200.00 |
+| GENERAL ELECTRIC | COCINA                  |        3 |  300.75 |
+| NULL             | TELEVISOR CURVO         |        2 | 1500.00 |
+| LG               | LAVADORA                |        2 |  800.50 |
+| NULL             | REFRIGERADOR INDUSTRIAL |        1 | 3000.00 |
+| NULL             | LAVADORA INDUSTRIAL     |        1 | 2500.00 |
+| NULL             | SECADORA INDUSTRIAL     |        1 | 2000.00 |
+| SAMSUNG          | NULL                    |     NULL |    NULL |
+| WHIRLPOOL        | NULL                    |     NULL |    NULL |
+| PHILIPS          | NULL                    |     NULL |    NULL |
++------------------+-------------------------+----------+---------+
+25 rows in set (0.001 sec)
+
+MariaDB [db_profesor]>

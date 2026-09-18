@@ -1,0 +1,263 @@
+    --Asociaciones de muchos a muchos
+
+    -- Se tiene las tablas [estudiantes], y [asignaturas] con la siguiente estructura:
+CREATE TABLE estudiantes(
+    id integer unsigned auto_increment,
+    nombre varchar(40),
+    apellido varchar(40),
+    PRIMARY KEY(id)
+);
+
+CREATE TABLE asignaturas(
+    id integer unsigned auto_increment,
+    nombre varchar(40),
+    area text,
+    PRIMARY KEY(id)
+);
+
+    -- Tabla asociativa respecto las dos anteriores, [estudiantes_asignaturas]:
+CREATE TABLE estudiantes_asignaturas(
+    estudiantes_id integer unsigned,
+    asignaturas_id integer unsigned,
+    periodo_del_curso integer(4) unsigned,
+    nota integer(2) unsigned,
+    PRIMARY KEY(estudiantes_id, asignaturas_id, periodo_del_curso),
+    FOREIGN KEY(estudiantes_id) references estudiantes(id) on update cascade,
+    FOREIGN KEY(asignaturas_id) references asignaturas(id) on update cascade
+);
+
+    -- Modificar e incluid auto_increment a las tablas ya creadas:
+ALTER TABLE estudiantes MODIFY id integer unsigned auto_increment;
+
+ALTER TABLE asignaturas MODIFY id integer unsigned auto_increment;
+
+ALTER TABLE estudiantes_asignaturas MODIFY nota integer(3) unsigned;
+
+    -- sembrado de datos
+INSERT INTO estudiantes(nombre, apellido) VALUES
+('JOSE', 'MEDINA'),
+('RICARDO', 'SILVA'),
+('ANDRES', 'FRANCO');
+
+INSERT INTO asignaturas(nombre, area) VALUES
+('LOGICA DE PROGRAMACION', 'PROGRAMACION'),
+('MYSQL', 'BASE DE DATOS'),
+('POSTGRESQL', 'BASE DE DATOS'),
+('HTML', 'DESARROLLO WEB'),
+('JAVASCRIPT', 'DESARROLLO WEB'),
+('PHP', 'DESARROLLO WEB'),
+('PYTHON', 'PROGRAMACION');
+
+INSERT INTO estudiantes_asignaturas(estudiantes_id, asignaturas_id, periodo_del_curso, nota) VALUES
+(1, 1, 2025, 80),
+(1, 2, 2026, 100),
+(1, 4, 2025, 90),
+(2, 1, 2025, 90),
+(2, 2, 2026, 85),
+(2, 4, 2025, 100),
+(3, 1, 2025, 95),
+(3, 2, 2026, 100),
+(3, 4, 2025, 100);
+
+    -- Consultar informacion de varias tablas combinadas, incluyendo un alias para nombrar esta tabla de informacion: AS A, AS B
+SELECT A.NOMBRE AS PROVEEDOR, 
+        B.NOMBRE AS PRODUCTO,
+        B.CANTIDAD,
+        B.PRECIO
+FROM PROVEEDORES AS A, PRODUCTOS AS B
+WHERE A.ID = B.PROVEEDOR_ID;
+
+    --  Consulta asociando 3 tablas,  [estudiantes], [asignaturas] y [estudiantes_asignaturas]:
+SELECT  A.NOMBRE AS NOMBRE_ESTUDIANTE,
+        A.APELLIDO AS APPELLIDO_ESTUDIANTE,
+        B.NOMBRE AS NOMBRE_ASIGNATURA,
+        C.PERIODO_DEL_CURSO AS PERIODO,
+        C.NOTA AS NOTA
+FROM    ESTUDIANTES AS A, ASIGNATURAS AS B, ESTUDIANTES_ASIGNATURAS AS C
+WHERE   A.ID = C.ESTUDIANTES_ID AND
+        B.ID = C.ASIGNATURAS_ID;
+
+        
+INSERT INTO estudiantes_asignaturas(estudiantes_id, asignaturas_id, periodo_del_curso, nota) VALUES
+(1, 1, 2026, 100);
+
+    --  Creacion de vista para consulta de [estudiantes] y [asignaturas]:
+CREATE VIEW vista_estudiantes_asignaturas AS
+SELECT A.NOMBRE AS NOMBRE_ESTUDIANTE,
+       A.APELLIDO AS APELLIDO_ESTUDIANTE,
+       B.NOMBRE AS NOMBRE_ASIGNATURA,
+       C.PERIODO_DEL_CURSO AS PERIODO,
+       C.NOTA AS NOTA
+FROM ESTUDIANTES AS A,
+    ASIGNATURAS AS B,
+    ESTUDIANTES_ASIGNATURAS AS C
+    WHERE A.ID = C.ESTUDIANTES_ID AND 
+          B.ID = C.ASIGNATURAS_ID;
+
+    -- Consulta de 2 tablas asociadas [proveedores] y [productos] con INNER JOIN:
+SELECT PROVEEDORES.NOMBRE AS PROVEEDOR,
+       PRODUCTOS.NOMBRE AS PRODUCTO,
+       PRODUCTOS.CANTIDAD,
+       PRODUCTOS.PRECIO
+FROM PROVEEDORES
+INNER JOIN PRODUCTOS ON PROVEEDORES.ID = PRODUCTOS.PROVEEDOR_ID;
+
+    -- INNER JOIN guardado como vista:
+CREATE VIEW vista_inner_join_proveedores_productos AS
+SELECT PROVEEDORES.NOMBRE AS PROVEEDOR,
+       PRODUCTOS.NOMBRE AS PRODUCTO,
+       PRODUCTOS.CANTIDAD,
+       PRODUCTOS.PRECIO
+FROM PROVEEDORES
+INNER JOIN PRODUCTOS ON PROVEEDORES.ID = PRODUCTOS.PROVEEDOR_ID;
+
+    -- LEFT JOIN
+    -- Se va a anadir 3 nuevos proveedores sin productos:
+INSERT INTO PROVEEDORES(NOMBRE, DIRECCION, TELEFONO, CORREO_ELECTRONICO) VALUES
+('PHILIPS', 'PLAZA VENEZUELA', '2125673421', 'info@philips.com'),
+('SAMSUNG', 'BOLEITA NORTES', '2129872323', 'info@samsung.com'),
+('WHIRLPOOL', 'LA CALIFORNIA', '2124417889', 'info@whirlpool.com');
+
+SELECT PROVEEDORES.NOMBRE AS PROVEEDOR,
+       PRODUCTOS.NOMBRE AS PRODUCTO,
+       PRODUCTOS.CANTIDAD,
+       PRODUCTOS.PRECIO
+FROM PROVEEDORES
+LEFT JOIN PRODUCTOS ON PROVEEDORES.ID = PRODUCTOS.PROVEEDOR_ID;
+
+    -- LEFT JOIN guardado como vista:
+CREATE VIEW vista_left_join_proveedores_productos AS
+SELECT PROVEEDORES.NOMBRE AS PROVEEDOR,
+       PRODUCTOS.NOMBRE AS PRODUCTO,
+       PRODUCTOS.CANTIDAD,
+       PRODUCTOS.PRECIO
+FROM PROVEEDORES
+LEFT JOIN PRODUCTOS ON PROVEEDORES.ID = PRODUCTOS.PROVEEDOR_ID;
+
+    --  RIGHT JOIN
+CREATE TABLE PROVEEDORES_SECUENCIAL(
+    ID INTEGER UNSIGNED AUTO_INCREMENT,
+    NOMBRE VARCHAR(40),
+    DIRECCION VARCHAR(100),
+    TELEFONO VARCHAR(20),
+    CORREO_ELECTRONICO VARCHAR(50),
+    PRIMARY KEY(ID)
+);
+
+CREATE TABLE PRODUCTOS_SECUENCIAL(
+    ID INTEGER UNSIGNED AUTO_INCREMENT,
+    PROVEEDOR_ID INTEGER UNSIGNED,
+    NOMBRE VARCHAR(40),
+    CANTIDAD INTEGER UNSIGNED,
+    PRECIO DECIMAL(10,2),
+    PRIMARY KEY(ID)
+);
+
+INSERT INTO PROVEEDORES_SECUENCIAL(nombre, direccion, telefono, correo_electronico) VALUES
+('GENERAL ELECTRIC','AV. LECUNA','2121112233','info@ge.com'),
+('LG','AV. ROMULO GALLEGOS','2122222277','info@lg.com'),
+('MABE','AV. FCO. DE MIRANDA','2123334455','info@mabe.com'),
+('PHILIPS', 'PLAZA VENEZUELA', '2125673421', 'info@philips.com'),
+('SAMSUNG', 'BOLEITA NORTES', '2129872323', 'info@samsung.com'),
+('WHIRLPOOL', 'LA CALIFORNIA', '2124417889', 'info@whirlpool.com');
+
+INSERT INTO PRODUCTOS_SECUENCIAL(proveedor_id, nombre, cantidad, precio) VALUES
+(1,'NEVERA',6,500.25),
+(4,'NEVERA',6,500.25),
+(1,'COCINA',3,300.75),
+(5,'COCINA',3,300.75),
+(2,'LAVADORA',2,800.50),
+(6,'LAVADORA',2,800.50),
+(3,'AIRE ACONDICIONADO',4,600.75),
+(7,'AIRE ACONDICIONADO',4,600.75),
+(3,'TELEVISOR',7,400.00),
+(3,'LAPTOP',5,1200.00),
+(8,'LAPTOP',5,1200.00),
+(2,'MICROONDAS',8,150.25),
+(9,'MICROONDAS',8,150.25),
+(1,'LICUADORA',12,100.00),
+(10,'LICUADORA',12,100.00),
+(2,'PLANCHA',12,75.50),
+(11,'PLANCHA',12,75.50),
+(3,'VENTILADOR',12,50.00),
+(12,'VENTILADOR',12,50.00),
+(1,'HORNO A GAS',6,450.00),
+(2,'CAFETERA',12,250.00),
+(13,'CAFETERA',12,250.00),
+(3,'TOSTADORA',12,80.00),
+(14,'TOSTADORA',12,80.00);
+
+
+CREATE VIEW vista_right_join_proveedores_productos AS
+SELECT PROVEEDORES_SECUENCIAL.NOMBRE AS PROVEEDOR,
+       PRODUCTOS_SECUENCIAL.NOMBRE AS PRODUCTO,
+       PRODUCTOS_SECUENCIAL.CANTIDAD,
+       PRODUCTOS_SECUENCIAL.PRECIO
+FROM PROVEEDORES_SECUENCIAL
+RIGHT JOIN PRODUCTOS_SECUENCIAL ON PROVEEDORES_SECUENCIAL.ID = PRODUCTOS_SECUENCIAL.PROVEEDOR_ID;
+
+    -- FULL JOIN
+SELECT PROVEEDORES_SECUENCIAL.NOMBRE AS PROVEEDOR,
+       PRODUCTOS_SECUENCIAL.NOMBRE AS PRODUCTO,
+       PRODUCTOS_SECUENCIAL.CANTIDAD,
+       PRODUCTOS_SECUENCIAL.PRECIO
+FROM PROVEEDORES_SECUENCIAL
+INNER JOIN PRODUCTOS_SECUENCIAL ON PROVEEDORES_SECUENCIAL.ID = PRODUCTOS_SECUENCIAL.PROVEEDOR_ID
+UNION
+SELECT PROVEEDORES_SECUENCIAL.NOMBRE AS PROVEEDOR,
+       PRODUCTOS_SECUENCIAL.NOMBRE AS PRODUCTO,
+       PRODUCTOS_SECUENCIAL.CANTIDAD,
+       PRODUCTOS_SECUENCIAL.PRECIO
+FROM PROVEEDORES_SECUENCIAL
+RIGHT JOIN PRODUCTOS_SECUENCIAL ON PROVEEDORES_SECUENCIAL.ID = PRODUCTOS_SECUENCIAL.PROVEEDOR_ID;
+
+CREATE VIEW vista_full_join_proveedores_productos AS
+SELECT PROVEEDORES_SECUENCIAL.NOMBRE AS PROVEEDOR,
+       PRODUCTOS_SECUENCIAL.NOMBRE AS PRODUCTO,
+       PRODUCTOS_SECUENCIAL.CANTIDAD,
+       PRODUCTOS_SECUENCIAL.PRECIO
+FROM PROVEEDORES_SECUENCIAL
+LEFT JOIN PRODUCTOS_SECUENCIAL ON PROVEEDORES_SECUENCIAL.ID = PRODUCTOS_SECUENCIAL.PROVEEDOR_ID
+UNION
+SELECT PROVEEDORES_SECUENCIAL.NOMBRE AS PROVEEDOR,
+       PRODUCTOS_SECUENCIAL.NOMBRE AS PRODUCTO,
+       PRODUCTOS_SECUENCIAL.CANTIDAD,
+       PRODUCTOS_SECUENCIAL.PRECIO
+FROM PROVEEDORES_SECUENCIAL
+RIGHT JOIN PRODUCTOS_SECUENCIAL ON PROVEEDORES_SECUENCIAL.ID = PRODUCTOS_SECUENCIAL.PROVEEDOR_ID;
+
+-- Columnas calculadas
+SELECT SUM(CAMPO)...;
+
+SELECT SUM(CANTIDAD) FROM vista_full_join_proveedores_productos;
+
+
+SELECT MIN(CAMPO)...;
+
+SELECT MIN(PRECIO) FROM vista_full_join_proveedores_productos
+
+
+SELECT MAX(CAMPO)...;
+
+SELECT MAX(PRECIO) FROM vista_full_join_proveedores_productos
+
+
+SELECT AVG(CAMPO)...;
+
+SELECT AVG(PRECIO) FROM vista_full_join_proveedores_productos
+
+SELECT ROUND(AVG(PRECIO),2) FROM vista_full_join_proveedores_productos
+
+    -- Caso para contar
+    -- Valores NULL no se cuentan
+SELECT COUNT(CAMPO)...;
+
+SELECT COUNT(PROVEEDOR) FROM vista_full_join_proveedores_productos
+
+    -- Ordenamiento de regristro
+    
+ASC
+
+DESC
+
+SELECT * FROM vista_full_join_proveedores_productos ORDER BY CANTIDAD DESC, PRECIO DESC;
