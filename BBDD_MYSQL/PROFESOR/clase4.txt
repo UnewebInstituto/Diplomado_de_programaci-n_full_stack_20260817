@@ -1,0 +1,982 @@
+
+Setting environment for using XAMPP for Windows.
+PROFESOR@WIN-CMUODTI144V c:\xampp
+# mysql -u root -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 54
+Server version: 10.4.32-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> use db_profesor
+Database changed
+MariaDB [db_profesor]> show tables;
++----------------------------------------+
+| Tables_in_db_profesor                  |
++----------------------------------------+
+| asignaturas                            |
+| estudiantes                            |
+| estudiantes_asignaturas                |
+| personas                               |
+| personas1                              |
+| personas_con_indice                    |
+| personas_con_indice_cedula             |
+| personas_con_indice_cedula_correo      |
+| productos                              |
+| productos_cascade                      |
+| productos_secuencial                   |
+| proveedores                            |
+| proveedores_cascade                    |
+| proveedores_secuencial                 |
+| vista_estudiantes_asignaturas          |
+| vista_full_join_proveedores_productos  |
+| vista_inner_join_proveedores_productos |
+| vista_left_join_proveedores_productos  |
+| vista_right_join_proveedores_productos |
++----------------------------------------+
+19 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select * from vista_inner_join_proveedores_productos;
++------------------+-------------+----------+--------+
+| PROVEEDOR        | PRODUCTO    | CANTIDAD | PRECIO |
++------------------+-------------+----------+--------+
+| GENERAL ELECTRIC | NEVERA      |        6 | 500.25 |
+| GENERAL ELECTRIC | COCINA      |        3 | 300.75 |
+| LG               | LAVADORA    |        2 | 800.50 |
+| LG               | MICROONDAS  |        8 | 150.25 |
+| GENERAL ELECTRIC | LICUADORA   |       12 | 100.00 |
+| LG               | PLANCHA     |       12 |  75.50 |
+| GENERAL ELECTRIC | HORNO A GAS |        6 | 450.00 |
+| LG               | CAFETERA    |       12 | 250.00 |
++------------------+-------------+----------+--------+
+8 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select * from productos;
++----+--------------+-------------+----------+--------+
+| id | proveedor_id | nombre      | cantidad | precio |
++----+--------------+-------------+----------+--------+
+|  1 |            1 | NEVERA      |        6 | 500.25 |
+|  2 |            1 | COCINA      |        3 | 300.75 |
+|  3 |            2 | LAVADORA    |        2 | 800.50 |
+|  7 |            2 | MICROONDAS  |        8 | 150.25 |
+|  8 |            1 | LICUADORA   |       12 | 100.00 |
+|  9 |            2 | PLANCHA     |       12 |  75.50 |
+| 11 |            1 | HORNO A GAS |        6 | 450.00 |
+| 12 |            2 | CAFETERA    |       12 | 250.00 |
++----+--------------+-------------+----------+--------+
+8 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select * from vista_left_join_proveedores_productos;
++------------------+-------------+----------+--------+
+| PROVEEDOR        | PRODUCTO    | CANTIDAD | PRECIO |
++------------------+-------------+----------+--------+
+| GENERAL ELECTRIC | NEVERA      |        6 | 500.25 |
+| GENERAL ELECTRIC | COCINA      |        3 | 300.75 |
+| LG               | LAVADORA    |        2 | 800.50 |
+| LG               | MICROONDAS  |        8 | 150.25 |
+| GENERAL ELECTRIC | LICUADORA   |       12 | 100.00 |
+| LG               | PLANCHA     |       12 |  75.50 |
+| GENERAL ELECTRIC | HORNO A GAS |        6 | 450.00 |
+| LG               | CAFETERA    |       12 | 250.00 |
+| PHILIPS          | NULL        |     NULL |   NULL |
+| SAMSUNG          | NULL        |     NULL |   NULL |
+| WHIRLPOOL        | NULL        |     NULL |   NULL |
++------------------+-------------+----------+--------+
+11 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select * from proveedores;
++----+------------------+---------------------+------------+--------------------+
+| id | nombre           | direccion           | telefono   | correo_electronico |
++----+------------------+---------------------+------------+--------------------+
+|  1 | GENERAL ELECTRIC | AV. LECUNA          | 2121112233 | info@ge.com        |
+|  2 | LG               | AV. ROMULO GALLEGOS | 2121112277 | info@lg.com        |
+|  4 | PHILIPS          | PLAZA VENEZUELA     | 2125673421 | info@philips.com   |
+|  5 | SAMSUNG          | BOLEITA NORTES      | 2129872323 | info@samsung.com   |
+|  6 | WHIRLPOOL        | LA CALIFORNIA       | 2124417889 | info@whirlpool.com |
++----+------------------+---------------------+------------+--------------------+
+5 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> create table productos_varios(
+    ->     id int unsigned auto_increment,
+    ->     proveedor_id int unsigned,
+    ->     nombre varchar(30),
+    ->     cantidad int unsigned,
+    ->     precio numeric(13,2),
+    ->     primary key (id),
+    ->     foreign key (proveedor_id) references proveedores(id)
+    -> );
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [db_profesor]> describe productos_varios;
++--------------+------------------+------+-----+---------+----------------+
+| Field        | Type             | Null | Key | Default | Extra          |
++--------------+------------------+------+-----+---------+----------------+
+| id           | int(10) unsigned | NO   | PRI | NULL    | auto_increment |
+| proveedor_id | int(10) unsigned | YES  | MUL | NULL    |                |
+| nombre       | varchar(30)      | YES  |     | NULL    |                |
+| cantidad     | int(10) unsigned | YES  |     | NULL    |                |
+| precio       | decimal(13,2)    | YES  |     | NULL    |                |
++--------------+------------------+------+-----+---------+----------------+
+5 rows in set (0.002 sec)
+
+MariaDB [db_profesor]> INSERT INTO productos_varios(proveedor_id, nombre, cantidad, precio) VALUES
+    -> (1,'NEVERA',6,500.25),
+    -> (1,'COCINA',3,300.75),
+    -> (2,'LAVADORA',2,800.50),
+    -> (4,'AIRE ACONDICIONADO',4,600.75),
+    -> (4,'TELEVISOR',7,400.00),
+    -> (4,'LAPTOP',5,1200.00),
+    -> (2,'MICROONDAS',8,150.25),
+    -> (1,'LICUADORA',12,100.00),
+    -> (2,'PLANCHA',12,75.50),
+    -> (4,'VENTILADOR',12,50.00),
+    -> (1,'HORNO A GAS',6,450.00),
+    -> (2,'CAFETERA',12,250.00),
+    -> (4,'TOSTADORA',12,80.00),
+    -> (1,'NEVERA',6,500.25),
+    -> (1,'COCINA',3,300.75),
+    -> (2,'LAVADORA',2,800.50),
+    -> (4,'AIRE ACONDICIONADO',4,600.75),
+    -> (4,'TELEVISOR',7,400.00),
+    -> (4,'LAPTOP',5,1200.00),
+    -> (2,'MICROONDAS',8,150.25),
+    -> (1,'LICUADORA',12,100.00),
+    -> (2,'PLANCHA',12,75.50),
+    -> (4,'VENTILADOR',12,50.00),
+    -> (1,'HORNO A GAS',6,450.00),
+    -> (2,'CAFETERA',12,250.00),
+    -> (4,'TOSTADORA',12,80.00),
+    -> (1,'NEVERA',6,500.25),
+    -> (1,'COCINA',3,300.75),
+    -> (2,'LAVADORA',2,800.50),
+    -> (4,'AIRE ACONDICIONADO',4,600.75),
+    -> (4,'TELEVISOR',7,400.00),
+    -> (4,'LAPTOP',5,1200.00),
+    -> (2,'MICROONDAS',8,150.25),
+    -> (1,'LICUADORA',12,100.00),
+    -> (2,'PLANCHA',12,75.50),
+    -> (4,'VENTILADOR',12,50.00),
+    -> (1,'HORNO A GAS',6,450.00),
+    -> (2,'CAFETERA',12,250.00),
+    -> (4,'TOSTADORA',12,80.00),
+    -> (1,'NEVERA',6,500.25),
+    -> (1,'COCINA',3,300.75),
+    -> (2,'LAVADORA',2,800.50),
+    -> (4,'AIRE ACONDICIONADO',4,600.75),
+    -> (4,'TELEVISOR',7,400.00),
+    -> (4,'LAPTOP',5,1200.00),
+    -> (2,'MICROONDAS',8,150.25),
+    -> (1,'LICUADORA',12,100.00),
+    -> (2,'PLANCHA',12,75.50),
+    -> (4,'VENTILADOR',12,50.00),
+    -> (1,'HORNO A GAS',6,450.00),
+    -> (2,'CAFETERA',12,250.00),
+    -> (4,'TOSTADORA',12,80.00);
+Query OK, 52 rows affected (0.005 sec)
+Records: 52  Duplicates: 0  Warnings: 0
+
+MariaDB [db_profesor]> select * from productos_varios;
++----+--------------+--------------------+----------+---------+
+| id | proveedor_id | nombre             | cantidad | precio  |
++----+--------------+--------------------+----------+---------+
+|  1 |            1 | NEVERA             |        6 |  500.25 |
+|  2 |            1 | COCINA             |        3 |  300.75 |
+|  3 |            2 | LAVADORA           |        2 |  800.50 |
+|  4 |            4 | AIRE ACONDICIONADO |        4 |  600.75 |
+|  5 |            4 | TELEVISOR          |        7 |  400.00 |
+|  6 |            4 | LAPTOP             |        5 | 1200.00 |
+|  7 |            2 | MICROONDAS         |        8 |  150.25 |
+|  8 |            1 | LICUADORA          |       12 |  100.00 |
+|  9 |            2 | PLANCHA            |       12 |   75.50 |
+| 10 |            4 | VENTILADOR         |       12 |   50.00 |
+| 11 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 12 |            2 | CAFETERA           |       12 |  250.00 |
+| 13 |            4 | TOSTADORA          |       12 |   80.00 |
+| 14 |            1 | NEVERA             |        6 |  500.25 |
+| 15 |            1 | COCINA             |        3 |  300.75 |
+| 16 |            2 | LAVADORA           |        2 |  800.50 |
+| 17 |            4 | AIRE ACONDICIONADO |        4 |  600.75 |
+| 18 |            4 | TELEVISOR          |        7 |  400.00 |
+| 19 |            4 | LAPTOP             |        5 | 1200.00 |
+| 20 |            2 | MICROONDAS         |        8 |  150.25 |
+| 21 |            1 | LICUADORA          |       12 |  100.00 |
+| 22 |            2 | PLANCHA            |       12 |   75.50 |
+| 23 |            4 | VENTILADOR         |       12 |   50.00 |
+| 24 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 25 |            2 | CAFETERA           |       12 |  250.00 |
+| 26 |            4 | TOSTADORA          |       12 |   80.00 |
+| 27 |            1 | NEVERA             |        6 |  500.25 |
+| 28 |            1 | COCINA             |        3 |  300.75 |
+| 29 |            2 | LAVADORA           |        2 |  800.50 |
+| 30 |            4 | AIRE ACONDICIONADO |        4 |  600.75 |
+| 31 |            4 | TELEVISOR          |        7 |  400.00 |
+| 32 |            4 | LAPTOP             |        5 | 1200.00 |
+| 33 |            2 | MICROONDAS         |        8 |  150.25 |
+| 34 |            1 | LICUADORA          |       12 |  100.00 |
+| 35 |            2 | PLANCHA            |       12 |   75.50 |
+| 36 |            4 | VENTILADOR         |       12 |   50.00 |
+| 37 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 38 |            2 | CAFETERA           |       12 |  250.00 |
+| 39 |            4 | TOSTADORA          |       12 |   80.00 |
+| 40 |            1 | NEVERA             |        6 |  500.25 |
+| 41 |            1 | COCINA             |        3 |  300.75 |
+| 42 |            2 | LAVADORA           |        2 |  800.50 |
+| 43 |            4 | AIRE ACONDICIONADO |        4 |  600.75 |
+| 44 |            4 | TELEVISOR          |        7 |  400.00 |
+| 45 |            4 | LAPTOP             |        5 | 1200.00 |
+| 46 |            2 | MICROONDAS         |        8 |  150.25 |
+| 47 |            1 | LICUADORA          |       12 |  100.00 |
+| 48 |            2 | PLANCHA            |       12 |   75.50 |
+| 49 |            4 | VENTILADOR         |       12 |   50.00 |
+| 50 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 51 |            2 | CAFETERA           |       12 |  250.00 |
+| 52 |            4 | TOSTADORA          |       12 |   80.00 |
++----+--------------+--------------------+----------+---------+
+52 rows in set (0.001 sec)
+
+MariaDB [db_profesor]> select distinct nombre from productos_varios;
++--------------------+
+| nombre             |
++--------------------+
+| NEVERA             |
+| COCINA             |
+| LAVADORA           |
+| AIRE ACONDICIONADO |
+| TELEVISOR          |
+| LAPTOP             |
+| MICROONDAS         |
+| LICUADORA          |
+| PLANCHA            |
+| VENTILADOR         |
+| HORNO A GAS        |
+| CAFETERA           |
+| TOSTADORA          |
++--------------------+
+13 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select nombre from productos_varios group by nombre;
++--------------------+
+| nombre             |
++--------------------+
+| AIRE ACONDICIONADO |
+| CAFETERA           |
+| COCINA             |
+| HORNO A GAS        |
+| LAPTOP             |
+| LAVADORA           |
+| LICUADORA          |
+| MICROONDAS         |
+| NEVERA             |
+| PLANCHA            |
+| TELEVISOR          |
+| TOSTADORA          |
+| VENTILADOR         |
++--------------------+
+13 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select nombre as nombre_producto,
+    ->        sum(cantidad) as total_cantidad from productos_varios
+    ->        group by nombre;
++--------------------+----------------+
+| nombre_producto    | total_cantidad |
++--------------------+----------------+
+| AIRE ACONDICIONADO |             16 |
+| CAFETERA           |             48 |
+| COCINA             |             12 |
+| HORNO A GAS        |             24 |
+| LAPTOP             |             20 |
+| LAVADORA           |              8 |
+| LICUADORA          |             48 |
+| MICROONDAS         |             32 |
+| NEVERA             |             24 |
+| PLANCHA            |             48 |
+| TELEVISOR          |             28 |
+| TOSTADORA          |             48 |
+| VENTILADOR         |             48 |
++--------------------+----------------+
+13 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select nombre as nombre_producto,
+    ->        sum(cantidad) as cantidad_total,
+    ->        min(precio) as precio_minimo,
+    ->        max(precio) as precio_maximo,
+    ->        avg(precio) as precio_promedio
+    ->        from productos_varios group by nombre;
++--------------------+----------------+---------------+---------------+-----------------+
+| nombre_producto    | cantidad_total | precio_minimo | precio_maximo | precio_promedio |
++--------------------+----------------+---------------+---------------+-----------------+
+| AIRE ACONDICIONADO |             16 |        600.75 |        600.75 |      600.750000 |
+| CAFETERA           |             48 |        250.00 |        250.00 |      250.000000 |
+| COCINA             |             12 |        300.75 |        300.75 |      300.750000 |
+| HORNO A GAS        |             24 |        450.00 |        450.00 |      450.000000 |
+| LAPTOP             |             20 |       1200.00 |       1200.00 |     1200.000000 |
+| LAVADORA           |              8 |        800.50 |        800.50 |      800.500000 |
+| LICUADORA          |             48 |        100.00 |        100.00 |      100.000000 |
+| MICROONDAS         |             32 |        150.25 |        150.25 |      150.250000 |
+| NEVERA             |             24 |        500.25 |        500.25 |      500.250000 |
+| PLANCHA            |             48 |         75.50 |         75.50 |       75.500000 |
+| TELEVISOR          |             28 |        400.00 |        400.00 |      400.000000 |
+| TOSTADORA          |             48 |         80.00 |         80.00 |       80.000000 |
+| VENTILADOR         |             48 |         50.00 |         50.00 |       50.000000 |
++--------------------+----------------+---------------+---------------+-----------------+
+13 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select * from productos_varios where nombre in ('NEVERA', 'COCINA', 'LAVADORA');
++----+--------------+----------+----------+--------+
+| id | proveedor_id | nombre   | cantidad | precio |
++----+--------------+----------+----------+--------+
+|  1 |            1 | NEVERA   |        6 | 500.25 |
+|  2 |            1 | COCINA   |        3 | 300.75 |
+|  3 |            2 | LAVADORA |        2 | 800.50 |
+| 14 |            1 | NEVERA   |        6 | 500.25 |
+| 15 |            1 | COCINA   |        3 | 300.75 |
+| 16 |            2 | LAVADORA |        2 | 800.50 |
+| 27 |            1 | NEVERA   |        6 | 500.25 |
+| 28 |            1 | COCINA   |        3 | 300.75 |
+| 29 |            2 | LAVADORA |        2 | 800.50 |
+| 40 |            1 | NEVERA   |        6 | 500.25 |
+| 41 |            1 | COCINA   |        3 | 300.75 |
+| 42 |            2 | LAVADORA |        2 | 800.50 |
++----+--------------+----------+----------+--------+
+12 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select nombre as nombre_producto,
+    ->        sum(cantidad) as cantidad_total,
+    ->        min(precio) as precio_minimo,
+    ->        max(precio) as precio_maximo,
+    ->        avg(precio) as precio_promedio
+    ->        from productos_varios
+    ->        where nombre in ('NEVERA', 'COCINA', 'LAVADORA')
+    ->        group by nombre;
++-----------------+----------------+---------------+---------------+-----------------+
+| nombre_producto | cantidad_total | precio_minimo | precio_maximo | precio_promedio |
++-----------------+----------------+---------------+---------------+-----------------+
+| COCINA          |             12 |        300.75 |        300.75 |      300.750000 |
+| LAVADORA        |              8 |        800.50 |        800.50 |      800.500000 |
+| NEVERA          |             24 |        500.25 |        500.25 |      500.250000 |
++-----------------+----------------+---------------+---------------+-----------------+
+3 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> INSERT INTO productos_varios(proveedor_id, nombre, cantidad, precio) VALUES
+    -> (1,'NEVERA',6,250.50),
+    -> (1,'COCINA',8,120.25),
+    -> (2,'LAVADORA',12,350.75);
+Query OK, 3 rows affected (0.001 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MariaDB [db_profesor]> select nombre as nombre_producto,
+    ->        sum(cantidad) as cantidad_total,
+    ->        min(precio) as precio_minimo,
+    ->        max(precio) as precio_maximo,
+    ->        avg(precio) as precio_promedio
+    ->        from productos_varios
+    ->        where nombre in ('NEVERA', 'COCINA', 'LAVADORA')
+    ->        group by nombre;
++-----------------+----------------+---------------+---------------+-----------------+
+| nombre_producto | cantidad_total | precio_minimo | precio_maximo | precio_promedio |
++-----------------+----------------+---------------+---------------+-----------------+
+| COCINA          |             20 |        120.25 |        300.75 |      264.650000 |
+| LAVADORA        |             20 |        350.75 |        800.50 |      710.550000 |
+| NEVERA          |             30 |        250.50 |        500.25 |      450.300000 |
++-----------------+----------------+---------------+---------------+-----------------+
+3 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select nombre as nombre_producto,
+    ->        sum(cantidad) as cantidad_total,
+    ->        min(precio) as precio_minimo,
+    ->        max(precio) as precio_maximo,
+    ->        round(avg(precio),2) as precio_promedio
+    ->        from productos_varios
+    ->        where nombre in ('NEVERA', 'COCINA', 'LAVADORA')
+    ->        group by nombre
+    -> ;
++-----------------+----------------+---------------+---------------+-----------------+
+| nombre_producto | cantidad_total | precio_minimo | precio_maximo | precio_promedio |
++-----------------+----------------+---------------+---------------+-----------------+
+| COCINA          |             20 |        120.25 |        300.75 |          264.65 |
+| LAVADORA        |             20 |        350.75 |        800.50 |          710.55 |
+| NEVERA          |             30 |        250.50 |        500.25 |          450.30 |
++-----------------+----------------+---------------+---------------+-----------------+
+3 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select * from productos_varios where nombre NOT in ('NEVERA', 'COCINA', 'LAVADORA');
++----+--------------+--------------------+----------+---------+
+| id | proveedor_id | nombre             | cantidad | precio  |
++----+--------------+--------------------+----------+---------+
+|  4 |            4 | AIRE ACONDICIONADO |        4 |  600.75 |
+|  5 |            4 | TELEVISOR          |        7 |  400.00 |
+|  6 |            4 | LAPTOP             |        5 | 1200.00 |
+|  7 |            2 | MICROONDAS         |        8 |  150.25 |
+|  8 |            1 | LICUADORA          |       12 |  100.00 |
+|  9 |            2 | PLANCHA            |       12 |   75.50 |
+| 10 |            4 | VENTILADOR         |       12 |   50.00 |
+| 11 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 12 |            2 | CAFETERA           |       12 |  250.00 |
+| 13 |            4 | TOSTADORA          |       12 |   80.00 |
+| 17 |            4 | AIRE ACONDICIONADO |        4 |  600.75 |
+| 18 |            4 | TELEVISOR          |        7 |  400.00 |
+| 19 |            4 | LAPTOP             |        5 | 1200.00 |
+| 20 |            2 | MICROONDAS         |        8 |  150.25 |
+| 21 |            1 | LICUADORA          |       12 |  100.00 |
+| 22 |            2 | PLANCHA            |       12 |   75.50 |
+| 23 |            4 | VENTILADOR         |       12 |   50.00 |
+| 24 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 25 |            2 | CAFETERA           |       12 |  250.00 |
+| 26 |            4 | TOSTADORA          |       12 |   80.00 |
+| 30 |            4 | AIRE ACONDICIONADO |        4 |  600.75 |
+| 31 |            4 | TELEVISOR          |        7 |  400.00 |
+| 32 |            4 | LAPTOP             |        5 | 1200.00 |
+| 33 |            2 | MICROONDAS         |        8 |  150.25 |
+| 34 |            1 | LICUADORA          |       12 |  100.00 |
+| 35 |            2 | PLANCHA            |       12 |   75.50 |
+| 36 |            4 | VENTILADOR         |       12 |   50.00 |
+| 37 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 38 |            2 | CAFETERA           |       12 |  250.00 |
+| 39 |            4 | TOSTADORA          |       12 |   80.00 |
+| 43 |            4 | AIRE ACONDICIONADO |        4 |  600.75 |
+| 44 |            4 | TELEVISOR          |        7 |  400.00 |
+| 45 |            4 | LAPTOP             |        5 | 1200.00 |
+| 46 |            2 | MICROONDAS         |        8 |  150.25 |
+| 47 |            1 | LICUADORA          |       12 |  100.00 |
+| 48 |            2 | PLANCHA            |       12 |   75.50 |
+| 49 |            4 | VENTILADOR         |       12 |   50.00 |
+| 50 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 51 |            2 | CAFETERA           |       12 |  250.00 |
+| 52 |            4 | TOSTADORA          |       12 |   80.00 |
++----+--------------+--------------------+----------+---------+
+40 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select * from productos_varios where NOT ( nombre = 'NEVERA' OR
+    ->                                            nombre = 'COCINA' OR
+    ->                                            nombre = 'LAVADORA' );
++----+--------------+--------------------+----------+---------+
+| id | proveedor_id | nombre             | cantidad | precio  |
++----+--------------+--------------------+----------+---------+
+|  4 |            4 | AIRE ACONDICIONADO |        4 |  600.75 |
+|  5 |            4 | TELEVISOR          |        7 |  400.00 |
+|  6 |            4 | LAPTOP             |        5 | 1200.00 |
+|  7 |            2 | MICROONDAS         |        8 |  150.25 |
+|  8 |            1 | LICUADORA          |       12 |  100.00 |
+|  9 |            2 | PLANCHA            |       12 |   75.50 |
+| 10 |            4 | VENTILADOR         |       12 |   50.00 |
+| 11 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 12 |            2 | CAFETERA           |       12 |  250.00 |
+| 13 |            4 | TOSTADORA          |       12 |   80.00 |
+| 17 |            4 | AIRE ACONDICIONADO |        4 |  600.75 |
+| 18 |            4 | TELEVISOR          |        7 |  400.00 |
+| 19 |            4 | LAPTOP             |        5 | 1200.00 |
+| 20 |            2 | MICROONDAS         |        8 |  150.25 |
+| 21 |            1 | LICUADORA          |       12 |  100.00 |
+| 22 |            2 | PLANCHA            |       12 |   75.50 |
+| 23 |            4 | VENTILADOR         |       12 |   50.00 |
+| 24 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 25 |            2 | CAFETERA           |       12 |  250.00 |
+| 26 |            4 | TOSTADORA          |       12 |   80.00 |
+| 30 |            4 | AIRE ACONDICIONADO |        4 |  600.75 |
+| 31 |            4 | TELEVISOR          |        7 |  400.00 |
+| 32 |            4 | LAPTOP             |        5 | 1200.00 |
+| 33 |            2 | MICROONDAS         |        8 |  150.25 |
+| 34 |            1 | LICUADORA          |       12 |  100.00 |
+| 35 |            2 | PLANCHA            |       12 |   75.50 |
+| 36 |            4 | VENTILADOR         |       12 |   50.00 |
+| 37 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 38 |            2 | CAFETERA           |       12 |  250.00 |
+| 39 |            4 | TOSTADORA          |       12 |   80.00 |
+| 43 |            4 | AIRE ACONDICIONADO |        4 |  600.75 |
+| 44 |            4 | TELEVISOR          |        7 |  400.00 |
+| 45 |            4 | LAPTOP             |        5 | 1200.00 |
+| 46 |            2 | MICROONDAS         |        8 |  150.25 |
+| 47 |            1 | LICUADORA          |       12 |  100.00 |
+| 48 |            2 | PLANCHA            |       12 |   75.50 |
+| 49 |            4 | VENTILADOR         |       12 |   50.00 |
+| 50 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 51 |            2 | CAFETERA           |       12 |  250.00 |
+| 52 |            4 | TOSTADORA          |       12 |   80.00 |
++----+--------------+--------------------+----------+---------+
+40 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select * from productos_varios where nombre <> 'NEVERA' AND
+    ->                                      nombre <> 'COCINA' AND
+    ->                                      nombre <> 'LAVADORA';
++----+--------------+--------------------+----------+---------+
+| id | proveedor_id | nombre             | cantidad | precio  |
++----+--------------+--------------------+----------+---------+
+|  4 |            4 | AIRE ACONDICIONADO |        4 |  600.75 |
+|  5 |            4 | TELEVISOR          |        7 |  400.00 |
+|  6 |            4 | LAPTOP             |        5 | 1200.00 |
+|  7 |            2 | MICROONDAS         |        8 |  150.25 |
+|  8 |            1 | LICUADORA          |       12 |  100.00 |
+|  9 |            2 | PLANCHA            |       12 |   75.50 |
+| 10 |            4 | VENTILADOR         |       12 |   50.00 |
+| 11 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 12 |            2 | CAFETERA           |       12 |  250.00 |
+| 13 |            4 | TOSTADORA          |       12 |   80.00 |
+| 17 |            4 | AIRE ACONDICIONADO |        4 |  600.75 |
+| 18 |            4 | TELEVISOR          |        7 |  400.00 |
+| 19 |            4 | LAPTOP             |        5 | 1200.00 |
+| 20 |            2 | MICROONDAS         |        8 |  150.25 |
+| 21 |            1 | LICUADORA          |       12 |  100.00 |
+| 22 |            2 | PLANCHA            |       12 |   75.50 |
+| 23 |            4 | VENTILADOR         |       12 |   50.00 |
+| 24 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 25 |            2 | CAFETERA           |       12 |  250.00 |
+| 26 |            4 | TOSTADORA          |       12 |   80.00 |
+| 30 |            4 | AIRE ACONDICIONADO |        4 |  600.75 |
+| 31 |            4 | TELEVISOR          |        7 |  400.00 |
+| 32 |            4 | LAPTOP             |        5 | 1200.00 |
+| 33 |            2 | MICROONDAS         |        8 |  150.25 |
+| 34 |            1 | LICUADORA          |       12 |  100.00 |
+| 35 |            2 | PLANCHA            |       12 |   75.50 |
+| 36 |            4 | VENTILADOR         |       12 |   50.00 |
+| 37 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 38 |            2 | CAFETERA           |       12 |  250.00 |
+| 39 |            4 | TOSTADORA          |       12 |   80.00 |
+| 43 |            4 | AIRE ACONDICIONADO |        4 |  600.75 |
+| 44 |            4 | TELEVISOR          |        7 |  400.00 |
+| 45 |            4 | LAPTOP             |        5 | 1200.00 |
+| 46 |            2 | MICROONDAS         |        8 |  150.25 |
+| 47 |            1 | LICUADORA          |       12 |  100.00 |
+| 48 |            2 | PLANCHA            |       12 |   75.50 |
+| 49 |            4 | VENTILADOR         |       12 |   50.00 |
+| 50 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 51 |            2 | CAFETERA           |       12 |  250.00 |
+| 52 |            4 | TOSTADORA          |       12 |   80.00 |
++----+--------------+--------------------+----------+---------+
+40 rows in set (0.007 sec)
+
+MariaDB [db_profesor]> select * from productos_varios where precio >= 200 and
+    -> precio <= 400;
++----+--------------+-----------+----------+--------+
+| id | proveedor_id | nombre    | cantidad | precio |
++----+--------------+-----------+----------+--------+
+|  2 |            1 | COCINA    |        3 | 300.75 |
+|  5 |            4 | TELEVISOR |        7 | 400.00 |
+| 12 |            2 | CAFETERA  |       12 | 250.00 |
+| 15 |            1 | COCINA    |        3 | 300.75 |
+| 18 |            4 | TELEVISOR |        7 | 400.00 |
+| 25 |            2 | CAFETERA  |       12 | 250.00 |
+| 28 |            1 | COCINA    |        3 | 300.75 |
+| 31 |            4 | TELEVISOR |        7 | 400.00 |
+| 38 |            2 | CAFETERA  |       12 | 250.00 |
+| 41 |            1 | COCINA    |        3 | 300.75 |
+| 44 |            4 | TELEVISOR |        7 | 400.00 |
+| 51 |            2 | CAFETERA  |       12 | 250.00 |
+| 53 |            1 | NEVERA    |        6 | 250.50 |
+| 55 |            2 | LAVADORA  |       12 | 350.75 |
++----+--------------+-----------+----------+--------+
+14 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select * from productos_varios where precio between 200 and 400;
++----+--------------+-----------+----------+--------+
+| id | proveedor_id | nombre    | cantidad | precio |
++----+--------------+-----------+----------+--------+
+|  2 |            1 | COCINA    |        3 | 300.75 |
+|  5 |            4 | TELEVISOR |        7 | 400.00 |
+| 12 |            2 | CAFETERA  |       12 | 250.00 |
+| 15 |            1 | COCINA    |        3 | 300.75 |
+| 18 |            4 | TELEVISOR |        7 | 400.00 |
+| 25 |            2 | CAFETERA  |       12 | 250.00 |
+| 28 |            1 | COCINA    |        3 | 300.75 |
+| 31 |            4 | TELEVISOR |        7 | 400.00 |
+| 38 |            2 | CAFETERA  |       12 | 250.00 |
+| 41 |            1 | COCINA    |        3 | 300.75 |
+| 44 |            4 | TELEVISOR |        7 | 400.00 |
+| 51 |            2 | CAFETERA  |       12 | 250.00 |
+| 53 |            1 | NEVERA    |        6 | 250.50 |
+| 55 |            2 | LAVADORA  |       12 | 350.75 |
++----+--------------+-----------+----------+--------+
+14 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select * from productos_varios
+    -> where
+    -> not (precio >= 200 and precio <= 400);
++----+--------------+--------------------+----------+---------+
+| id | proveedor_id | nombre             | cantidad | precio  |
++----+--------------+--------------------+----------+---------+
+|  1 |            1 | NEVERA             |        6 |  500.25 |
+|  3 |            2 | LAVADORA           |        2 |  800.50 |
+|  4 |            4 | AIRE ACONDICIONADO |        4 |  600.75 |
+|  6 |            4 | LAPTOP             |        5 | 1200.00 |
+|  7 |            2 | MICROONDAS         |        8 |  150.25 |
+|  8 |            1 | LICUADORA          |       12 |  100.00 |
+|  9 |            2 | PLANCHA            |       12 |   75.50 |
+| 10 |            4 | VENTILADOR         |       12 |   50.00 |
+| 11 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 13 |            4 | TOSTADORA          |       12 |   80.00 |
+| 14 |            1 | NEVERA             |        6 |  500.25 |
+| 16 |            2 | LAVADORA           |        2 |  800.50 |
+| 17 |            4 | AIRE ACONDICIONADO |        4 |  600.75 |
+| 19 |            4 | LAPTOP             |        5 | 1200.00 |
+| 20 |            2 | MICROONDAS         |        8 |  150.25 |
+| 21 |            1 | LICUADORA          |       12 |  100.00 |
+| 22 |            2 | PLANCHA            |       12 |   75.50 |
+| 23 |            4 | VENTILADOR         |       12 |   50.00 |
+| 24 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 26 |            4 | TOSTADORA          |       12 |   80.00 |
+| 27 |            1 | NEVERA             |        6 |  500.25 |
+| 29 |            2 | LAVADORA           |        2 |  800.50 |
+| 30 |            4 | AIRE ACONDICIONADO |        4 |  600.75 |
+| 32 |            4 | LAPTOP             |        5 | 1200.00 |
+| 33 |            2 | MICROONDAS         |        8 |  150.25 |
+| 34 |            1 | LICUADORA          |       12 |  100.00 |
+| 35 |            2 | PLANCHA            |       12 |   75.50 |
+| 36 |            4 | VENTILADOR         |       12 |   50.00 |
+| 37 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 39 |            4 | TOSTADORA          |       12 |   80.00 |
+| 40 |            1 | NEVERA             |        6 |  500.25 |
+| 42 |            2 | LAVADORA           |        2 |  800.50 |
+| 43 |            4 | AIRE ACONDICIONADO |        4 |  600.75 |
+| 45 |            4 | LAPTOP             |        5 | 1200.00 |
+| 46 |            2 | MICROONDAS         |        8 |  150.25 |
+| 47 |            1 | LICUADORA          |       12 |  100.00 |
+| 48 |            2 | PLANCHA            |       12 |   75.50 |
+| 49 |            4 | VENTILADOR         |       12 |   50.00 |
+| 50 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 52 |            4 | TOSTADORA          |       12 |   80.00 |
+| 54 |            1 | COCINA             |        8 |  120.25 |
++----+--------------+--------------------+----------+---------+
+41 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select * from productos_varios where NOT (precio between 200 and 400);
++----+--------------+--------------------+----------+---------+
+| id | proveedor_id | nombre             | cantidad | precio  |
++----+--------------+--------------------+----------+---------+
+|  1 |            1 | NEVERA             |        6 |  500.25 |
+|  3 |            2 | LAVADORA           |        2 |  800.50 |
+|  4 |            4 | AIRE ACONDICIONADO |        4 |  600.75 |
+|  6 |            4 | LAPTOP             |        5 | 1200.00 |
+|  7 |            2 | MICROONDAS         |        8 |  150.25 |
+|  8 |            1 | LICUADORA          |       12 |  100.00 |
+|  9 |            2 | PLANCHA            |       12 |   75.50 |
+| 10 |            4 | VENTILADOR         |       12 |   50.00 |
+| 11 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 13 |            4 | TOSTADORA          |       12 |   80.00 |
+| 14 |            1 | NEVERA             |        6 |  500.25 |
+| 16 |            2 | LAVADORA           |        2 |  800.50 |
+| 17 |            4 | AIRE ACONDICIONADO |        4 |  600.75 |
+| 19 |            4 | LAPTOP             |        5 | 1200.00 |
+| 20 |            2 | MICROONDAS         |        8 |  150.25 |
+| 21 |            1 | LICUADORA          |       12 |  100.00 |
+| 22 |            2 | PLANCHA            |       12 |   75.50 |
+| 23 |            4 | VENTILADOR         |       12 |   50.00 |
+| 24 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 26 |            4 | TOSTADORA          |       12 |   80.00 |
+| 27 |            1 | NEVERA             |        6 |  500.25 |
+| 29 |            2 | LAVADORA           |        2 |  800.50 |
+| 30 |            4 | AIRE ACONDICIONADO |        4 |  600.75 |
+| 32 |            4 | LAPTOP             |        5 | 1200.00 |
+| 33 |            2 | MICROONDAS         |        8 |  150.25 |
+| 34 |            1 | LICUADORA          |       12 |  100.00 |
+| 35 |            2 | PLANCHA            |       12 |   75.50 |
+| 36 |            4 | VENTILADOR         |       12 |   50.00 |
+| 37 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 39 |            4 | TOSTADORA          |       12 |   80.00 |
+| 40 |            1 | NEVERA             |        6 |  500.25 |
+| 42 |            2 | LAVADORA           |        2 |  800.50 |
+| 43 |            4 | AIRE ACONDICIONADO |        4 |  600.75 |
+| 45 |            4 | LAPTOP             |        5 | 1200.00 |
+| 46 |            2 | MICROONDAS         |        8 |  150.25 |
+| 47 |            1 | LICUADORA          |       12 |  100.00 |
+| 48 |            2 | PLANCHA            |       12 |   75.50 |
+| 49 |            4 | VENTILADOR         |       12 |   50.00 |
+| 50 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 52 |            4 | TOSTADORA          |       12 |   80.00 |
+| 54 |            1 | COCINA             |        8 |  120.25 |
++----+--------------+--------------------+----------+---------+
+41 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select * from productos_varios
+    -> where precio < 200 or precio > 400;
++----+--------------+--------------------+----------+---------+
+| id | proveedor_id | nombre             | cantidad | precio  |
++----+--------------+--------------------+----------+---------+
+|  1 |            1 | NEVERA             |        6 |  500.25 |
+|  3 |            2 | LAVADORA           |        2 |  800.50 |
+|  4 |            4 | AIRE ACONDICIONADO |        4 |  600.75 |
+|  6 |            4 | LAPTOP             |        5 | 1200.00 |
+|  7 |            2 | MICROONDAS         |        8 |  150.25 |
+|  8 |            1 | LICUADORA          |       12 |  100.00 |
+|  9 |            2 | PLANCHA            |       12 |   75.50 |
+| 10 |            4 | VENTILADOR         |       12 |   50.00 |
+| 11 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 13 |            4 | TOSTADORA          |       12 |   80.00 |
+| 14 |            1 | NEVERA             |        6 |  500.25 |
+| 16 |            2 | LAVADORA           |        2 |  800.50 |
+| 17 |            4 | AIRE ACONDICIONADO |        4 |  600.75 |
+| 19 |            4 | LAPTOP             |        5 | 1200.00 |
+| 20 |            2 | MICROONDAS         |        8 |  150.25 |
+| 21 |            1 | LICUADORA          |       12 |  100.00 |
+| 22 |            2 | PLANCHA            |       12 |   75.50 |
+| 23 |            4 | VENTILADOR         |       12 |   50.00 |
+| 24 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 26 |            4 | TOSTADORA          |       12 |   80.00 |
+| 27 |            1 | NEVERA             |        6 |  500.25 |
+| 29 |            2 | LAVADORA           |        2 |  800.50 |
+| 30 |            4 | AIRE ACONDICIONADO |        4 |  600.75 |
+| 32 |            4 | LAPTOP             |        5 | 1200.00 |
+| 33 |            2 | MICROONDAS         |        8 |  150.25 |
+| 34 |            1 | LICUADORA          |       12 |  100.00 |
+| 35 |            2 | PLANCHA            |       12 |   75.50 |
+| 36 |            4 | VENTILADOR         |       12 |   50.00 |
+| 37 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 39 |            4 | TOSTADORA          |       12 |   80.00 |
+| 40 |            1 | NEVERA             |        6 |  500.25 |
+| 42 |            2 | LAVADORA           |        2 |  800.50 |
+| 43 |            4 | AIRE ACONDICIONADO |        4 |  600.75 |
+| 45 |            4 | LAPTOP             |        5 | 1200.00 |
+| 46 |            2 | MICROONDAS         |        8 |  150.25 |
+| 47 |            1 | LICUADORA          |       12 |  100.00 |
+| 48 |            2 | PLANCHA            |       12 |   75.50 |
+| 49 |            4 | VENTILADOR         |       12 |   50.00 |
+| 50 |            1 | HORNO A GAS        |        6 |  450.00 |
+| 52 |            4 | TOSTADORA          |       12 |   80.00 |
+| 54 |            1 | COCINA             |        8 |  120.25 |
++----+--------------+--------------------+----------+---------+
+41 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select * from productos_varios where nombre = 'COCINA';
++----+--------------+--------+----------+--------+
+| id | proveedor_id | nombre | cantidad | precio |
++----+--------------+--------+----------+--------+
+|  2 |            1 | COCINA |        3 | 300.75 |
+| 15 |            1 | COCINA |        3 | 300.75 |
+| 28 |            1 | COCINA |        3 | 300.75 |
+| 41 |            1 | COCINA |        3 | 300.75 |
+| 54 |            1 | COCINA |        8 | 120.25 |
++----+--------------+--------+----------+--------+
+5 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select * from productos_varios where nombre = 'NEVERA';
++----+--------------+--------+----------+--------+
+| id | proveedor_id | nombre | cantidad | precio |
++----+--------------+--------+----------+--------+
+|  1 |            1 | NEVERA |        6 | 500.25 |
+| 14 |            1 | NEVERA |        6 | 500.25 |
+| 27 |            1 | NEVERA |        6 | 500.25 |
+| 40 |            1 | NEVERA |        6 | 500.25 |
+| 53 |            1 | NEVERA |        6 | 250.50 |
++----+--------------+--------+----------+--------+
+5 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select * from productos_varios where nombre = 'LAVADORA';
++----+--------------+----------+----------+--------+
+| id | proveedor_id | nombre   | cantidad | precio |
++----+--------------+----------+----------+--------+
+|  3 |            2 | LAVADORA |        2 | 800.50 |
+| 16 |            2 | LAVADORA |        2 | 800.50 |
+| 29 |            2 | LAVADORA |        2 | 800.50 |
+| 42 |            2 | LAVADORA |        2 | 800.50 |
+| 55 |            2 | LAVADORA |       12 | 350.75 |
++----+--------------+----------+----------+--------+
+5 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select * from productos_varios where nombre = 'COCINA';
++----+--------------+--------+----------+--------+
+| id | proveedor_id | nombre | cantidad | precio |
++----+--------------+--------+----------+--------+
+|  2 |            1 | COCINA |        3 | 300.75 |
+| 15 |            1 | COCINA |        3 | 300.75 |
+| 28 |            1 | COCINA |        3 | 300.75 |
+| 41 |            1 | COCINA |        3 | 300.75 |
+| 54 |            1 | COCINA |        8 | 120.25 |
++----+--------------+--------+----------+--------+
+5 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select * from productos_varios where precio < 400;
++----+--------------+------------+----------+--------+
+| id | proveedor_id | nombre     | cantidad | precio |
++----+--------------+------------+----------+--------+
+|  2 |            1 | COCINA     |        3 | 300.75 |
+|  7 |            2 | MICROONDAS |        8 | 150.25 |
+|  8 |            1 | LICUADORA  |       12 | 100.00 |
+|  9 |            2 | PLANCHA    |       12 |  75.50 |
+| 10 |            4 | VENTILADOR |       12 |  50.00 |
+| 12 |            2 | CAFETERA   |       12 | 250.00 |
+| 13 |            4 | TOSTADORA  |       12 |  80.00 |
+| 15 |            1 | COCINA     |        3 | 300.75 |
+| 20 |            2 | MICROONDAS |        8 | 150.25 |
+| 21 |            1 | LICUADORA  |       12 | 100.00 |
+| 22 |            2 | PLANCHA    |       12 |  75.50 |
+| 23 |            4 | VENTILADOR |       12 |  50.00 |
+| 25 |            2 | CAFETERA   |       12 | 250.00 |
+| 26 |            4 | TOSTADORA  |       12 |  80.00 |
+| 28 |            1 | COCINA     |        3 | 300.75 |
+| 33 |            2 | MICROONDAS |        8 | 150.25 |
+| 34 |            1 | LICUADORA  |       12 | 100.00 |
+| 35 |            2 | PLANCHA    |       12 |  75.50 |
+| 36 |            4 | VENTILADOR |       12 |  50.00 |
+| 38 |            2 | CAFETERA   |       12 | 250.00 |
+| 39 |            4 | TOSTADORA  |       12 |  80.00 |
+| 41 |            1 | COCINA     |        3 | 300.75 |
+| 46 |            2 | MICROONDAS |        8 | 150.25 |
+| 47 |            1 | LICUADORA  |       12 | 100.00 |
+| 48 |            2 | PLANCHA    |       12 |  75.50 |
+| 49 |            4 | VENTILADOR |       12 |  50.00 |
+| 51 |            2 | CAFETERA   |       12 | 250.00 |
+| 52 |            4 | TOSTADORA  |       12 |  80.00 |
+| 53 |            1 | NEVERA     |        6 | 250.50 |
+| 54 |            1 | COCINA     |        8 | 120.25 |
+| 55 |            2 | LAVADORA   |       12 | 350.75 |
++----+--------------+------------+----------+--------+
+31 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> select * from productos_varios
+    -> where precio < 400 XOR
+    ->       nombre = 'COCINA';
++----+--------------+------------+----------+--------+
+| id | proveedor_id | nombre     | cantidad | precio |
++----+--------------+------------+----------+--------+
+|  7 |            2 | MICROONDAS |        8 | 150.25 |
+|  8 |            1 | LICUADORA  |       12 | 100.00 |
+|  9 |            2 | PLANCHA    |       12 |  75.50 |
+| 10 |            4 | VENTILADOR |       12 |  50.00 |
+| 12 |            2 | CAFETERA   |       12 | 250.00 |
+| 13 |            4 | TOSTADORA  |       12 |  80.00 |
+| 20 |            2 | MICROONDAS |        8 | 150.25 |
+| 21 |            1 | LICUADORA  |       12 | 100.00 |
+| 22 |            2 | PLANCHA    |       12 |  75.50 |
+| 23 |            4 | VENTILADOR |       12 |  50.00 |
+| 25 |            2 | CAFETERA   |       12 | 250.00 |
+| 26 |            4 | TOSTADORA  |       12 |  80.00 |
+| 33 |            2 | MICROONDAS |        8 | 150.25 |
+| 34 |            1 | LICUADORA  |       12 | 100.00 |
+| 35 |            2 | PLANCHA    |       12 |  75.50 |
+| 36 |            4 | VENTILADOR |       12 |  50.00 |
+| 38 |            2 | CAFETERA   |       12 | 250.00 |
+| 39 |            4 | TOSTADORA  |       12 |  80.00 |
+| 46 |            2 | MICROONDAS |        8 | 150.25 |
+| 47 |            1 | LICUADORA  |       12 | 100.00 |
+| 48 |            2 | PLANCHA    |       12 |  75.50 |
+| 49 |            4 | VENTILADOR |       12 |  50.00 |
+| 51 |            2 | CAFETERA   |       12 | 250.00 |
+| 52 |            4 | TOSTADORA  |       12 |  80.00 |
+| 53 |            1 | NEVERA     |        6 | 250.50 |
+| 55 |            2 | LAVADORA   |       12 | 350.75 |
++----+--------------+------------+----------+--------+
+26 rows in set (0.000 sec)
+
+MariaDB [db_profesor]>
+MariaDB [db_profesor]>
+MariaDB [db_profesor]>
+MariaDB [db_profesor]> show tables;
++----------------------------------------+
+| Tables_in_db_profesor                  |
++----------------------------------------+
+| asignaturas                            |
+| estudiantes                            |
+| estudiantes_asignaturas                |
+| personas                               |
+| personas1                              |
+| personas_con_indice                    |
+| personas_con_indice_cedula             |
+| personas_con_indice_cedula_correo      |
+| productos                              |
+| productos_cascade                      |
+| productos_secuencial                   |
+| productos_varios                       |
+| proveedores                            |
+| proveedores_cascade                    |
+| proveedores_secuencial                 |
+| vista_estudiantes_asignaturas          |
+| vista_full_join_proveedores_productos  |
+| vista_inner_join_proveedores_productos |
+| vista_left_join_proveedores_productos  |
+| vista_right_join_proveedores_productos |
++----------------------------------------+
+20 rows in set (0.000 sec)
+
+MariaDB [db_profesor]> describe personas;
++---------------------+---------------------+------+-----+---------+-------+
+| Field               | Type                | Null | Key | Default | Extra |
++---------------------+---------------------+------+-----+---------+-------+
+| cedula              | varchar(10)         | YES  |     | NULL    |       |
+| nombre              | varchar(30)         | YES  |     | NULL    |       |
+| apellido            | varchar(30)         | YES  |     | NULL    |       |
+| direccion           | text                | YES  |     | NULL    |       |
+| email               | text                | YES  |     | NULL    |       |
+| telefono            | char(20)            | YES  |     | NULL    |       |
+| fecha_de_nacimiento | date                | YES  |     | NULL    |       |
+| edad                | tinyint(3) unsigned | YES  |     | NULL    |       |
++---------------------+---------------------+------+-----+---------+-------+
+8 rows in set (0.002 sec)
+
+MariaDB [db_profesor]> show tables;
++----------------------------------------+
+| Tables_in_db_profesor                  |
++----------------------------------------+
+| asignaturas                            |
+| estudiantes                            |
+| estudiantes_asignaturas                |
+| personas                               |
+| personas1                              |
+| personas_con_indice                    |
+| personas_con_indice_cedula             |
+| personas_con_indice_cedula_correo      |
+| productos                              |
+| productos_cascade                      |
+| productos_secuencial                   |
+| productos_varios                       |
+| proveedores                            |
+| proveedores_cascade                    |
+| proveedores_secuencial                 |
+| vista_estudiantes_asignaturas          |
+| vista_full_join_proveedores_productos  |
+| vista_inner_join_proveedores_productos |
+| vista_left_join_proveedores_productos  |
+| vista_right_join_proveedores_productos |
++----------------------------------------+
+20 rows in set (0.001 sec)
+
+MariaDB [db_profesor]> describe personas1;
++---------------------+---------------------+------+-----+---------+-------+
+| Field               | Type                | Null | Key | Default | Extra |
++---------------------+---------------------+------+-----+---------+-------+
+| cedula              | varchar(10)         | YES  |     | NULL    |       |
+| nombre              | varchar(30)         | YES  |     | NULL    |       |
+| apellido            | varchar(30)         | YES  |     | NULL    |       |
+| direccion           | text                | YES  |     | NULL    |       |
+| email               | text                | YES  |     | NULL    |       |
+| telefono            | char(20)            | YES  |     | NULL    |       |
+| fecha_de_nacimiento | date                | YES  |     | NULL    |       |
+| edad                | tinyint(3) unsigned | YES  |     | NULL    |       |
++---------------------+---------------------+------+-----+---------+-------+
+8 rows in set (0.001 sec)
+
+MariaDB [db_profesor]> describe personas_con_indice;
++---------------------+---------------------+------+-----+---------+----------------+
+| Field               | Type                | Null | Key | Default | Extra          |
++---------------------+---------------------+------+-----+---------+----------------+
+| id                  | int(10) unsigned    | NO   | PRI | NULL    | auto_increment |
+| cedula              | varchar(10)         | YES  |     | NULL    |                |
+| nombre              | varchar(30)         | YES  |     | NULL    |                |
+| apellido            | varchar(30)         | YES  |     | NULL    |                |
+| direccion           | text                | YES  |     | NULL    |                |
+| correo_electronico  | varchar(80)         | YES  |     | NULL    |                |
+| telefono            | char(20)            | YES  |     | NULL    |                |
+| fecha_de_nacimiento | date                | YES  |     | NULL    |                |
+| edad                | tinyint(3) unsigned | YES  |     | NULL    |                |
++---------------------+---------------------+------+-----+---------+----------------+
+9 rows in set (0.002 sec)
+
+MariaDB [db_profesor]> use db_profesor_pma
+Database changed
+MariaDB [db_profesor_pma]> show create table productos;
++-----------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table     | Create Table                                                                                                                                                                                                                                                                                                                                                                              |
++-----------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| productos | CREATE TABLE `productos` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `proveedor_id` int(10) unsigned DEFAULT NULL,
+  `nombre` varchar(30) DEFAULT NULL,
+  `cantidad` int(10) unsigned DEFAULT NULL,
+  `precio` decimal(13,2) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `indice_proveedor_id` (`proveedor_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci |
++-----------+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+1 row in set (0.000 sec)
+
+MariaDB [db_profesor_pma]>
