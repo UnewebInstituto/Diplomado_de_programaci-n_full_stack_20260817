@@ -1,1 +1,1 @@
-"C:\xampp\mysql\bin\mysqldump" -u root -p db_ricardo > ./respaldos/db_ricardo_20260918.sql
+"C:\xampp\mysql\bin\mysqldump" -u root -p db_ricardo > ./respaldos/db_ricardo_20260921.sql

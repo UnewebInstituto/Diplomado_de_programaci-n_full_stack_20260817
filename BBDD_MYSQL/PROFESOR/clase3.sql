@@ -306,11 +306,3 @@ ORDER BY CANTIDAD ASC, PRECIO ASC;
 -- DESCENDENTE
 SELECT * FROM vista_full_join_proveedores_productos 
 ORDER BY CANTIDAD DESC, PRECIO DESC;
-
-
-
-
-
-
-
-

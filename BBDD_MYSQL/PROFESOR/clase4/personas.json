@@ -1,0 +1,12 @@
+[
+{"type":"header","version":"5.2.1","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"database","name":"db_profesor_pma"},
+{"type":"table","name":"personas","database":"db_profesor_pma","data":
+[
+{"cedula":"V1234","nombre":"ANA","apellido":"VASQUEZ","direccion":"SANTA FE","email":"AV@GMAIL.COM","telefono":"+5821211234567","fecha_de_nacimiento":"1960-08-15","edad":"66"},
+{"cedula":"V5678","nombre":"YOLANDA","apellido":"TORTOZA","direccion":"CATIA LA MAR","email":"yt@gmail.com","telefono":"2123334455","fecha_de_nacimiento":"1975-09-10","edad":"51"},
+{"cedula":"V9012","nombre":"NELLY","apellido":"CONTRERAS","direccion":"LA VEGA","email":"nc@gmail.com","telefono":"2124434930","fecha_de_nacimiento":"1968-07-16","edad":"58"},
+{"cedula":"V3456","nombre":"LIBIA","apellido":"COLS","direccion":"GUARENAS","email":"lc@gmail.com","telefono":"2123634106","fecha_de_nacimiento":"1975-05-20","edad":"51"}
+]
+}
+]

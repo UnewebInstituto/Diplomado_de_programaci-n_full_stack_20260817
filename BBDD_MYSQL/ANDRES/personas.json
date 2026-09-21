@@ -1,0 +1,12 @@
+[
+{"type":"header","version":"5.2.1","comment":"Export to JSON plugin for PHPMyAdmin"},
+{"type":"database","name":"db_andres_pma"},
+{"type":"table","name":"personas","database":"db_andres_pma","data":
+[
+{"cedula":"V1234","nombre":"ANA","apellido":"PEREZ","direccion":"CHACAITO","email":"ANA@GMAIL.COM","telefono":"0412-1234567","fecha_de_nacimiento":"2007-12-04","edad":"18"},
+{"cedula":"V5678","nombre":"YOLANDA","apellido":"TORTOZA","direccion":"CATIA LA MAR","email":"yt@gmail.com","telefono":"2123334455","fecha_de_nacimiento":"1975-09-10","edad":"51"},
+{"cedula":"V9012","nombre":"NELLY","apellido":"CONTRERAS","direccion":"LA VEGA","email":"nc@gmail.com","telefono":"2124434930","fecha_de_nacimiento":"1968-07-16","edad":"58"},
+{"cedula":"V3456","nombre":"LIBIA","apellido":"COLS","direccion":"GUARENA","email":"lc@gmail.com","telefono":"2123634106","fecha_de_nacimiento":"1975-05-20","edad":"51"}
+]
+}
+]

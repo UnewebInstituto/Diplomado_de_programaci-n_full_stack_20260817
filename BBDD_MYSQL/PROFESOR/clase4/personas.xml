@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+- phpMyAdmin XML Dump
+- version 5.2.1
+- https://www.phpmyadmin.net
+-
+- Servidor: 127.0.0.1
+- Tiempo de generación: 21-09-2026 a las 16:12:37
+- Versión del servidor: 10.4.32-MariaDB
+- Versión de PHP: 8.2.12
+-->
+
+<pma_xml_export version="1.0" xmlns:pma="https://www.phpmyadmin.net/some_doc_url/">
+    <!--
+    - Structure schemas
+    -->
+    <pma:structure_schemas>
+        <pma:database name="db_profesor_pma" collation="utf8mb4_general_ci" charset="utf8mb4">
+            <pma:table name="personas">
+                CREATE TABLE `personas` (
+                  `cedula` varchar(10) NOT NULL,
+                  `nombre` varchar(30) NOT NULL,
+                  `apellido` varchar(30) NOT NULL,
+                  `direccion` text NOT NULL,
+                  `email` text NOT NULL,
+                  `telefono` varchar(20) NOT NULL,
+                  `fecha_de_nacimiento` date NOT NULL,
+                  `edad` tinyint(3) unsigned NOT NULL
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+            </pma:table>
+        </pma:database>
+    </pma:structure_schemas>
+
+    <!--
+    - Base de datos: 'db_profesor_pma'
+    -->
+    <database name="db_profesor_pma">
+        <!-- Tabla personas -->
+        <table name="personas">
+            <column name="cedula">V1234</column>
+            <column name="nombre">ANA</column>
+            <column name="apellido">VASQUEZ</column>
+            <column name="direccion">SANTA FE</column>
+            <column name="email">AV@GMAIL.COM</column>
+            <column name="telefono">+5821211234567</column>
+            <column name="fecha_de_nacimiento">1960-08-15</column>
+            <column name="edad">66</column>
+        </table>
+        <table name="personas">
+            <column name="cedula">V5678</column>
+            <column name="nombre">YOLANDA</column>
+            <column name="apellido">TORTOZA</column>
+            <column name="direccion">CATIA LA MAR</column>
+            <column name="email">yt@gmail.com</column>
+            <column name="telefono">2123334455</column>
+            <column name="fecha_de_nacimiento">1975-09-10</column>
+            <column name="edad">51</column>
+        </table>
+        <table name="personas">
+            <column name="cedula">V9012</column>
+            <column name="nombre">NELLY</column>
+            <column name="apellido">CONTRERAS</column>
+            <column name="direccion">LA VEGA</column>
+            <column name="email">nc@gmail.com</column>
+            <column name="telefono">2124434930</column>
+            <column name="fecha_de_nacimiento">1968-07-16</column>
+            <column name="edad">58</column>
+        </table>
+        <table name="personas">
+            <column name="cedula">V3456</column>
+            <column name="nombre">LIBIA</column>
+            <column name="apellido">COLS</column>
+            <column name="direccion">GUARENAS</column>
+            <column name="email">lc@gmail.com</column>
+            <column name="telefono">2123634106</column>
+            <column name="fecha_de_nacimiento">1975-05-20</column>
+            <column name="edad">51</column>
+        </table>
+    </database>
+</pma_xml_export>
