@@ -163,11 +163,11 @@ INSERT INTO PROVEEDORES_SECUENCIAL(nombre, direccion, telefono, correo_electroni
 
 INSERT INTO PRODUCTOS_SECUENCIAL(proveedor_id, nombre, cantidad, precio) VALUES
 (1,'NEVERA',6,500.25),
-(4,'NEVERA',6,500.25),
+(7,'NEVERA',6,500.25),
 (1,'COCINA',3,300.75),
-(5,'COCINA',3,300.75),
+(7,'COCINA',3,300.75),
 (2,'LAVADORA',2,800.50),
-(6,'LAVADORA',2,800.50),
+(7,'LAVADORA',2,800.50),
 (3,'AIRE ACONDICIONADO',4,600.75),
 (7,'AIRE ACONDICIONADO',4,600.75),
 (3,'TELEVISOR',7,400.00),
@@ -234,7 +234,7 @@ SELECT SUM(CANTIDAD) FROM vista_full_join_proveedores_productos;
 
 SELECT MIN(CAMPO)...;
 
-SELECT MIN(PRECIO) FROM vista_full_join_proveedores_productos
+SELECT MIN(PRECIO) FROM vista_full_join_proveedores_productos;
 
 
 SELECT MAX(CAMPO)...;
