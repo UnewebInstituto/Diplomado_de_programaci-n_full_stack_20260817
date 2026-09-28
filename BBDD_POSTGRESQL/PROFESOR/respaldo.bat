@@ -1,0 +1,1 @@
+"C:\Program Files\PostgreSQL\15\bin\pg_dump" -U postgres -h localhost -d db_profesor -F p -v -f "./respaldos/db_profesor_20260928.sql"

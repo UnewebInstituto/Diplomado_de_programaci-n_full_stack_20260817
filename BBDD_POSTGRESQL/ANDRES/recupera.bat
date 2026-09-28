@@ -1,0 +1,1 @@
+"C:\Program Files\PostgreSQL\15\bin\psql" -U postgres -h localhost -d db_andres_copia -f "./respaldos/db_andres_20260928.sql"

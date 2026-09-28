@@ -1,0 +1,1585 @@
+POSTGRESQL:
+
+Sitio oficial del instalación:
+https://www.postgresql.org/
+
+Server [localhost]:
+Database [postgres]:
+Port [5432]:
+Username [postgres]:
+Contraseña para usuario postgres:
+psql (15.13)
+ADVERTENCIA: El código de página de la consola (850) difiere del código
+            de página de Windows (1252).
+            Los caracteres de 8 bits pueden funcionar incorrectamente.
+            Vea la página de referencia de psql «Notes for Windows users»
+            para obtener más detalles.
+Digite «help» para obtener ayuda.
+
+postgres=# help
+Está usando psql, la interfaz de línea de órdenes de PostgreSQL.
+Digite:  \copyright para ver los términos de distribución
+       \h para ayuda de órdenes SQL
+       \? para ayuda de órdenes psql
+       \g o punto y coma («;») para ejecutar la consulta
+       \q para salir
+postgres=# \h
+Ayuda disponible:
+  ABORT                            CREATE USER MAPPING
+  ALTER AGGREGATE                  CREATE VIEW
+  ALTER COLLATION                  DEALLOCATE
+  ALTER CONVERSION                 DECLARE
+  ALTER DATABASE                   DELETE
+  ALTER DEFAULT PRIVILEGES         DISCARD
+  ALTER DOMAIN                     DO
+  ALTER EVENT TRIGGER              DROP ACCESS METHOD
+  ALTER EXTENSION                  DROP AGGREGATE
+  ALTER FOREIGN DATA WRAPPER       DROP CAST
+  ALTER FOREIGN TABLE              DROP COLLATION
+  ALTER FUNCTION                   DROP CONVERSION
+  ALTER GROUP                      DROP DATABASE
+  ALTER INDEX                      DROP DOMAIN
+  ALTER LANGUAGE                   DROP EVENT TRIGGER
+  ALTER LARGE OBJECT               DROP EXTENSION
+  ALTER MATERIALIZED VIEW          DROP FOREIGN DATA WRAPPER
+  ALTER OPERATOR                   DROP FOREIGN TABLE
+  ALTER OPERATOR CLASS             DROP FUNCTION
+  ALTER OPERATOR FAMILY            DROP GROUP
+  ALTER POLICY                     DROP INDEX
+  ALTER PROCEDURE                  DROP LANGUAGE
+  ALTER PUBLICATION                DROP MATERIALIZED VIEW
+  ALTER ROLE                       DROP OPERATOR
+  ALTER ROUTINE                    DROP OPERATOR CLASS
+  ALTER RULE                       DROP OPERATOR FAMILY
+  ALTER SCHEMA                     DROP OWNED
+  ALTER SEQUENCE                   DROP POLICY
+  ALTER SERVER                     DROP PROCEDURE
+  ALTER STATISTICS                 DROP PUBLICATION
+  ALTER SUBSCRIPTION               DROP ROLE
+  ALTER SYSTEM                     DROP ROUTINE
+  ALTER TABLE                      DROP RULE
+  ALTER TABLESPACE                 DROP SCHEMA
+  ALTER TEXT SEARCH CONFIGURATION  DROP SEQUENCE
+  ALTER TEXT SEARCH DICTIONARY     DROP SERVER
+  ALTER TEXT SEARCH PARSER         DROP STATISTICS
+  ALTER TEXT SEARCH TEMPLATE       DROP SUBSCRIPTION
+  ALTER TRIGGER                    DROP TABLE
+  ALTER TYPE                       DROP TABLESPACE
+  ALTER USER                       DROP TEXT SEARCH CONFIGURATION
+  ALTER USER MAPPING               DROP TEXT SEARCH DICTIONARY
+  ALTER VIEW                       DROP TEXT SEARCH PARSER
+  ANALYZE                          DROP TEXT SEARCH TEMPLATE
+  BEGIN                            DROP TRANSFORM
+  CALL                             DROP TRIGGER
+  CHECKPOINT                       DROP TYPE
+  CLOSE                            DROP USER
+  CLUSTER                          DROP USER MAPPING
+  COMMENT                          DROP VIEW
+  COMMIT                           END
+  COMMIT PREPARED                  EXECUTE
+  COPY                             EXPLAIN
+  CREATE ACCESS METHOD             FETCH
+  CREATE AGGREGATE                 GRANT
+  CREATE CAST                      IMPORT FOREIGN SCHEMA
+  CREATE COLLATION                 INSERT
+  CREATE CONVERSION                LISTEN
+  CREATE DATABASE                  LOAD
+  CREATE DOMAIN                    LOCK
+  CREATE EVENT TRIGGER             MERGE
+  CREATE EXTENSION                 MOVE
+  CREATE FOREIGN DATA WRAPPER      NOTIFY
+  CREATE FOREIGN TABLE             PREPARE
+  CREATE FUNCTION                  PREPARE TRANSACTION
+  CREATE GROUP                     REASSIGN OWNED
+  CREATE INDEX                     REFRESH MATERIALIZED VIEW
+  CREATE LANGUAGE                  REINDEX
+  CREATE MATERIALIZED VIEW         RELEASE SAVEPOINT
+  CREATE OPERATOR                  RESET
+  CREATE OPERATOR CLASS            REVOKE
+  CREATE OPERATOR FAMILY           ROLLBACK
+  CREATE POLICY                    ROLLBACK PREPARED
+  CREATE PROCEDURE                 ROLLBACK TO SAVEPOINT
+  CREATE PUBLICATION               SAVEPOINT
+  CREATE ROLE                      SECURITY LABEL
+  CREATE RULE                      SELECT
+  CREATE SCHEMA                    SELECT INTO
+  CREATE SEQUENCE                  SET
+  CREATE SERVER                    SET CONSTRAINTS
+  CREATE STATISTICS                SET ROLE
+  CREATE SUBSCRIPTION              SET SESSION AUTHORIZATION
+  CREATE TABLE                     SET TRANSACTION
+^Cpostgres=# help
+Está usando psql, la interfaz de línea de órdenes de PostgreSQL.
+Digite:  \copyright para ver los términos de distribución
+       \h para ayuda de órdenes SQL
+       \? para ayuda de órdenes psql
+       \g o punto y coma («;») para ejecutar la consulta
+       \q para salir
+postgres=# \?
+General
+  \copyright      mostrar tÚrminos de uso y distribuci¾n de PostgreSQL
+  \crosstabview [COLUMNAS]
+                  ejecutar la consulta y desplegar en ½crosstab╗
+  \errverbose     mostrar error mßs reciente en mßxima verbosidad
+  \g [(OPTIONS)] [FILE]
+                  ejecuta la consulta (y envÝa el resultado a un fichero o |pipe);
+                  \g sin argumentos es equivalente a un punto y coma
+  \gdesc          describir resultado de la consulta, sin ejecutarla
+  \gexec          ejecutar la consulta, luego ejecuta cada valor del resultado
+  \gset [PREFIJO] ejecutar la consulta y almacenar el resultado en variables
+                  de psql
+  \gx [(OPTIONS)] [FILE]
+                  como \g, pero fuerza el modo de salida expandido
+  \q              salir de psql
+  \watch [SEGS]   ejecutar consulta cada SEGS segundos
+
+Ayuda
+  \? [commands]   desplegar ayuda sobre las ¾rdenes backslash
+  \? options      desplegar ayuda sobre opciones de lÝnea de ¾rdenes
+  \? variables    desplegar ayuda sobre variables especiales
+  \h [NOMBRE]     mostrar ayuda de sintaxis de ¾rdenes SQL;
+                  use ½*╗ para todas las ¾rdenes
+
+B·fer de consulta
+  \e [ARCHIVO] [L═NEA]
+                  editar el b·fer de consulta (o archivo) con editor externo
+  \ef [NOMBRE-FUNCIËN [L═NEA]]
+                  editar una funci¾n con editor externo
+  \ev [NOMBRE-VISTA [L═NEA]]
+                  editar definici¾n de una vista con editor externo
+  \p              mostrar el contenido del b·fer de consulta
+  \r              reiniciar (limpiar) el b·fer de consulta
+  \w ARCHIVO      escribir b·fer de consulta a archivo
+
+Entrada/Salida
+        (con -n, donde existe, se omite el salto de lÝnea final)
+  \copy ...            ejecutar orden SQL COPY con flujo de datos al cliente
+  \echo [-n] [STRING]  escribe la cadena en la salida estßndar
+  \i ARCHIVO           ejecutar ¾rdenes desde archivo
+  \ir ARCHIVO          como \i, pero relativo a la ubicaci¾n del script actual
+  \o [ARCHIVO]         enviar resultados de consultas a archivo u |orden
+  \qecho [-n] [STRING] escribe la cadena hacia flujo de salida \o
+  \warn [-n] [STRING]  escribe la cadena a la salida de error estßndar
+
+Condicional
+  \if EXPRESIËN   inicia bloque condicional
+  \elif EXPR      alternativa dentro del bloque condicional actual
+  \else           alternativa final dentro del bloque condicional actual
+  \endif          termina el bloque condicional
+
+Informativo
+   (opciones: S = desplegar objetos de sistema, + = agregar mßs detalle)
+  \d[S+]            listar tablas, vistas y secuencias
+  \d[S+]  NOMBRE    describir tabla, Ýndice, secuencia o vista
+  \da[S]  [PATRËN]  listar funciones de agregaci¾n
+  \dA[+]  [PATRËN]  listar mÚtodos de acceso
+  \dAc[+] [AMPTRN [TYPEPTRN]]  listar las clases de operadores
+  \dAf[+] [AMPTRN [TYPEPTRN]]  listar las familias de operadores
+  \dAo[+] [AMPTRN [OPFPTRN]]   listar los operadores de la familia de operadores
+  \dAp[+] [AMPTRN [OPFPTRN]]   enumera las funciones de la familia de operadores
+  \db[+]  [PATRËN]  listar tablespaces
+  \dc[S+] [PATRËN]  listar conversiones
+  \dconfig[+] [PATRËN]  listar parßmetros de configuraci¾n
+  \dC[+]  [PATRËN]  listar conversiones de tipo (casts)
+  \dd[S]  [PATRËN]  listar comentarios de objetos que no aparecen en otra parte
+  \dD[S+] [PATRËN]  listar dominios
+  \ddp    [PATRËN]  listar privilegios por omisi¾n
+^Cpostgres=#
+postgres=# CREATE DATABASE db_profesor;
+CREATE DATABASE
+postgres=# \h
+Ayuda disponible:
+  ABORT                            CREATE USER MAPPING
+  ALTER AGGREGATE                  CREATE VIEW
+  ALTER COLLATION                  DEALLOCATE
+  ALTER CONVERSION                 DECLARE
+  ALTER DATABASE                   DELETE
+  ALTER DEFAULT PRIVILEGES         DISCARD
+  ALTER DOMAIN                     DO
+  ALTER EVENT TRIGGER              DROP ACCESS METHOD
+  ALTER EXTENSION                  DROP AGGREGATE
+  ALTER FOREIGN DATA WRAPPER       DROP CAST
+  ALTER FOREIGN TABLE              DROP COLLATION
+  ALTER FUNCTION                   DROP CONVERSION
+  ALTER GROUP                      DROP DATABASE
+  ALTER INDEX                      DROP DOMAIN
+  ALTER LANGUAGE                   DROP EVENT TRIGGER
+  ALTER LARGE OBJECT               DROP EXTENSION
+  ALTER MATERIALIZED VIEW          DROP FOREIGN DATA WRAPPER
+  ALTER OPERATOR                   DROP FOREIGN TABLE
+  ALTER OPERATOR CLASS             DROP FUNCTION
+  ALTER OPERATOR FAMILY            DROP GROUP
+  ALTER POLICY                     DROP INDEX
+  ALTER PROCEDURE                  DROP LANGUAGE
+  ALTER PUBLICATION                DROP MATERIALIZED VIEW
+^Cpostgres=# \?
+General
+  \copyright      mostrar tÚrminos de uso y distribuci¾n de PostgreSQL
+  \crosstabview [COLUMNAS]
+                  ejecutar la consulta y desplegar en ½crosstab╗
+  \errverbose     mostrar error mßs reciente en mßxima verbosidad
+  \g [(OPTIONS)] [FILE]
+                  ejecuta la consulta (y envÝa el resultado a un fichero o |pipe);
+                  \g sin argumentos es equivalente a un punto y coma
+  \gdesc          describir resultado de la consulta, sin ejecutarla
+  \gexec          ejecutar la consulta, luego ejecuta cada valor del resultado
+  \gset [PREFIJO] ejecutar la consulta y almacenar el resultado en variables
+                  de psql
+  \gx [(OPTIONS)] [FILE]
+                  como \g, pero fuerza el modo de salida expandido
+  \q              salir de psql
+  \watch [SEGS]   ejecutar consulta cada SEGS segundos
+
+Ayuda
+  \? [commands]   desplegar ayuda sobre las ¾rdenes backslash
+  \? options      desplegar ayuda sobre opciones de lÝnea de ¾rdenes
+  \? variables    desplegar ayuda sobre variables especiales
+  \h [NOMBRE]     mostrar ayuda de sintaxis de ¾rdenes SQL;
+                  use ½*╗ para todas las ¾rdenes
+
+B·fer de consulta
+  \e [ARCHIVO] [L═NEA]
+                  editar el b·fer de consulta (o archivo) con editor externo
+  \ef [NOMBRE-FUNCIËN [L═NEA]]
+                  editar una funci¾n con editor externo
+  \ev [NOMBRE-VISTA [L═NEA]]
+                  editar definici¾n de una vista con editor externo
+  \p              mostrar el contenido del b·fer de consulta
+  \r              reiniciar (limpiar) el b·fer de consulta
+  \w ARCHIVO      escribir b·fer de consulta a archivo
+
+Entrada/Salida
+        (con -n, donde existe, se omite el salto de lÝnea final)
+  \copy ...            ejecutar orden SQL COPY con flujo de datos al cliente
+  \echo [-n] [STRING]  escribe la cadena en la salida estßndar
+  \i ARCHIVO           ejecutar ¾rdenes desde archivo
+  \ir ARCHIVO          como \i, pero relativo a la ubicaci¾n del script actual
+  \o [ARCHIVO]         enviar resultados de consultas a archivo u |orden
+  \qecho [-n] [STRING] escribe la cadena hacia flujo de salida \o
+  \warn [-n] [STRING]  escribe la cadena a la salida de error estßndar
+
+Condicional
+  \if EXPRESIËN   inicia bloque condicional
+  \elif EXPR      alternativa dentro del bloque condicional actual
+  \else           alternativa final dentro del bloque condicional actual
+  \endif          termina el bloque condicional
+
+Informativo
+   (opciones: S = desplegar objetos de sistema, + = agregar mßs detalle)
+  \d[S+]            listar tablas, vistas y secuencias
+  \d[S+]  NOMBRE    describir tabla, Ýndice, secuencia o vista
+  \da[S]  [PATRËN]  listar funciones de agregaci¾n
+  \dA[+]  [PATRËN]  listar mÚtodos de acceso
+  \dAc[+] [AMPTRN [TYPEPTRN]]  listar las clases de operadores
+  \dAf[+] [AMPTRN [TYPEPTRN]]  listar las familias de operadores
+  \dAo[+] [AMPTRN [OPFPTRN]]   listar los operadores de la familia de operadores
+  \dAp[+] [AMPTRN [OPFPTRN]]   enumera las funciones de la familia de operadores
+  \db[+]  [PATRËN]  listar tablespaces
+  \dc[S+] [PATRËN]  listar conversiones
+  \dconfig[+] [PATRËN]  listar parßmetros de configuraci¾n
+  \dC[+]  [PATRËN]  listar conversiones de tipo (casts)
+  \dd[S]  [PATRËN]  listar comentarios de objetos que no aparecen en otra parte
+  \dD[S+] [PATRËN]  listar dominios
+  \ddp    [PATRËN]  listar privilegios por omisi¾n
+  \dE[S+] [PATRËN]  listar tablas forßneas
+  \des[+] [PATRËN]  listar servidores forßneos
+  \det[+] [PATRËN]  listar tablas forßneas
+  \deu[+] [PATRËN]  listar mapeos de usuario
+  \dew[+] [PATRËN]  listar conectores de datos externos
+  \df[anptw][S+] [FUNCPTRN [TYPEPTRN ...]]
+                    listar funciones [s¾lo ag./normal/proc./trigger/ventana]
+  \dF[+]  [PATRËN]  listar configuraciones de b·squeda en texto
+  \dFd[+] [PATRËN]  listar diccionarios de b·squeda en texto
+  \dFp[+] [PATRËN]  listar analizadores (parsers) de b·sq. en texto
+  \dFt[+] [PATRËN]  listar plantillas de b·squeda en texto
+  \dg[S+] [PATRËN]  listar roles
+  \di[S+] [PATRËN]  listar Ýndices
+  \dl[+]            listar objetos grandes, lo mismo que \lo_list
+  \dL[S+] [PATRËN]  listar lenguajes procedurales
+  \dm[S+] [PATRËN]  listar vistas materializadas
+  \dn[S+] [PATRËN]  listar esquemas
+  \do[S+] [OPPTRN [TYPEPTRN [TYPEPTRN]]]
+                    listar operadores
+  \dO[S]  [PATRËN]  listar ordenamientos (collations)
+  \dp     [PATRËN]  listar privilegios de acceso a tablas, vistas y secuencias
+  \dP[tin+] [PATRËN] listar relaciones particionadas (s¾lo tablas/Ýndices) [n=anidadas]
+  \drds [PATRËN_ROL [PATRËN_BASE]]
+                    listar parßmetros de rol por base de datos
+  \dRp[+] [PATRËN]  listar publicaciones de replicaci¾n
+  \dRs[+] [PATRËN]  listar suscripciones de replicaci¾n
+  \ds[S+] [PATRËN]  listar secuencias
+  \dt[S+] [PATRËN]  listar tablas
+  \dT[S+] [PATRËN]  listar tipos de dato
+  \du[S+] [PATRËN]  listar roles
+  \dv[S+] [PATRËN]  listar vistas
+  \dx[+]  [PATRËN]  listar extensiones
+  \dX     [PATRËN]  listar estadÝsticas extendidas
+  \dy[+]  [PATRËN]  listar disparadores por eventos
+  \l[+]   [PATRËN]  listar bases de datos
+  \sf[+]  FUNCIËN   mostrar la definici¾n de una funci¾n
+  \sv[+]  VISTA     mostrar la definici¾n de una vista
+  \z      [PATRËN]  lo mismo que \dp
+
+Objetos Grandes
+  \lo_export LOBOID ARCHIVO escribir objeto grande a archivo
+  \lo_import ARCHIVO [COMENTARIO]
+                    leer objeto grande desde archivo
+  \lo_list[+]       listar objetos grandes
+  \lo_unlink LOBOID borrar un objeto grande
+
+Formato
+  \a              cambiar entre modo de salida alineado y sin alinear
+  \C [CADENA]     definir tÝtulo de tabla, o indefinir si es vacÝo
+  \f [CADENA]     mostrar o definir separador de campos para
+                  modo de salida sin alinear
+  \H              cambiar modo de salida HTML (actualmente desactivado)
+  \pset [NOMBRE [VALOR]]  define opci¾n de tabla de salida
+                  (border|columns|csv_fieldsep|expanded|fieldsep|fieldsep_zero|
+                   footer|format|linestyle|null|numericlocale|pager|
+                   pager_min_lines|recordsep|recordsep_zero|tableattr|title|
+                   tuples_only|unicode_border_linestyle|unicode_column_linestyle|
+                   unicode_header_linestyle)
+  \t [on|off]      mostrar s¾lo filas (actualmente desactivado)
+  \T [CADENA]      definir atributos HTML de <table>, o indefinir si es vacÝo
+  \x [on|off|auto] cambiar modo expandido (actualmente desactivado)
+
+Conexiones
+  \c[onnect] [BASE-DE-DATOS|- USUARIO|- ANFITRIËN|- PUERTO|- | conninfo]
+                  conectar a una nueva base de datos (actual: ½postgres╗)
+  \conninfo       despliega la informaci¾n sobre la conexi¾n actual
+  \encoding [CODIFICACIËN]
+                  mostrar o definir codificaci¾n del cliente
+  \password [USUARIO]
+                  cambiar la contrase±a para un usuario en forma segura
+
+Sistema Operativo
+  \cd [DIR]        cambiar el directorio de trabajo actual
+  \getenv PSQLVAR ENVVAR obtener variable de ambiente
+  \setenv NOMBRE [VALOR]
+                   definir o indefinir variable de ambiente
+  \timing [on|off] mostrar tiempo de ejecuci¾n de ¾rdenes
+                   (actualmente desactivado)
+  \! [ORDEN]       ejecutar orden en intÚrprete de ¾rdenes (shell),
+                   o iniciar intÚrprete interactivo
+
+Variables
+  \prompt [TEXTO] NOMBRE  preguntar al usuario el valor de la variable
+  \set [NOMBRE [VALOR]]   definir variables internas,
+                          listar todas si no se dan parßmetros
+  \unset NOMBRE           indefinir (eliminar) variable interna
+
+postgres=#
+postgres=# \c db_profesor;
+Ahora está conectado a la base de datos «db_profesor» con el usuario «postgres».
+db_profesor=# CREATE TABLE personas(
+db_profesor(#     cedula varchar(10),
+db_profesor(#     nombre varchar(30),
+db_profesor(#     apellido varchar(30),
+db_profesor(#     correo varchar(60),
+db_profesor(#     telefono varchar(20),
+db_profesor(#     direccion text
+db_profesor(# );
+CREATE TABLE
+db_profesor=# \d personas;
+                         Tabla ½public.personas╗
+  Columna  |         Tipo          | Ordenamiento | Nulable | Por omisi¾n
+-----------+-----------------------+--------------+---------+-------------
+ cedula    | character varying(10) |              |         |
+ nombre    | character varying(30) |              |         |
+ apellido  | character varying(30) |              |         |
+ correo    | character varying(60) |              |         |
+ telefono  | character varying(20) |              |         |
+ direccion | text                  |              |         |
+
+
+db_profesor=# insert into personas(
+db_profesor(#     cedula, nombre, apellido,
+db_profesor(#     correo, telefono, direccion
+db_profesor(# ) values
+db_profesor-# ('V1234', 'ANA' , 'VASQUEZ',
+db_profesor(# 'AV@GMAIL.COM', '414 1234567', 'SANTA FE');
+INSERT 0 1
+db_profesor=# SELECT * FROM PERSONAS;
+ cedula | nombre | apellido |    correo    |  telefono   | direccion
+--------+--------+----------+--------------+-------------+-----------
+ V1234  | ANA    | VASQUEZ  | AV@GMAIL.COM | 414 1234567 | SANTA FE
+(1 fila)
+
+
+db_profesor=# \l db*
+                                                            Listado de base de datos
+   Nombre    |  Due±o   | Codificaci¾n |        Collate         |         Ctype          | configuraci¾n ICU | Proveedor de locale | Privilegios
+-------------+----------+--------------+------------------------+------------------------+-------------------+---------------------+-------------
+ db_andres   | postgres | UTF8         | Spanish_Venezuela.1252 | Spanish_Venezuela.1252 |                   | libc                |
+ db_jose     | postgres | UTF8         | Spanish_Venezuela.1252 | Spanish_Venezuela.1252 |                   | libc                |
+ db_profesor | postgres | UTF8         | Spanish_Venezuela.1252 | Spanish_Venezuela.1252 |                   | libc                |
+ db_ricardo  | postgres | UTF8         | Spanish_Venezuela.1252 | Spanish_Venezuela.1252 |                   | libc                |
+(4 filas)
+
+
+db_profesor=# \l
+                                                                 Listado de base de datos
+   Nombre    |  Due±o   | Codificaci¾n |        Collate         |         Ctype          | configuraci¾n ICU | Proveedor de locale |      Privilegios
+-------------+----------+--------------+------------------------+------------------------+-------------------+---------------------+-----------------------
+ db_andres   | postgres | UTF8         | Spanish_Venezuela.1252 | Spanish_Venezuela.1252 |                   | libc                |
+ db_jose     | postgres | UTF8         | Spanish_Venezuela.1252 | Spanish_Venezuela.1252 |                   | libc                |
+ db_profesor | postgres | UTF8         | Spanish_Venezuela.1252 | Spanish_Venezuela.1252 |                   | libc                |
+ db_ricardo  | postgres | UTF8         | Spanish_Venezuela.1252 | Spanish_Venezuela.1252 |                   | libc                |
+ postgres    | postgres | UTF8         | Spanish_Venezuela.1252 | Spanish_Venezuela.1252 |                   | libc                |
+ template0   | postgres | UTF8         | Spanish_Venezuela.1252 | Spanish_Venezuela.1252 |                   | libc                | =c/postgres          +
+             |          |              |                        |                        |                   |                     | postgres=CTc/postgres
+ template1   | postgres | UTF8         | Spanish_Venezuela.1252 | Spanish_Venezuela.1252 |                   | libc                | =c/postgres          +
+             |          |              |                        |                        |                   |                     | postgres=CTc/postgres
+(7 filas)
+
+
+db_profesor=#
+db_profesor=#
+db_profesor=#
+db_profesor=#
+db_profesor=# CREATE TABLE personas_serial(
+db_profesor(#     id serial,
+db_profesor(#     cedula varchar(10),
+db_profesor(#     nombre varchar(30),
+db_profesor(#     apellido varchar(30),
+db_profesor(#     correo varchar(60),
+db_profesor(#     telefono varchar(20),
+db_profesor(#     direccion text,
+db_profesor(#     primary key(id)
+db_profesor(# );
+CREATE TABLE
+db_profesor=# \dt
+            Listado de relaciones
+ Esquema |     Nombre      | Tipo  |  Due±o
+---------+-----------------+-------+----------
+ public  | personas        | tabla | postgres
+ public  | personas_serial | tabla | postgres
+(2 filas)
+
+
+db_profesor=# \ds
+                  Listado de relaciones
+ Esquema |         Nombre         |   Tipo    |  Due±o
+---------+------------------------+-----------+----------
+ public  | personas_serial_id_seq | secuencia | postgres
+(1 fila)
+
+
+db_profesor=#
+db_profesor=# \d
+                  Listado de relaciones
+ Esquema |         Nombre         |   Tipo    |  Due±o
+---------+------------------------+-----------+----------
+ public  | personas               | tabla     | postgres
+ public  | personas_serial        | tabla     | postgres
+ public  | personas_serial_id_seq | secuencia | postgres
+(3 filas)
+
+
+db_profesor=# \d personas_serial;
+                                      Tabla ½public.personas_serial╗
+  Columna  |         Tipo          | Ordenamiento | Nulable  |                 Por omisi¾n             
+-----------+-----------------------+--------------+----------+---------------------------------------------
+ id        | integer               |              | not null | nextval('personas_serial_id_seq'::regclass)
+ cedula    | character varying(10) |              |          |
+ nombre    | character varying(30) |              |          |
+ apellido  | character varying(30) |              |          |
+ correo    | character varying(60) |              |          |
+ telefono  | character varying(20) |              |          |
+ direccion | text                  |              |          |
+═ndices:
+    "personas_serial_pkey" PRIMARY KEY, btree (id)
+
+
+db_profesor=# \d personas_serial_id_seq;
+               Secuencia ½public.personas_serial_id_seq╗
+  Tipo   | Inicio | MÝnimo |   Mßximo   | Incremento | ┐Cicla? | Cache
+---------+--------+--------+------------+------------+---------+-------
+ integer |      1 |      1 | 2147483647 |          1 | no      |     1
+Asociada a: public.personas_serial.id
+
+
+db_profesor=# select * from personas_serial;
+ id | cedula | nombre | apellido | correo | telefono | direccion
+----+--------+--------+----------+--------+----------+-----------
+(0 filas)
+
+
+db_profesor=# insert into personas_serial(
+db_profesor(#     cedula, nombre, apellido,
+db_profesor(#     correo, telefono, direccion
+db_profesor(# ) values
+db_profesor-# ('V1234', 'ANA' , 'VASQUEZ',
+db_profesor(# 'AV@GMAIL.COM', '414 1234567', 'SANTA FE');
+INSERT 0 1
+db_profesor=# select * from personas_serial;
+ id | cedula | nombre | apellido |    correo    |  telefono   | direccion
+----+--------+--------+----------+--------------+-------------+-----------
+  1 | V1234  | ANA    | VASQUEZ  | AV@GMAIL.COM | 414 1234567 | SANTA FE
+(1 fila)
+
+
+db_profesor=# \dt personas_serial_id_seq;
+No se encontró relación llamada «personas_serial_id_seq».
+db_profesor=# \d personas_serial_id_seq;
+               Secuencia ½public.personas_serial_id_seq╗
+  Tipo   | Inicio | MÝnimo |   Mßximo   | Incremento | ┐Cicla? | Cache
+---------+--------+--------+------------+------------+---------+-------
+ integer |      1 |      1 | 2147483647 |          1 | no      |     1
+Asociada a: public.personas_serial.id
+
+
+db_profesor=# \dt personas_serial;
+            Listado de relaciones
+ Esquema |     Nombre      | Tipo  |  Due±o
+---------+-----------------+-------+----------
+ public  | personas_serial | tabla | postgres
+(1 fila)
+
+
+db_profesor=# \d personas_serial;
+                                      Tabla ½public.personas_serial╗
+  Columna  |         Tipo          | Ordenamiento | Nulable  |                 Por omisi¾n             
+-----------+-----------------------+--------------+----------+---------------------------------------------
+ id        | integer               |              | not null | nextval('personas_serial_id_seq'::regclass)
+ cedula    | character varying(10) |              |          |
+ nombre    | character varying(30) |              |          |
+ apellido  | character varying(30) |              |          |
+ correo    | character varying(60) |              |          |
+ telefono  | character varying(20) |              |          |
+ direccion | text                  |              |          |
+═ndices:
+    "personas_serial_pkey" PRIMARY KEY, btree (id)
+
+
+db_profesor=# create table proveedores(
+db_profesor(#     id serial,
+db_profesor(#     nombre varchar(80),
+db_profesor(#     direccion text,
+db_profesor(#     telefono varchar(40),
+db_profesor(#     correo_electronico varchar(80),
+db_profesor(#     primary key(id)
+db_profesor(# );
+CREATE TABLE
+db_profesor=# create table productos(
+db_profesor(#     id serial,
+db_profesor(#     proveedor_id integer unsigned,
+db_profesor(#     nombre varchar(80),
+db_profesor(#     existencias integer,
+db_profesor(#     precio numeric(13,2),
+db_profesor(#     foreign key(proveedor_id) references proveedores(id) on delete cascade on update cascade
+db_profesor(# );
+ERROR:  error de sintaxis en o cerca de «unsigned»
+LÍNEA 3:     proveedor_id integer unsigned,
+                                  ^
+db_profesor=# create table productos(
+db_profesor(#     id serial,
+db_profesor(#     proveedor_id integer,
+db_profesor(#     nombre varchar(80),
+db_profesor(#     existencias integer,
+db_profesor(#     precio numeric(13,2),
+db_profesor(#     foreign key(proveedor_id) references proveedores(id) on delete cascade on update cascade
+db_profesor(# );
+CREATE TABLE
+db_profesor=# \d
+                  Listado de relaciones
+ Esquema |         Nombre         |   Tipo    |  Due±o
+---------+------------------------+-----------+----------
+ public  | personas               | tabla     | postgres
+ public  | personas_serial        | tabla     | postgres
+ public  | personas_serial_id_seq | secuencia | postgres
+ public  | productos              | tabla     | postgres
+ public  | productos_id_seq       | secuencia | postgres
+ public  | proveedores            | tabla     | postgres
+ public  | proveedores_id_seq     | secuencia | postgres
+(7 filas)
+
+
+db_profesor=# insert into proveedores(nombre, direccion,
+db_profesor(#     telefono, correo_electronico) values
+db_profesor-# ('GENERAL ELECTRIC','AV. LECUNA','2121112233','info@ge.com'),
+db_profesor-# ('LG','AV. ROMULO GALLEGOS','2121112277','info@lg.com'),
+db_profesor-# ('MABE','AV. FCO. DE MIRANDA','2123334455','info@mabe.com');
+INSERT 0 3
+db_profesor=# insert into productos(proveedor_id, nombre,
+db_profesor(#     existencias, precio) values
+db_profesor-# (1,'NEVERA',6,500.25),
+db_profesor-# (1,'COCINA',3,300.75),
+db_profesor-# (2,'LAVADORA',2,800.50),
+db_profesor-# (3,'AIRE ACONDICIONADO',4,600.75),
+db_profesor-# (3,'TELEVISOR',7,400.00),
+db_profesor-# (3,'LAPTOP',5,1200.00),
+db_profesor-# (2,'MICROONDAS',8,150.25),
+db_profesor-# (1,'LICUADORA',12,100.00),
+db_profesor-# (2,'PLANCHA',12,75.50),
+db_profesor-# (3,'VENTILADOR',12,50.00),
+db_profesor-# (1,'HORNO A GAS',6,450.00),
+db_profesor-# (2,'CAFETERA',12,250.00),
+db_profesor-# (3,'TOSTADORA',12,80.00);
+INSERT 0 13
+db_profesor=# help alter table;
+ERROR:  error de sintaxis en o cerca de «help»
+LÍNEA 1: help alter table;
+         ^
+db_profesor=# \h alter table
+Orden:       ALTER TABLE
+Descripci¾n: cambia la definici¾n de una tabla
+Sintaxis:
+ALTER TABLE [ IF EXISTS ] [ ONLY ] nombre [ * ]
+    acci¾n [, ... ]
+ALTER TABLE [ IF EXISTS ] [ ONLY ] nombre [ * ]
+    RENAME [ COLUMN ] nombre_de_columna TO nuevo_nombre_de_columna
+ALTER TABLE [ IF EXISTS ] [ ONLY ] nombre [ * ]
+    RENAME CONSTRAINT nombre_restricci¾n TO nuevo_nombre_restricci¾n
+ALTER TABLE [ IF EXISTS ] nombre
+    RENAME TO nuevo_nombre
+ALTER TABLE [ IF EXISTS ] nombre
+    SET SCHEMA nuevo_esquema
+ALTER TABLE ALL IN TABLESPACE nombre [ OWNED BY nombre_de_rol [, ... ] ]
+    SET TABLESPACE nuevo_tablespace [ NOWAIT ]
+ALTER TABLE [ IF EXISTS ] nombre
+    ATTACH PARTITION nombre_de_partici¾n { FOR VALUES borde_de_partici¾n | DEFAULT }
+ALTER TABLE [ IF EXISTS ] nombre
+    DETACH PARTITION nombre_de_partici¾n [ CONCURRENTLY | FINALIZE ]
+
+donde acci¾n es una de:
+
+    ADD [ COLUMN ] [ IF NOT EXISTS ] nombre_de_columna tipo_de_dato [ COLLATE ordenamiento ] [ restricci¾n_de_columna [ ... ] ]
+    DROP [ COLUMN ] [ IF EXISTS ] nombre_de_columna [ RESTRICT | CASCADE ]
+    ALTER [ COLUMN ] nombre_de_columna [ SET DATA ] TYPE tipo_de_dato [ COLLATE ordenamiento ] [ USING expresi¾n ]
+    ALTER [ COLUMN ] nombre_de_columna SET DEFAULT expresi¾n
+    ALTER [ COLUMN ] nombre_de_columna DROP DEFAULT
+    ALTER [ COLUMN ] nombre_de_columna { SET | DROP } NOT NULL
+    ALTER [ COLUMN ] nombre_de_columna DROP EXPRESSION [ IF EXISTS ]
+    ALTER [ COLUMN ] nombre_de_columna ADD GENERATED { ALWAYS | BY DEFAULT } AS IDENTITY [ ( opciones_de_secuencia ) ]
+    ALTER [ COLUMN ] nombre_de_columna { SET GENERATED { ALWAYS | BY DEFAULT } | SET opci¾n_de_secuencia | RESTART [ [ WITH ] reinicio ] } [...]
+    ALTER [ COLUMN ] nombre_de_columna DROP IDENTITY [ IF EXISTS ]
+    ALTER [ COLUMN ] nombre_de_columna SET STATISTICS entero
+    ALTER [ COLUMN ] nombre_de_columna SET ( opci¾n_de_atributo = valor [, ... ] )
+    ALTER [ COLUMN ] nombre_de_columna RESET ( opci¾n_de_atributo [, ... ] )
+    ALTER [ COLUMN ] nombre_de_columna SET STORAGE { PLAIN | EXTERNAL | EXTENDED | MAIN }
+    ALTER [ COLUMN ] nombre_de_columna SET COMPRESSION mÚtodo_de_compresi¾n
+    ADD restricci¾n_de_tabla [ NOT VALID ]
+    ADD restricci¾n_de_tabla_con_Ýndice
+    ALTER CONSTRAINT nombre_restricci¾n [ DEFERRABLE | NOT DEFERRABLE ] [ INITIALLY DEFERRED | INITIALLY IMMEDIATE ]
+    VALIDATE CONSTRAINT nombre_restricci¾n
+    DROP CONSTRAINT [ IF EXISTS ]  nombre_restricci¾n [ RESTRICT | CASCADE ]
+    DISABLE TRIGGER [ nombre_disparador | ALL | USER ]
+    ENABLE TRIGGER [ nombre_disparador | ALL | USER ]
+    ENABLE REPLICA TRIGGER nombre_disparador
+    ENABLE ALWAYS TRIGGER nombre_disparador
+    DISABLE RULE nombre_regla_de_reescritura
+    ENABLE RULE nombre_regla_de_reescritura
+    ENABLE REPLICA RULE nombre_regla_de_reescritura
+    ENABLE ALWAYS RULE nombre_regla_de_reescritura
+    DISABLE ROW LEVEL SECURITY
+    ENABLE ROW LEVEL SECURITY
+    FORCE ROW LEVEL SECURITY
+    NO FORCE ROW LEVEL SECURITY
+    CLUSTER ON nombre_Ýndice
+    SET WITHOUT CLUSTER
+    SET WITHOUT OIDS
+    SET ACCESS METHOD nuevo_mÚtodo_de_acceso
+    SET TABLESPACE nuevo_tablespace
+    SET { LOGGED | UNLOGGED }
+    SET ( parßmetro_de_almacenamiento [= valor] [, ... ] )
+    RESET ( parßmetro_de_almacenamiento [, ... ] )
+    INHERIT tabla_padre
+    NO INHERIT tabla_padre
+    OF nombre_de_tipo
+    NOT OF
+    OWNER TO { nuevo_due±o | CURRENT_ROLE | CURRENT_USER | SESSION_USER }
+    REPLICA IDENTITY { DEFAULT | USING INDEX nombre_Ýndice | FULL | NOTHING }
+
+y borde_de_partici¾n es:
+
+IN ( expresi¾n_de_borde_de_partici¾n [, ...] ) |
+FROM ( { expresi¾n_de_borde_de_partici¾n | MINVALUE | MAXVALUE } [, ...] )
+  TO ( { expresi¾n_de_borde_de_partici¾n | MINVALUE | MAXVALUE } [, ...] ) |
+WITH ( MODULUS literal_numÚrico, REMAINDER literal_numÚrico )
+
+donde restricci¾n_de_columna es:
+
+[ CONSTRAINT nombre_restricci¾n ]
+{ NOT NULL |
+  NULL |
+  CHECK ( expresi¾n ) [ NO INHERIT ] |
+  DEFAULT expr_por_omisi¾n |
+  GENERATED ALWAYS AS ( expr_de_generaci¾n ) STORED |
+  GENERATED { ALWAYS | BY DEFAULT } AS IDENTITY [ ( opciones_de_secuencia ) ] |
+  UNIQUE [ NULLS [ NOT ] DISTINCT ] parßmetros_de_Ýndice |
+  PRIMARY KEY parßmetros_de_Ýndice |
+  REFERENCES tabla_ref [ ( columna_ref ) ] [ MATCH FULL | MATCH PARTIAL | MATCH SIMPLE ]
+    [ ON DELETE acci¾n_referencial ] [ ON UPDATE acci¾n_referencial ] }
+[ DEFERRABLE | NOT DEFERRABLE ] [ INITIALLY DEFERRED | INITIALLY IMMEDIATE ]
+
+y restricci¾n_de_tabla es:
+
+[ CONSTRAINT nombre_restricci¾n ]
+{ CHECK ( expresi¾n ) [ NO INHERIT ] |
+  UNIQUE [ NULLS [ NOT ] DISTINCT ] ( nombre_de_columna [, ... ] ) parßmetros_de_Ýndice |
+  PRIMARY KEY ( nombre_de_columna [, ... ] ) parßmetros_de_Ýndice |
+  EXCLUDE [ USING mÚtodo_de_Ýndice ] ( elemento_de_exclusi¾n WITH operador [, ... ] ) parßmetros_de_Ýndice [ WHERE ( predicado ) ] |
+  FOREIGN KEY ( nombre_de_columna [, ... ] ) REFERENCES tabla_ref [ ( columna_ref [, ... ] ) ]
+    [ MATCH FULL | MATCH PARTIAL | MATCH SIMPLE ] [ ON DELETE acci¾n_referencial ] [ ON UPDATE acci¾n_referencial ] }
+[ DEFERRABLE | NOT DEFERRABLE ] [ INITIALLY DEFERRED | INITIALLY IMMEDIATE ]
+
+y restricci¾n_de_tabla_con_Ýndice es:
+
+    [ CONSTRAINT nombre_restricci¾n ]
+    { UNIQUE | PRIMARY KEY } USING INDEX nombre_Ýndice
+    [ DEFERRABLE | NOT DEFERRABLE ] [ INITIALLY DEFERRED | INITIALLY IMMEDIATE ]
+
+parßmetros_de_Ýndice en UNIQUE, PRIMARY KEY y EXCLUDE son:
+
+[ INCLUDE ( nombre_de_columna [, ... ] ) ]
+[ WITH ( parßmetro_de_almacenamiento [= valor] [, ... ] ) ]
+[ USING INDEX TABLESPACE nombre_de_tablespace ]
+
+elemento_de_exclusi¾n en una restricci¾n EXCLUDE es:
+
+{ nombre_de_columna | ( expresi¾n ) } [ COLLATE ordenamiento ] [ clase_de_ops [ ( parßmetro_opclass = valor [, ... ] ) ] ] [ ASC | DESC ] [ NULLS { FIRST | LAST } ]
+
+acci¾n_referencial en una restricci¾n FOREIGN KEY/REFERENCES es:
+
+{ NO ACTION | RESTRICT | CASCADE | SET NULL [ ( nombre_de_columna [, ... ] ) ] | SET DEFAULT [ ( nombre_de_columna [, ... ] ) ] }
+
+URL: https://www.postgresql.org/docs/15/sql-altertable.html
+
+^Cdb_profesor=#
+db_profesor=# alter table productos rename existencias to existencia;
+ALTER TABLE
+db_profesor=# \dt productos;
+         Listado de relaciones
+ Esquema |  Nombre   | Tipo  |  Due±o
+---------+-----------+-------+----------
+ public  | productos | tabla | postgres
+(1 fila)
+
+
+db_profesor=# \d productos;
+                                        Tabla ½public.productos╗
+   Columna    |         Tipo          | Ordenamiento | Nulable  |              Por omisi¾n             
+--------------+-----------------------+--------------+----------+---------------------------------------
+ id           | integer               |              | not null | nextval('productos_id_seq'::regclass) proveedor_id | integer               |              |          |
+ nombre       | character varying(80) |              |          |
+ existencia   | integer               |              |          |
+ precio       | numeric(13,2)         |              |          |
+Restricciones de llave forßnea:
+    "productos_proveedor_id_fkey" FOREIGN KEY (proveedor_id) REFERENCES proveedores(id) ON UPDATE CASCADE ON DELETE CASCADE
+
+
+db_profesor=# \d personas;
+                         Tabla ½public.personas╗
+  Columna  |         Tipo          | Ordenamiento | Nulable | Por omisi¾n
+-----------+-----------------------+--------------+---------+-------------
+ cedula    | character varying(10) |              |         |
+ nombre    | character varying(30) |              |         |
+ apellido  | character varying(30) |              |         |
+ correo    | character varying(60) |              |         |
+ telefono  | character varying(20) |              |         |
+ direccion | text                  |              |         |
+
+
+db_profesor=# alter table personas add column telefono_ofi varchar(20);
+ALTER TABLE
+db_profesor=# alter table personas add column telefono_cel varchar(20);
+ALTER TABLE
+db_profesor=# \d personas;
+                           Tabla ½public.personas╗
+   Columna    |         Tipo          | Ordenamiento | Nulable | Por omisi¾n
+--------------+-----------------------+--------------+---------+-------------
+ cedula       | character varying(10) |              |         |
+ nombre       | character varying(30) |              |         |
+ apellido     | character varying(30) |              |         |
+ correo       | character varying(60) |              |         |
+ telefono     | character varying(20) |              |         |
+ direccion    | text                  |              |         |
+ telefono_ofi | character varying(20) |              |         |
+ telefono_cel | character varying(20) |              |         |
+
+
+db_profesor=#
+db_profesor=# alter table personas alter column telefono_cel SET DATA TYPE text;
+ALTER TABLE
+db_profesor=# \d personas;
+                           Tabla ½public.personas╗
+   Columna    |         Tipo          | Ordenamiento | Nulable | Por omisi¾n
+--------------+-----------------------+--------------+---------+-------------
+ cedula       | character varying(10) |              |         |
+ nombre       | character varying(30) |              |         |
+ apellido     | character varying(30) |              |         |
+ correo       | character varying(60) |              |         |
+ telefono     | character varying(20) |              |         |
+ direccion    | text                  |              |         |
+ telefono_ofi | character varying(20) |              |         |
+ telefono_cel | text                  |              |         |
+
+
+db_profesor=# alter table personas drop column telefono_cel;
+ALTER TABLE
+db_profesor=# alter table personas drop column telefono_ofi;
+ALTER TABLE
+db_profesor=# \d personas;
+                         Tabla ½public.personas╗
+  Columna  |         Tipo          | Ordenamiento | Nulable | Por omisi¾n
+-----------+-----------------------+--------------+---------+-------------
+ cedula    | character varying(10) |              |         |
+ nombre    | character varying(30) |              |         |
+ apellido  | character varying(30) |              |         |
+ correo    | character varying(60) |              |         |
+ telefono  | character varying(20) |              |         |
+ direccion | text                  |              |         |
+
+
+db_profesor=# SELECT * FROM PROVEEDORES;
+ id |      nombre      |      direccion      |  telefono  | correo_electronico
+----+------------------+---------------------+------------+--------------------
+  1 | GENERAL ELECTRIC | AV. LECUNA          | 2121112233 | info@ge.com
+  2 | LG               | AV. ROMULO GALLEGOS | 2121112277 | info@lg.com
+  3 | MABE             | AV. FCO. DE MIRANDA | 2123334455 | info@mabe.com
+(3 filas)
+
+
+db_profesor=# SELECT * FROM PRODUCTOS;
+ id | proveedor_id |       nombre       | existencia | precio
+----+--------------+--------------------+------------+---------
+  1 |            1 | NEVERA             |          6 |  500.25
+  2 |            1 | COCINA             |          3 |  300.75
+  3 |            2 | LAVADORA           |          2 |  800.50
+  4 |            3 | AIRE ACONDICIONADO |          4 |  600.75
+  5 |            3 | TELEVISOR          |          7 |  400.00
+  6 |            3 | LAPTOP             |          5 | 1200.00
+  7 |            2 | MICROONDAS         |          8 |  150.25
+  8 |            1 | LICUADORA          |         12 |  100.00
+  9 |            2 | PLANCHA            |         12 |   75.50
+ 10 |            3 | VENTILADOR         |         12 |   50.00
+ 11 |            1 | HORNO A GAS        |          6 |  450.00
+ 12 |            2 | CAFETERA           |         12 |  250.00
+ 13 |            3 | TOSTADORA          |         12 |   80.00
+(13 filas)
+
+
+db_profesor=# SELECT PROVEEDORES.NOMBRE,
+db_profesor-#        PRODUCTOS.NOMBRE,
+db_profesor-#        PRODUCTOS.PRECIO,
+db_profesor-#        PRODUCTOS.EXISTENCIA
+db_profesor-#        FROM PROVEEDORES, PRODUCTOS
+db_profesor-#        WHERE PRODUCTOS.PROVEEDOR_ID = PROVEEDORES.ID;
+      nombre      |       nombre       | precio  | existencia
+------------------+--------------------+---------+------------
+ GENERAL ELECTRIC | NEVERA             |  500.25 |          6
+ GENERAL ELECTRIC | COCINA             |  300.75 |          3
+ LG               | LAVADORA           |  800.50 |          2
+ MABE             | AIRE ACONDICIONADO |  600.75 |          4
+ MABE             | TELEVISOR          |  400.00 |          7
+ MABE             | LAPTOP             | 1200.00 |          5
+ LG               | MICROONDAS         |  150.25 |          8
+ GENERAL ELECTRIC | LICUADORA          |  100.00 |         12
+ LG               | PLANCHA            |   75.50 |         12
+ MABE             | VENTILADOR         |   50.00 |         12
+ GENERAL ELECTRIC | HORNO A GAS        |  450.00 |          6
+ LG               | CAFETERA           |  250.00 |         12
+ MABE             | TOSTADORA          |   80.00 |         12
+(13 filas)
+
+
+db_profesor=# SELECT A.NOMBRE AS "Nombre del Proveedor",
+db_profesor-#        B.NOMBRE AS "Nombre del Producto",
+db_profesor-#        B.PRECIO AS "Precio",
+db_profesor-#        B.EXISTENCIA AS "Cantidad en Existencia"
+db_profesor-#        FROM PROVEEDORES AS A, PRODUCTOS AS B
+db_profesor-#        WHERE B.PROVEEDOR_ID = A.ID;
+ Nombre del Proveedor | Nombre del Producto | Precio  | Cantidad en Existencia
+----------------------+---------------------+---------+------------------------
+ GENERAL ELECTRIC     | NEVERA              |  500.25 |                      6
+ GENERAL ELECTRIC     | COCINA              |  300.75 |                      3
+ LG                   | LAVADORA            |  800.50 |                      2
+ MABE                 | AIRE ACONDICIONADO  |  600.75 |                      4
+ MABE                 | TELEVISOR           |  400.00 |                      7
+ MABE                 | LAPTOP              | 1200.00 |                      5
+ LG                   | MICROONDAS          |  150.25 |                      8
+ GENERAL ELECTRIC     | LICUADORA           |  100.00 |                     12
+ LG                   | PLANCHA             |   75.50 |                     12
+ MABE                 | VENTILADOR          |   50.00 |                     12
+ GENERAL ELECTRIC     | HORNO A GAS         |  450.00 |                      6
+ LG                   | CAFETERA            |  250.00 |                     12
+ MABE                 | TOSTADORA           |   80.00 |                     12
+(13 filas)
+
+
+db_profesor=# CREATE VIEW vista_proveedores_productos AS
+db_profesor-# SELECT A.NOMBRE AS "Nombre del Proveedor",
+db_profesor-#        B.NOMBRE AS "Nombre del Producto",
+db_profesor-#        B.PRECIO AS "Precio",
+db_profesor-#        B.EXISTENCIA AS "Cantidad en Existencia"
+db_profesor-#        FROM PROVEEDORES AS A, PRODUCTOS AS B
+db_profesor-#        WHERE B.PROVEEDOR_ID = A.ID;
+CREATE VIEW
+db_profesor=# \d
+                    Listado de relaciones
+ Esquema |           Nombre            |   Tipo    |  Due±o
+---------+-----------------------------+-----------+----------
+ public  | personas                    | tabla     | postgres
+ public  | personas_serial             | tabla     | postgres
+ public  | personas_serial_id_seq      | secuencia | postgres
+ public  | productos                   | tabla     | postgres
+ public  | productos_id_seq            | secuencia | postgres
+ public  | proveedores                 | tabla     | postgres
+ public  | proveedores_id_seq          | secuencia | postgres
+ public  | vista_proveedores_productos | vista     | postgres
+(8 filas)
+
+
+db_profesor=# \dv
+                  Listado de relaciones
+ Esquema |           Nombre            | Tipo  |  Due±o
+---------+-----------------------------+-------+----------
+ public  | vista_proveedores_productos | vista | postgres
+(1 fila)
+
+
+db_profesor=# select * from vista_proveedores_productos;
+ Nombre del Proveedor | Nombre del Producto | Precio  | Cantidad en Existencia
+----------------------+---------------------+---------+------------------------
+ GENERAL ELECTRIC     | NEVERA              |  500.25 |                      6
+ GENERAL ELECTRIC     | COCINA              |  300.75 |                      3
+ LG                   | LAVADORA            |  800.50 |                      2
+ MABE                 | AIRE ACONDICIONADO  |  600.75 |                      4
+ MABE                 | TELEVISOR           |  400.00 |                      7
+ MABE                 | LAPTOP              | 1200.00 |                      5
+ LG                   | MICROONDAS          |  150.25 |                      8
+ GENERAL ELECTRIC     | LICUADORA           |  100.00 |                     12
+ LG                   | PLANCHA             |   75.50 |                     12
+ MABE                 | VENTILADOR          |   50.00 |                     12
+ GENERAL ELECTRIC     | HORNO A GAS         |  450.00 |                      6
+ LG                   | CAFETERA            |  250.00 |                     12
+ MABE                 | TOSTADORA           |   80.00 |                     12
+(13 filas)
+
+
+db_profesor=# select "Nombre del Producto", "Cantidad en Existencia", "Precio"
+db_profesor-# from vista_proveedores_productos;
+ Nombre del Producto | Cantidad en Existencia | Precio
+---------------------+------------------------+---------
+ NEVERA              |                      6 |  500.25
+ COCINA              |                      3 |  300.75
+ LAVADORA            |                      2 |  800.50
+ AIRE ACONDICIONADO  |                      4 |  600.75
+ TELEVISOR           |                      7 |  400.00
+ LAPTOP              |                      5 | 1200.00
+ MICROONDAS          |                      8 |  150.25
+ LICUADORA           |                     12 |  100.00
+ PLANCHA             |                     12 |   75.50
+ VENTILADOR          |                     12 |   50.00
+ HORNO A GAS         |                      6 |  450.00
+ CAFETERA            |                     12 |  250.00
+ TOSTADORA           |                     12 |   80.00
+(13 filas)
+
+
+db_profesor=# SELECT A.NOMBRE AS PROVEEDOR,
+db_profesor-#        B.NOMBRE AS PRODUCTO,
+db_profesor-#        B.PRECIO,
+db_profesor-#        B.EXISTENCIA
+db_profesor-#        FROM PROVEEDORES AS A
+db_profesor-#        INNER JOIN PRODUCTOS AS B
+db_profesor-#        ON B.PROVEEDOR_ID = A.ID;
+    proveedor     |      producto      | precio  | existencia
+------------------+--------------------+---------+------------
+ GENERAL ELECTRIC | NEVERA             |  500.25 |          6
+ GENERAL ELECTRIC | COCINA             |  300.75 |          3
+ LG               | LAVADORA           |  800.50 |          2
+ MABE             | AIRE ACONDICIONADO |  600.75 |          4
+ MABE             | TELEVISOR          |  400.00 |          7
+ MABE             | LAPTOP             | 1200.00 |          5
+ LG               | MICROONDAS         |  150.25 |          8
+ GENERAL ELECTRIC | LICUADORA          |  100.00 |         12
+ LG               | PLANCHA            |   75.50 |         12
+ MABE             | VENTILADOR         |   50.00 |         12
+ GENERAL ELECTRIC | HORNO A GAS        |  450.00 |          6
+ LG               | CAFETERA           |  250.00 |         12
+ MABE             | TOSTADORA          |   80.00 |         12
+(13 filas)
+
+
+db_profesor=# CREATE VIEW VISTA_INNER_JOIN_PROVEEDORES_PRODUCTOS AS
+db_profesor-# SELECT A.NOMBRE AS PROVEEDOR,
+db_profesor-#        B.NOMBRE AS PRODUCTO,
+db_profesor-#        B.PRECIO,
+db_profesor-#        B.EXISTENCIA
+db_profesor-#        FROM PROVEEDORES AS A
+db_profesor-#        INNER JOIN PRODUCTOS AS B
+db_profesor-#        ON B.PROVEEDOR_ID = A.ID;
+CREATE VIEW
+db_profesor=# \dv
+                        Listado de relaciones
+ Esquema |                 Nombre                 | Tipo  |  Due±o
+---------+----------------------------------------+-------+----------
+ public  | vista_inner_join_proveedores_productos | vista | postgres
+ public  | vista_proveedores_productos            | vista | postgres
+(2 filas)
+
+
+db_profesor=# select * from vista_inner_join_proveedores_productos
+db_profesor-# ;
+    proveedor     |      producto      | precio  | existencia
+------------------+--------------------+---------+------------
+ GENERAL ELECTRIC | NEVERA             |  500.25 |          6
+ GENERAL ELECTRIC | COCINA             |  300.75 |          3
+ LG               | LAVADORA           |  800.50 |          2
+ MABE             | AIRE ACONDICIONADO |  600.75 |          4
+ MABE             | TELEVISOR          |  400.00 |          7
+ MABE             | LAPTOP             | 1200.00 |          5
+ LG               | MICROONDAS         |  150.25 |          8
+ GENERAL ELECTRIC | LICUADORA          |  100.00 |         12
+ LG               | PLANCHA            |   75.50 |         12
+ MABE             | VENTILADOR         |   50.00 |         12
+ GENERAL ELECTRIC | HORNO A GAS        |  450.00 |          6
+ LG               | CAFETERA           |  250.00 |         12
+ MABE             | TOSTADORA          |   80.00 |         12
+(13 filas)
+
+
+db_profesor=# \d productos;
+                                        Tabla ½public.productos╗
+   Columna    |         Tipo          | Ordenamiento | Nulable  |              Por omisi¾n             
+--------------+-----------------------+--------------+----------+---------------------------------------
+ id           | integer               |              | not null | nextval('productos_id_seq'::regclass) proveedor_id | integer               |              |          |
+ nombre       | character varying(80) |              |          |
+ existencia   | integer               |              |          |
+ precio       | numeric(13,2)         |              |          |
+Restricciones de llave forßnea:
+    "productos_proveedor_id_fkey" FOREIGN KEY (proveedor_id) REFERENCES proveedores(id) ON UPDATE CASCADE ON DELETE CASCADE
+
+
+db_profesor=# alter table proveedores add primary key(id);
+ERROR:  no se permiten múltiples llaves primarias para la tabla «proveedores»
+db_profesor=# alter table productos add primary key(id);
+ALTER TABLE
+db_profesor=# \d productos;
+                                        Tabla ½public.productos╗
+   Columna    |         Tipo          | Ordenamiento | Nulable  |              Por omisi¾n             
+--------------+-----------------------+--------------+----------+---------------------------------------
+ id           | integer               |              | not null | nextval('productos_id_seq'::regclass) proveedor_id | integer               |              |          |
+ nombre       | character varying(80) |              |          |
+ existencia   | integer               |              |          |
+ precio       | numeric(13,2)         |              |          |
+═ndices:
+    "productos_pkey" PRIMARY KEY, btree (id)
+Restricciones de llave forßnea:
+    "productos_proveedor_id_fkey" FOREIGN KEY (proveedor_id) REFERENCES proveedores(id) ON UPDATE CASCADE ON DELETE CASCADE
+
+
+db_profesor=# create table proveedores_1(
+db_profesor(#     id serial,
+db_profesor(#     nombre varchar(80),
+db_profesor(#     direccion text,
+db_profesor(#     telefono varchar(40),
+db_profesor(#     correo_electronico varchar(80),
+db_profesor(#     primary key(id)
+db_profesor(# );
+CREATE TABLE
+db_profesor=# create table productos_1(
+db_profesor(#     id serial,
+db_profesor(#     proveedor_id integer,
+db_profesor(#     nombre varchar(80),
+db_profesor(#     existencias integer,
+db_profesor(#     precio numeric(13,2),
+db_profesor(#     primary key(id)
+db_profesor(# );
+CREATE TABLE
+db_profesor=# insert into proveedores_1(nombre, direccion,
+db_profesor(#     telefono, correo_electronico) values
+db_profesor-# ('GENERAL ELECTRIC','AV. LECUNA','2121112233','info@ge.com'),
+db_profesor-# ('LG','AV. ROMULO GALLEGOS','2121112277','info@lg.com'),
+db_profesor-# ('MABE','AV. FCO. DE MIRANDA','2123334455','info@mabe.com'),
+db_profesor-# ('ADMIRAL','AV. SAN MARTIN','2127112233','info@admiral.com'),
+db_profesor-# ('CONDESA','AV. BARALT','2128112277','info@condesa.com'),
+db_profesor-# ('WHIRPOOL','AV. VICTORIA','2129334455','info@whirpool.com');
+INSERT 0 6
+db_profesor=# select * from proveedores_1;
+ id |      nombre      |      direccion      |  telefono  | correo_electronico
+----+------------------+---------------------+------------+--------------------
+  1 | GENERAL ELECTRIC | AV. LECUNA          | 2121112233 | info@ge.com
+  2 | LG               | AV. ROMULO GALLEGOS | 2121112277 | info@lg.com
+  3 | MABE             | AV. FCO. DE MIRANDA | 2123334455 | info@mabe.com
+  4 | ADMIRAL          | AV. SAN MARTIN      | 2127112233 | info@admiral.com
+  5 | CONDESA          | AV. BARALT          | 2128112277 | info@condesa.com
+  6 | WHIRPOOL         | AV. VICTORIA        | 2129334455 | info@whirpool.com
+(6 filas)
+
+
+db_profesor=# insert into productos_1(proveedor_id, nombre,
+db_profesor(#     existencias, precio) values
+db_profesor-# (1,'NEVERA',6,500.25),
+db_profesor-# (1,'COCINA',3,300.75),
+db_profesor-# (2,'LAVADORA',2,800.50),
+db_profesor-# (3,'AIRE ACONDICIONADO',4,600.75),
+db_profesor-# (3,'TELEVISOR',7,400.00),
+db_profesor-# (3,'LAPTOP',5,1200.00),
+db_profesor-# (2,'MICROONDAS',8,150.25),
+db_profesor-# (1,'LICUADORA',12,100.00),
+db_profesor-# (2,'PLANCHA',12,75.50),
+db_profesor-# (3,'VENTILADOR',12,50.00),
+db_profesor-# (1,'HORNO A GAS',6,450.00),
+db_profesor-# (2,'CAFETERA',12,250.00),
+db_profesor-# (3,'TOSTADORA',12,80.00),
+db_profesor-# (11,'LICUADORA',12,100.00),
+db_profesor-# (12,'PLANCHA',12,75.50),
+db_profesor-# (10,'VENTILADOR',12,50.00),
+db_profesor-# (11,'HORNO A GAS',6,450.00),
+db_profesor-# (12,'CAFETERA',12,250.00),
+db_profesor-# (10,'TOSTADORA',12,80.00);
+INSERT 0 19
+db_profesor=#
+db_profesor=# CREATE VIEW VISTA_LEFT_JOIN_PROVEEDORES_PRODUCTOS AS
+db_profesor-# SELECT A.NOMBRE AS PROVEEDOR,
+db_profesor-#        B.NOMBRE AS PRODUCTO,
+db_profesor-#        B.PRECIO,
+db_profesor-#        B.EXISTENCIA
+db_profesor-#        FROM PROVEEDORES AS A
+db_profesor-#        LEFT JOIN PRODUCTOS AS B
+db_profesor-#        ON B.PROVEEDOR_ID = A.ID;
+CREATE VIEW
+db_profesor=# SELECT * FROM VISTA_LEFT_JOIN_PROVEEDORES_PRODUCTOS;
+    proveedor     |      producto      | precio  | existencia
+------------------+--------------------+---------+------------
+ GENERAL ELECTRIC | HORNO A GAS        |  450.00 |          6
+ GENERAL ELECTRIC | LICUADORA          |  100.00 |         12
+ GENERAL ELECTRIC | COCINA             |  300.75 |          3
+ GENERAL ELECTRIC | NEVERA             |  500.25 |          6
+ LG               | CAFETERA           |  250.00 |         12
+ LG               | PLANCHA            |   75.50 |         12
+ LG               | MICROONDAS         |  150.25 |          8
+ LG               | LAVADORA           |  800.50 |          2
+ MABE             | TOSTADORA          |   80.00 |         12
+ MABE             | VENTILADOR         |   50.00 |         12
+ MABE             | LAPTOP             | 1200.00 |          5
+ MABE             | TELEVISOR          |  400.00 |          7
+ MABE             | AIRE ACONDICIONADO |  600.75 |          4
+(13 filas)
+
+
+db_profesor=# DROP VIEW VISTA_LEFT_JOIN_PROVEEDORES_PRODUCTOS;
+DROP VIEW
+db_profesor=# CREATE VIEW VISTA_LEFT_JOIN_PROVEEDORES_PRODUCTOS AS
+db_profesor-# SELECT A.NOMBRE AS PROVEEDOR,
+db_profesor-#        B.NOMBRE AS PRODUCTO,
+db_profesor-#        B.PRECIO,
+db_profesor-#        B.EXISTENCIA
+db_profesor-#        FROM PROVEEDORES_1 AS A
+db_profesor-#        LEFT JOIN PRODUCTOS_1 AS B
+db_profesor-#        ON B.PROVEEDOR_ID = A.ID;
+ERROR:  no existe la columna b.existencia
+LÍNEA 5:        B.EXISTENCIA
+                ^
+SUGERENCIA:  Probablemente quiera hacer referencia a la columna «b.existencias».
+db_profesor=# ALTER TABLE PRODUCTOS_1 ALTER COLUMN EXISTENCIAS TO EXISTENCIA
+db_profesor-# ;
+ERROR:  error de sintaxis en o cerca de «TO»
+LÍNEA 1: ALTER TABLE PRODUCTOS_1 ALTER COLUMN EXISTENCIAS TO EXISTENC...
+                                                          ^
+db_profesor=# ALTER TABLE PRODUCTOS_1 RENAME EXISTENCIAS TO EXISTENCIA;
+ALTER TABLE
+db_profesor=# CREATE VIEW VISTA_LEFT_JOIN_PROVEEDORES_PRODUCTOS AS
+db_profesor-# SELECT A.NOMBRE AS PROVEEDOR,
+db_profesor-#        B.NOMBRE AS PRODUCTO,
+db_profesor-#        B.PRECIO,
+db_profesor-#        B.EXISTENCIA
+db_profesor-#        FROM PROVEEDORES_1 AS A
+db_profesor-#        LEFT JOIN PRODUCTOS_1 AS B
+db_profesor-#        ON B.PROVEEDOR_ID = A.ID;
+CREATE VIEW
+db_profesor=# CREATE VIEW VISTA_RIGHT_JOIN_PROVEEDORES_PRODUCTOS AS
+db_profesor-# SELECT A.NOMBRE AS PROVEEDOR,
+db_profesor-#        B.NOMBRE AS PRODUCTO,
+db_profesor-#        B.PRECIO,
+db_profesor-#        B.EXISTENCIA
+db_profesor-#        FROM PROVEEDORES_1 AS A
+db_profesor-#        RIGHT JOIN PRODUCTOS_1 AS B
+db_profesor-#        ON B.PROVEEDOR_ID = A.ID;
+CREATE VIEW
+db_profesor=# SELECT * FROM VISTA_LEFT_JOIN_PROVEEDORES;
+ERROR:  no existe la relación «vista_left_join_proveedores»
+LÍNEA 1: SELECT * FROM VISTA_LEFT_JOIN_PROVEEDORES;
+                       ^
+db_profesor=# SELECT * FROM VISTA_LEFT_JOIN_PROVEEDORES_PRODUCTOS;
+    proveedor     |      producto      | precio  | existencia
+------------------+--------------------+---------+------------
+ GENERAL ELECTRIC | NEVERA             |  500.25 |          6
+ GENERAL ELECTRIC | COCINA             |  300.75 |          3
+ LG               | LAVADORA           |  800.50 |          2
+ MABE             | AIRE ACONDICIONADO |  600.75 |          4
+ MABE             | TELEVISOR          |  400.00 |          7
+ MABE             | LAPTOP             | 1200.00 |          5
+ LG               | MICROONDAS         |  150.25 |          8
+ GENERAL ELECTRIC | LICUADORA          |  100.00 |         12
+ LG               | PLANCHA            |   75.50 |         12
+ MABE             | VENTILADOR         |   50.00 |         12
+ GENERAL ELECTRIC | HORNO A GAS        |  450.00 |          6
+ LG               | CAFETERA           |  250.00 |         12
+ MABE             | TOSTADORA          |   80.00 |         12
+ CONDESA          |                    |         |
+ WHIRPOOL         |                    |         |
+ ADMIRAL          |                    |         |
+(16 filas)
+
+
+db_profesor=# SELECT * FROM VISTA_RIGHT_JOIN_PROVEEDORES_PRODUCTOS;
+    proveedor     |      producto      | precio  | existencia
+------------------+--------------------+---------+------------
+ GENERAL ELECTRIC | NEVERA             |  500.25 |          6
+ GENERAL ELECTRIC | COCINA             |  300.75 |          3
+ LG               | LAVADORA           |  800.50 |          2
+ MABE             | AIRE ACONDICIONADO |  600.75 |          4
+ MABE             | TELEVISOR          |  400.00 |          7
+ MABE             | LAPTOP             | 1200.00 |          5
+ LG               | MICROONDAS         |  150.25 |          8
+ GENERAL ELECTRIC | LICUADORA          |  100.00 |         12
+ LG               | PLANCHA            |   75.50 |         12
+ MABE             | VENTILADOR         |   50.00 |         12
+ GENERAL ELECTRIC | HORNO A GAS        |  450.00 |          6
+ LG               | CAFETERA           |  250.00 |         12
+ MABE             | TOSTADORA          |   80.00 |         12
+                  | LICUADORA          |  100.00 |         12
+                  | PLANCHA            |   75.50 |         12
+                  | VENTILADOR         |   50.00 |         12
+                  | HORNO A GAS        |  450.00 |          6
+                  | CAFETERA           |  250.00 |         12
+                  | TOSTADORA          |   80.00 |         12
+(19 filas)
+
+
+db_profesor=# CREATE VIEW VISTA_FULL_JOIN_PROVEEDORES_PRODUCTOS AS
+db_profesor-# SELECT A.NOMBRE AS PROVEEDOR,
+db_profesor-#        B.NOMBRE AS PRODUCTO,
+db_profesor-#        B.PRECIO,
+db_profesor-#        B.EXISTENCIA
+db_profesor-#        FROM PROVEEDORES_1 AS A
+db_profesor-#        LEFT JOIN PRODUCTOS_1 AS B
+db_profesor-#        ON B.PROVEEDOR_ID = A.ID
+db_profesor-# UNION
+db_profesor-# SELECT A.NOMBRE AS PROVEEDOR,
+db_profesor-#        B.NOMBRE AS PRODUCTO,
+db_profesor-#        B.PRECIO,
+db_profesor-#        B.EXISTENCIA
+db_profesor-#        FROM PROVEEDORES_1 AS A
+db_profesor-#        RIGHT JOIN PRODUCTOS_1 AS B
+db_profesor-#        ON B.PROVEEDOR_ID = A.ID;
+CREATE VIEW
+db_profesor=# SELECT * FROM VISTA_FULL_JOIN_PROVEEDORES_PRODUCTOS;
+    proveedor     |      producto      | precio  | existencia
+------------------+--------------------+---------+------------
+ MABE             | LAPTOP             | 1200.00 |          5
+ MABE             | VENTILADOR         |   50.00 |         12
+                  | PLANCHA            |   75.50 |         12
+ WHIRPOOL         |                    |         |
+ LG               | LAVADORA           |  800.50 |          2
+ LG               | CAFETERA           |  250.00 |         12
+                  | CAFETERA           |  250.00 |         12
+ ADMIRAL          |                    |         |
+ LG               | PLANCHA            |   75.50 |         12
+                  | TOSTADORA          |   80.00 |         12
+ GENERAL ELECTRIC | COCINA             |  300.75 |          3
+ MABE             | AIRE ACONDICIONADO |  600.75 |          4
+ GENERAL ELECTRIC | LICUADORA          |  100.00 |         12
+ GENERAL ELECTRIC | NEVERA             |  500.25 |          6
+ MABE             | TELEVISOR          |  400.00 |          7
+ LG               | MICROONDAS         |  150.25 |          8
+(22 filas)
+
+
+db_profesor=#     | LICUADORA          |  100.00 |         12
+db_profesor=#     |                    |         |
+db_profesor=#     | VENTILADOR         |   50.00 |         12
+db_profesor=#
+db_profesor=#
+db_profesor=#
+db_profesor=#
+db_profesor=# SELECT * FROM VISTA_FULL_JOIN_PROVEEDORES_PRODUCTOS;
+    proveedor     |      producto      | precio  | existencia
+------------------+--------------------+---------+------------
+ MABE             | LAPTOP             | 1200.00 |          5
+ MABE             | VENTILADOR         |   50.00 |         12
+                  | PLANCHA            |   75.50 |         12
+ WHIRPOOL         |                    |         |
+ LG               | LAVADORA           |  800.50 |          2
+ LG               | CAFETERA           |  250.00 |         12
+                  | CAFETERA           |  250.00 |         12
+ ADMIRAL          |                    |         |
+ LG               | PLANCHA            |   75.50 |         12
+                  | TOSTADORA          |   80.00 |         12
+ GENERAL ELECTRIC | COCINA             |  300.75 |          3
+ MABE             | AIRE ACONDICIONADO |  600.75 |          4
+ GENERAL ELECTRIC | LICUADORA          |  100.00 |         12
+ GENERAL ELECTRIC | NEVERA             |  500.25 |          6
+ MABE             | TELEVISOR          |  400.00 |          7
+ LG               | MICROONDAS         |  150.25 |          8
+ GENERAL ELECTRIC | HORNO A GAS        |  450.00 |          6
+                  | HORNO A GAS        |  450.00 |          6
+ MABE             | TOSTADORA          |   80.00 |         12
+                  | LICUADORA          |  100.00 |         12
+ CONDESA          |                    |         |
+                  | VENTILADOR         |   50.00 |         12
+(22 filas)
+
+
+db_profesor=#
+db_profesor=#
+db_profesor=#
+db_profesor=#
+db_profesor=#
+db_profesor=# \d
+                          Listado de relaciones
+ Esquema |                 Nombre                 |   Tipo    |  Due±o
+---------+----------------------------------------+-----------+----------
+ public  | personas                               | tabla     | postgres
+ public  | personas_serial                        | tabla     | postgres
+ public  | personas_serial_id_seq                 | secuencia | postgres
+ public  | productos                              | tabla     | postgres
+ public  | productos_1                            | tabla     | postgres
+ public  | productos_1_id_seq                     | secuencia | postgres
+ public  | productos_id_seq                       | secuencia | postgres
+ public  | proveedores                            | tabla     | postgres
+ public  | proveedores_1                          | tabla     | postgres
+ public  | proveedores_1_id_seq                   | secuencia | postgres
+ public  | proveedores_id_seq                     | secuencia | postgres
+ public  | vista_full_join_proveedores_productos  | vista     | postgres
+ public  | vista_inner_join_proveedores_productos | vista     | postgres
+ public  | vista_left_join_proveedores_productos  | vista     | postgres
+ public  | vista_proveedores_productos            | vista     | postgres
+ public  | vista_right_join_proveedores_productos | vista     | postgres
+(16 filas)
+
+
+db_profesor=# select * from vista_proveedores_productos;
+ Nombre del Proveedor | Nombre del Producto | Precio  | Cantidad en Existencia
+----------------------+---------------------+---------+------------------------
+ GENERAL ELECTRIC     | HORNO A GAS         |  450.00 |                      6
+ GENERAL ELECTRIC     | LICUADORA           |  100.00 |                     12
+ GENERAL ELECTRIC     | COCINA              |  300.75 |                      3
+ GENERAL ELECTRIC     | NEVERA              |  500.25 |                      6
+ LG                   | CAFETERA            |  250.00 |                     12
+ LG                   | PLANCHA             |   75.50 |                     12
+ LG                   | MICROONDAS          |  150.25 |                      8
+ LG                   | LAVADORA            |  800.50 |                      2
+ MABE                 | TOSTADORA           |   80.00 |                     12
+ MABE                 | VENTILADOR          |   50.00 |                     12
+ MABE                 | LAPTOP              | 1200.00 |                      5
+ MABE                 | TELEVISOR           |  400.00 |                      7
+ MABE                 | AIRE ACONDICIONADO  |  600.75 |                      4
+(13 filas)
+
+
+db_profesor=# select sum("Precio") from vista_proveedores_productos;
+   sum
+---------
+ 4958.00
+(1 fila)
+
+
+db_profesor=# select sum("Cantidad en Existencia") from vista_proveedores_productos;
+ sum
+-----
+ 101
+(1 fila)
+
+
+db_profesor=# SELECT MAX("Precio") from vista_proveedores_productos;
+   max
+---------
+ 1200.00
+(1 fila)
+
+
+db_profesor=# SELECT AVG("Precio") from vista_proveedores_productos;
+         avg
+----------------------
+ 381.3846153846153846
+(1 fila)
+
+
+db_profesor=# SELECT MIN("Precio") from vista_proveedores_productos;
+  min
+-------
+ 50.00
+(1 fila)
+
+
+db_profesor=# SELECT ROUND(AVG("Precio"),2) from vista_proveedores_productos;
+ round
+--------
+ 381.38
+(1 fila)
+
+
+db_profesor=# SELECT SQRT(16);
+ sqrt
+------
+    4
+(1 fila)
+
+
+db_profesor=# select * from vista_proveedores_productos order by "Precio";
+ Nombre del Proveedor | Nombre del Producto | Precio  | Cantidad en Existencia
+----------------------+---------------------+---------+------------------------
+ MABE                 | VENTILADOR          |   50.00 |                     12
+ LG                   | PLANCHA             |   75.50 |                     12
+ MABE                 | TOSTADORA           |   80.00 |                     12
+ GENERAL ELECTRIC     | LICUADORA           |  100.00 |                     12
+ LG                   | MICROONDAS          |  150.25 |                      8
+ LG                   | CAFETERA            |  250.00 |                     12
+ GENERAL ELECTRIC     | COCINA              |  300.75 |                      3
+ MABE                 | TELEVISOR           |  400.00 |                      7
+ GENERAL ELECTRIC     | HORNO A GAS         |  450.00 |                      6
+ GENERAL ELECTRIC     | NEVERA              |  500.25 |                      6
+ MABE                 | AIRE ACONDICIONADO  |  600.75 |                      4
+ LG                   | LAVADORA            |  800.50 |                      2
+ MABE                 | LAPTOP              | 1200.00 |                      5
+(13 filas)
+
+
+db_profesor=# select * from vista_proveedores_productos order by "Precio" desc;
+ Nombre del Proveedor | Nombre del Producto | Precio  | Cantidad en Existencia
+----------------------+---------------------+---------+------------------------
+ MABE                 | LAPTOP              | 1200.00 |                      5
+ LG                   | LAVADORA            |  800.50 |                      2
+ MABE                 | AIRE ACONDICIONADO  |  600.75 |                      4
+ GENERAL ELECTRIC     | NEVERA              |  500.25 |                      6
+ GENERAL ELECTRIC     | HORNO A GAS         |  450.00 |                      6
+ MABE                 | TELEVISOR           |  400.00 |                      7
+ GENERAL ELECTRIC     | COCINA              |  300.75 |                      3
+ LG                   | CAFETERA            |  250.00 |                     12
+ LG                   | MICROONDAS          |  150.25 |                      8
+ GENERAL ELECTRIC     | LICUADORA           |  100.00 |                     12
+ MABE                 | TOSTADORA           |   80.00 |                     12
+ LG                   | PLANCHA             |   75.50 |                     12
+ MABE                 | VENTILADOR          |   50.00 |                     12
+(13 filas)
+
+
+db_profesor=# select * from vista_proveedores_productos order by "Nombre del Proveedor" asc, "Precio" desc;
+ Nombre del Proveedor | Nombre del Producto | Precio  | Cantidad en Existencia
+----------------------+---------------------+---------+------------------------
+ GENERAL ELECTRIC     | NEVERA              |  500.25 |                      6
+ GENERAL ELECTRIC     | HORNO A GAS         |  450.00 |                      6
+ GENERAL ELECTRIC     | COCINA              |  300.75 |                      3
+ GENERAL ELECTRIC     | LICUADORA           |  100.00 |                     12
+ LG                   | LAVADORA            |  800.50 |                      2
+ LG                   | CAFETERA            |  250.00 |                     12
+ LG                   | MICROONDAS          |  150.25 |                      8
+ LG                   | PLANCHA             |   75.50 |                     12
+ MABE                 | LAPTOP              | 1200.00 |                      5
+ MABE                 | AIRE ACONDICIONADO  |  600.75 |                      4
+ MABE                 | TELEVISOR           |  400.00 |                      7
+ MABE                 | TOSTADORA           |   80.00 |                     12
+ MABE                 | VENTILADOR          |   50.00 |                     12
+(13 filas)
+
+
+db_profesor=# select distinct "Nombre del Proveedor" from vista_proveedores_productos;
+ Nombre del Proveedor
+----------------------
+ MABE
+ LG
+ GENERAL ELECTRIC
+(3 filas)
+
+
+db_profesor=# select "Nombre del Proveedor" from vista_proveedores_productos
+db_profesor-# group by "Nombre del Proveedor";
+ Nombre del Proveedor
+----------------------
+ MABE
+ LG
+ GENERAL ELECTRIC
+(3 filas)
+
+
+db_profesor=# select "Nombre del Proveedor",
+db_profesor-#        avg("Precio"),
+db_profesor-#        sum("Cantidad en Existencia")
+db_profesor-#        from vista_proveedores_productos
+db_profesor-#        group by "Nombre del Proveedor";
+ Nombre del Proveedor |         avg          | sum
+----------------------+----------------------+-----
+ MABE                 | 466.1500000000000000 |  40
+ LG                   | 319.0625000000000000 |  34
+ GENERAL ELECTRIC     | 337.7500000000000000 |  27
+(3 filas)
+
+
+db_profesor=# select "Nombre del Proveedor",
+db_profesor-#        avg("Precio") as "Precio Promedio",
+db_profesor-#        round(sum("Cantidad en Existencia"),2) as "Cantidad en Existencia"
+db_profesor-#        from vista_proveedores_productos
+db_profesor-#        group by "Nombre del Proveedor";
+ Nombre del Proveedor |   Precio Promedio    | Cantidad en Existencia
+----------------------+----------------------+------------------------
+ MABE                 | 466.1500000000000000 |                  40.00
+ LG                   | 319.0625000000000000 |                  34.00
+ GENERAL ELECTRIC     | 337.7500000000000000 |                  27.00
+(3 filas)
+
+
+db_profesor=# select "Nombre del Proveedor",
+db_profesor-#        round(avg("Precio"),2) as "Precio Promedio",
+db_profesor-#        sum("Cantidad en Existencia") as "Cantidad en Existencia"
+db_profesor-#        from vista_proveedores_productos
+db_profesor-#        group by "Nombre del Proveedor";
+ Nombre del Proveedor | Precio Promedio | Cantidad en Existencia
+----------------------+-----------------+------------------------
+ MABE                 |          466.15 |                     40
+ LG                   |          319.06 |                     34
+ GENERAL ELECTRIC     |          337.75 |                     27
+(3 filas)
+
+
+db_profesor=# INSERT personas_serial(cedula, nombre,
+db_profesor(#     apellido, correo, telefono, direccion)
+db_profesor-# values
+db_profesor-# ('V5678','YOLANDA','TORTOZA','YT@GMAIL.COM','4149871234','CATIA LA MAR'),
+db_profesor-# ('V9012','LIBIA','COLS','LC@GMAIL.COM','4145551234','GUARENAS'),
+db_profesor-# ('V8765','MAIBA','ROMERO','MR@GMAIL.COM','4128881234','EL SILENCIO');
+ERROR:  error de sintaxis en o cerca de «personas_serial»
+LÍNEA 1: INSERT personas_serial(cedula, nombre,
+                ^
+db_profesor=# INSERT INTO personas_serial(cedula, nombre,
+db_profesor(#     apellido, correo, telefono, direccion)
+db_profesor-# values
+db_profesor-# ('V5678','YOLANDA','TORTOZA','YT@GMAIL.COM','4149871234','CATIA LA MAR'),
+db_profesor-# ('V9012','LIBIA','COLS','LC@GMAIL.COM','4145551234','GUARENAS'),
+db_profesor-# ('V8765','MAIBA','ROMERO','MR@GMAIL.COM','4128881234','EL SILENCIO');
+INSERT 0 3
+db_profesor=# SELECT * FROM PERSONAS_SERIAL;
+ id | cedula | nombre  | apellido |    correo    |  telefono   |  direccion
+----+--------+---------+----------+--------------+-------------+--------------
+  1 | V1234  | ANA     | VASQUEZ  | AV@GMAIL.COM | 414 1234567 | SANTA FE
+  2 | V5678  | YOLANDA | TORTOZA  | YT@GMAIL.COM | 4149871234  | CATIA LA MAR
+  3 | V9012  | LIBIA   | COLS     | LC@GMAIL.COM | 4145551234  | GUARENAS
+  4 | V8765  | MAIBA   | ROMERO   | MR@GMAIL.COM | 4128881234  | EL SILENCIO
+(4 filas)
+
+
+db_profesor=# UPDATE personas_serial SET DIRECCION = 'GUATIRE'
+db_profesor-# WHERE CEDULA = "V9012";
+ERROR:  no existe la columna «V9012»
+LÍNEA 2: WHERE CEDULA = "V9012";
+                        ^
+db_profesor=# UPDATE personas_serial SET DIRECCION = 'GUATIRE'
+db_profesor-# WHERE CEDULA = 'V9012';
+UPDATE 1
+db_profesor=# SELECT * FROM PERSONAS_SERIAL;
+ id | cedula | nombre  | apellido |    correo    |  telefono   |  direccion
+----+--------+---------+----------+--------------+-------------+--------------
+  1 | V1234  | ANA     | VASQUEZ  | AV@GMAIL.COM | 414 1234567 | SANTA FE
+  2 | V5678  | YOLANDA | TORTOZA  | YT@GMAIL.COM | 4149871234  | CATIA LA MAR
+  4 | V8765  | MAIBA   | ROMERO   | MR@GMAIL.COM | 4128881234  | EL SILENCIO
+  3 | V9012  | LIBIA   | COLS     | LC@GMAIL.COM | 4145551234  | GUATIRE
+(4 filas)
+
+
+db_profesor=# DELETE FROM PERSONAS_SERIAL WHERE CEDULA = 'V1234';
+DELETE 1
+db_profesor=#
