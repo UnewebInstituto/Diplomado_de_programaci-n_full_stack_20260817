@@ -1,0 +1,152 @@
+Server [localhost]:
+Database [postgres]:
+Port [5432]:
+Username [postgres]:
+Contraseña para usuario postgres:
+psql (15.13)
+ADVERTENCIA: El código de página de la consola (850) difiere del código
+            de página de Windows (1252).
+            Los caracteres de 8 bits pueden funcionar incorrectamente.
+            Vea la página de referencia de psql «Notes for Windows users»
+            para obtener más detalles.
+Digite «help» para obtener ayuda.
+
+postgres=# \c db_profesor_pga
+Ahora está conectado a la base de datos «db_profesor_pga» con el usuario «postgres».
+db_profesor_pga=# \d
+              Listado de relaciones
+ Esquema |     Nombre      |   Tipo    |  Due±o
+---------+-----------------+-----------+----------
+ public  | personas        | tabla     | postgres
+ public  | personas_id_seq | secuencia | postgres
+(2 filas)
+
+
+db_profesor_pga=# \dt personas;
+         Listado de relaciones
+ Esquema |  Nombre  | Tipo  |  Due±o
+---------+----------+-------+----------
+ public  | personas | tabla | postgres
+(1 fila)
+
+
+db_profesor_pga=# \d personas;
+                                            Tabla ½public.personas╗
+      Columna       |          Tipo           | Ordenamiento | Nulable  |             Por omisi¾n     
+--------------------+-------------------------+--------------+----------+--------------------------------------
+ id                 | integer                 |              | not null | nextval('personas_id_seq'::regclass)
+ nombre             | character varying(40)   |              |          |
+ apellido           | character varying(40)   |              |          |
+ fecha_nac          | date                    |              |          |
+ direccion          | text                    |              |          |
+ correo_electronico | character varying(80)   |              |          |
+ telefono           | character varying(20)[] |              |          |
+═ndices:
+    "personas_pkey" PRIMARY KEY, btree (id)
+
+
+db_profesor_pga=# \dt rrhh
+No se encontró relación llamada «rrhh».
+db_profesor_pga=# \dt rrhh.personas;
+         Listado de relaciones
+ Esquema |  Nombre  | Tipo  |  Due±o
+---------+----------+-------+----------
+ rrhh    | personas | tabla | postgres
+(1 fila)
+
+
+db_profesor_pga=# \dt rrhh.*;
+         Listado de relaciones
+ Esquema |  Nombre  | Tipo  |  Due±o
+---------+----------+-------+----------
+ rrhh    | personas | tabla | postgres
+(1 fila)
+
+
+db_profesor_pga=# \dt
+         Listado de relaciones
+ Esquema |  Nombre  | Tipo  |  Due±o
+---------+----------+-------+----------
+ public  | personas | tabla | postgres
+(1 fila)
+
+
+db_profesor_pga=# \d personas;
+                                            Tabla ½public.personas╗
+      Columna       |          Tipo           | Ordenamiento | Nulable  |             Por omisi¾n     
+--------------------+-------------------------+--------------+----------+--------------------------------------
+ id                 | integer                 |              | not null | nextval('personas_id_seq'::regclass)
+ nombre             | character varying(40)   |              |          |
+ apellido           | character varying(40)   |              |          |
+ fecha_nac          | date                    |              |          |
+ direccion          | text                    |              |          |
+ correo_electronico | character varying(80)   |              |          |
+ telefono           | character varying(20)[] |              |          |
+═ndices:
+    "personas_pkey" PRIMARY KEY, btree (id)
+
+
+db_profesor_pga=# SELECT telefono[1], telefono[2] from public.personas;
+  telefono  |  telefono
+------------+------------
+ 4149871234 |
+ 4145551234 | 2129871234
+ 4128881234 | 2123456789
+ 4149871234 |
+ 4145551234 | 2129871234
+ 4128881234 | 2123456789
+(6 filas)
+
+
+db_profesor_pga=# SELECT telefono[1], telefono[2], telefono[3] from public.personas;
+  telefono  |  telefono  |  telefono
+------------+------------+------------
+ 4149871234 |            |
+ 4145551234 | 2129871234 |
+ 4128881234 | 2123456789 | 2129876534
+ 4149871234 |            |
+ 4145551234 | 2129871234 |
+ 4128881234 | 2123456789 | 2129876534
+(6 filas)
+
+
+db_profesor_pga=# SELECT nombre as "Nombre",
+db_profesor_pga-#        apellido as "Apellido",
+db_profesor_pga-#        telefono[1] as "Teléfono Hab.",
+db_profesor_pga-#        telefono[2] as "Teléfono Cel.",
+db_profesor_pga-#        telefono[3] as "Teléfono Ofi."
+db_profesor_pga-#        from public.personas;
+ Nombre  | Apellido | Teléfono Hab. | Teléfono Cel. | Teléfono Ofi.
+---------+----------+---------------+---------------+---------------
+ YOLANDA | TORTOZA  | 4149871234    |               |
+ LIBIA   | COLS     | 4145551234    | 2129871234    |
+ MAIBA   | ROMERO   | 4128881234    | 2123456789    | 2129876534
+ YOLANDA | TORTOZA  | 4149871234    |               |
+ LIBIA   | COLS     | 4145551234    | 2129871234    |
+ MAIBA   | ROMERO   | 4128881234    | 2123456789    | 2129876534
+(6 filas)
+
+
+db_profesor_pga=# \d proveedores;
+No se encontró relación llamada «proveedores».
+db_profesor_pga=# select * from alumnos;
+ id | nombre  | apellido
+----+---------+----------
+  1 | JOSE    | MEDINA
+  2 | RICARDO | SILVA
+  3 | ANDRES  | FRANCO
+(3 filas)
+
+
+db_profesor_pga=# select * from asignaturas;
+ id |         nombre
+----+------------------------
+  1 | LËGICA DE PROGRAMACIËN
+  2 | HTML5 NIVEL 1
+  3 | HTML5 NIVEL 2
+  4 | MYSQL
+  5 | POSTGRESQL
+(5 filas)
+
+
+db_profesor_pga=#

@@ -1,1 +1,1 @@
-"c:\Program Files\PostgreSQL\15\bin\pg_dump" -U postgres -h localhost -d db_jose -F p -v -f "./respaldos/db_jose_20260928.sql"
+"c:\Program Files\PostgreSQL\15\bin\pg_dump" -U postgres -h localhost -d db_jose -F p -v -f "./respaldos/db_jose_20260930.sql"
