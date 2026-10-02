@@ -1,0 +1,268 @@
+Como experto en bases de datos y PostgreSQL, te explico el origen de este fallo y cómo solucionarlo de manera efectiva.
+
+## Causas del Error (SQL State: 42830)
+
+El mensaje **`la lista de columnas referidas en una llave foránea no debe contener duplicados`** indica que PostgreSQL ha detectado que una misma columna se encuentra nombrada dos o más veces dentro de los paréntesis de una restricción de clave foránea (`FOREIGN KEY`).
+
+En el contexto de desarrollo visual que estás empleando, las causas más comunes son:
+
+* **Falla en el generador de código automático:** Herramientas de diseño visual o modeladores gráficos (como el diseñador de esquemas de pgAdmin 4 visible en tu imagen) pueden duplicar por error el mapeo de una columna al trazar una relación o al sincronizar las tablas intermedias de relaciones muchos a muchos (por ejemplo, en `productos_etiquetas`, `productos_calificaciones` o `usuarios_roles`).
+* **Error tipográfico manual en el DDL:** Especificar dos veces la misma columna en la lista de claves foráneas de una sentencia `CREATE TABLE` o `ALTER TABLE`.
+
+---
+
+## Correctivos a Aplicar
+
+### 1. Corrección en el código SQL (DDL)
+
+Inspecciona el script SQL que estás ejecutando y localiza la tabla que genera el conflicto. Revisa las definiciones de tus llaves foráneas para eliminar la columna repetida.
+
+* **Incorrecto (genera el error 42830):**
+```sql
+CONSTRAINT fk_producto FOREIGN KEY (producto_id, producto_id)
+REFERENCES productos (id)
+
+```
+
+
+* **Correcto:**
+```sql
+CONSTRAINT fk_producto FOREIGN KEY (producto_id)
+REFERENCES productos (id)
+
+```
+
+
+
+### 2. Corrección en el Diseñador Gráfico (pgAdmin 4)
+
+Dado que estás construyendo la base de datos a partir del DER en la interfaz gráfica:
+
+* **Revisa las tablas de asociación:** Presta especial atención a las tablas con claves compuestas o relaciones M:N (como `productos_etiquetas`, `productos_calificaciones`, etc.).
+* **Elimina líneas redundantes:** Si trazaste por error dos veces la misma relación entre un par de tablas, elimina la conexión sobrante en el diagrama.
+* **Verifica las propiedades de la Foreign Key:** Haz doble clic en la tabla afectada, busca la pestaña de restricciones o llaves foráneas y asegúrate de que cada columna local esté asociada de forma única.
+
+¿Deseas que revisemos el diseño o el script de alguna tabla en particular de tu diagrama para dejarla completamente depurada?
+
+Como experto en bases de datos y PostgreSQL, te explico el origen de este fallo y cómo solucionarlo de manera efectiva.
+
+## Causas del Error (SQL State: 42830)
+
+El mensaje **`la lista de columnas referidas en una llave foránea no debe contener duplicados`** indica que PostgreSQL ha detectado que una misma columna se encuentra nombrada dos o más veces dentro de los paréntesis de una restricción de clave foránea (`FOREIGN KEY`).
+
+En el contexto de desarrollo visual que estás empleando, las causas más comunes son:
+
+* **Falla en el generador de código automático:** Herramientas de diseño visual o modeladores gráficos (como el diseñador de esquemas de pgAdmin 4 visible en tu imagen) pueden duplicar por error el mapeo de una columna al trazar una relación o al sincronizar las tablas intermedias de relaciones muchos a muchos (por ejemplo, en `productos_etiquetas`, `productos_calificaciones` o `usuarios_roles`).
+* **Error tipográfico manual en el DDL:** Especificar dos veces la misma columna en la lista de claves foráneas de una sentencia `CREATE TABLE` o `ALTER TABLE`.
+
+---
+
+## Correctivos a Aplicar
+
+### 1. Corrección en el código SQL (DDL)
+
+Inspecciona el script SQL que estás ejecutando y localiza la tabla que genera el conflicto. Revisa las definiciones de tus llaves foráneas para eliminar la columna repetida.
+
+* **Incorrecto (genera el error 42830):**
+```sql
+CONSTRAINT fk_producto FOREIGN KEY (producto_id, producto_id)
+REFERENCES productos (id)
+
+```
+
+
+* **Correcto:**
+```sql
+CONSTRAINT fk_producto FOREIGN KEY (producto_id)
+REFERENCES productos (id)
+
+```
+
+
+
+### 2. Corrección en el Diseñador Gráfico (pgAdmin 4)
+
+Dado que estás construyendo la base de datos a partir del DER en la interfaz gráfica:
+
+* **Revisa las tablas de asociación:** Presta especial atención a las tablas con claves compuestas o relaciones M:N (como `productos_etiquetas`, `productos_calificaciones`, etc.).
+* **Elimina líneas redundantes:** Si trazaste por error dos veces la misma relación entre un par de tablas, elimina la conexión sobrante en el diagrama.
+* **Verifica las propiedades de la Foreign Key:** Haz doble clic en la tabla afectada, busca la pestaña de restricciones o llaves foráneas y asegúrate de que cada columna local esté asociada de forma única.
+
+¿Deseas que revisemos el diseño o el script de alguna tabla en particular de tu diagrama para dejarla completamente depurada?
+
+¡Excelente noticia! Me alegra que hayas podido resolver el inconveniente y ajustar las restricciones correctamente en la base de datos.
+
+Si al continuar ejecutando scripts o al seguir diseñando el modelo en pgAdmin 4 te surge alguna otra duda, consulta o requieres optimizar alguna estructura, no dudes en avisarme. ¡Mucho éxito con tu práctica!
+
+Voy a generar un script SQL completo con datos de prueba coherentes para tu esquema `practica01`, respetando estrictamente el orden de las dependencias de las llaves foráneas.
+
+He preparado el script ordenando las inserciones de manera que las tablas independientes (`categorias`, `etiquetas`, `roles`, `calificaciones`, `usuarios`) se llenen primero, permitiendo que las tablas dependientes e intermedias funcionen sin conflictos de llaves foráneas. Al final, se incluyen sentencias `setval` para actualizar los contadores `serial` de PostgreSQL en caso de que decidas insertar más registros posteriormente.
+
+
+Microsoft Windows [Versión 10.0.20348.4405]
+(c) Microsoft Corporation. Todos los derechos reservados.
+
+C:\Program Files\PostgreSQL\15\pgAdmin 4\runtime>"C:\Program Files\PostgreSQL\15\pgAdmin 4
+\runtime\psql.exe" "host=localhost port=5432 dbname=db_profesor_pga user=postgres sslmode=
+prefer connect_timeout=10" 2>>&1
+psql (15.13)
+WARNING: Console code page (850) differs from Windows code page (1252)
+         8-bit characters might not work correctly. See psql reference
+         page "Notes for Windows users" for details.
+Type "help" for help.
+
+db_profesor_pga=# -- 1. Sembrado de categorías
+db_profesor_pga=# INSERT INTO practica01.categorias (id, nombre) VALUES
+db_profesor_pga-# (1, 'Electrónica'),
+db_profesor_pga-# (2, 'Ropa y Accesorios'),
+db_profesor_pga-# (3, 'Hogar y Cocina');
+INSERT 0 3
+db_profesor_pga=# -- 2. Sembrado de etiquetas
+db_profesor_pga=# INSERT INTO practica01.etiquetas (id, descripcion) VALUES
+db_profesor_pga-# (1, 'Nuevo'),
+db_profesor_pga-# (2, 'Oferta'),
+db_profesor_pga-# (3, 'Destacado'),
+db_profesor_pga-# (4, 'Envío Gratis');
+INSERT 0 4
+db_profesor_pga=# -- 3. Sembrado de roles
+db_profesor_pga=# INSERT INTO practica01.roles (id, descripcion) VALUES
+db_profesor_pga-# (1, 'Administrador'),
+db_profesor_pga-# (2, 'Cliente'),
+db_profesor_pga-# (3, 'Vendedor');
+INSERT 0 3
+db_profesor_pga=# -- 4. Sembrado de usuarios (Nótese el uso de arreglos text[] para los te
+léfonos)
+db_profesor_pga=# INSERT INTO practica01.usuarios (id, cedula, nombre, apellido, telefono,
+ correo_electronico) VALUES
+db_profesor_pga-# (1, 'V12345678', 'Carlos', 'Pérez', ARRAY['04121234567', '02125551234'],
+ 'carlos.perez@email.com'),
+db_profesor_pga-# (2, 'V87654321', 'Ana', 'Gómez', ARRAY['04149876543'], 'ana.gomez@email.
+com'),
+db_profesor_pga-# (3, 'V11223344', 'Luis', 'Rodríguez', ARRAY['04241112233', '04162223344'
+], 'luis.rodriguez@email.com');
+INSERT 0 3
+db_profesor_pga=# -- 5. Sembrado de usuarios_roles (Asociación M:N)
+db_profesor_pga=# INSERT INTO practica01.usuarios_roles (usuario_id, rol_id) VALUES
+db_profesor_pga-# (1, 1), -- Carlos es Administrador
+db_profesor_pga-# (2, 2), -- Ana es Cliente
+db_profesor_pga-# (3, 3); -- Luis es Vendedor
+INSERT 0 3
+db_profesor_pga=# -- 6. Sembrado de productos (Depende de categorías)
+db_profesor_pga=# INSERT INTO practica01.productos (id, categoria_id, nombre, cantidad, pr
+ecio, descripcion) VALUES
+db_profesor_pga-# (1, 1, 'Smartphone X', 15, 450.00, 'Teléfono inteligente de última gener
+ación'),
+db_profesor_pga-# (2, 2, 'Camisa Casual', 30, 25.50, 'Camisa de algodón para caballero'),
+db_profesor_pga-# (3, 3, 'Licuadora Pro', 10, 89.99, 'Licuadora de alta potencia con vaso
+de vidrio');
+INSERT 0 3
+db_profesor_pga=# -- 7. Sembrado de imágenes (Depende de productos)
+db_profesor_pga=# INSERT INTO practica01.imagenes (id, producto_id, archivo) VALUES
+db_profesor_pga-# (1, 1, '/imagenes/smartphone_x_1.jpg'),
+db_profesor_pga-# (2, 1, '/imagenes/smartphone_x_2.jpg'),
+db_profesor_pga-# (3, 2, '/imagenes/camisa_casual_1.jpg'),
+db_profesor_pga-# (4, 3, '/imagenes/licuadora_pro_1.jpg');
+INSERT 0 4
+db_profesor_pga=# -- 8. Sembrado de calificaciones
+db_profesor_pga=# INSERT INTO practica01.calificaciones (id, descripcion) VALUES
+db_profesor_pga-# (1, 'Excelente'),
+db_profesor_pga-# (2, 'Bueno'),
+db_profesor_pga-# (3, 'Regular'),
+db_profesor_pga-# (4, 'Malo');
+INSERT 0 4
+db_profesor_pga=# -- 9. Sembrado de productos_etiquetas (Asociación M:N)
+db_profesor_pga=# INSERT INTO practica01.productos_etiquetas (producto_id, etiqueta_id) VA
+LUES
+db_profesor_pga-# (1, 1), -- Smartphone X -> Nuevo
+db_profesor_pga-# (1, 3), -- Smartphone X -> Destacado
+db_profesor_pga-# (2, 2), -- Camisa Casual -> Oferta
+db_profesor_pga-# (3, 4); -- Licuadora Pro -> Envío Gratis
+INSERT 0 4
+db_profesor_pga=# -- 10. Sembrado de productos_calificaciones (Asociación M:N:N)
+db_profesor_pga=# INSERT INTO practica01.productos_calificaciones (producto_id, calificaci
+on_id, usuario_id) VALUES
+db_profesor_pga-# (1, 1, 2), -- Ana calificó al Smartphone X como Excelente
+db_profesor_pga-# (2, 2, 2), -- Ana calificó a la Camisa Casual como Bueno
+db_profesor_pga-# (3, 1, 3); -- Luis calificó a la Licuadora Pro como Excelente
+INSERT 0 3
+db_profesor_pga=# -- Actualizar las secuencias (Seriales) para evitar errores de llave dup
+licada en futuros INSERT manuales
+db_profesor_pga=# SELECT setval('practica01.categorias_id_seq', (SELECT MAX(id) FROM pract
+ica01.categorias));
+ setval
+--------
+      3
+(1 row)
+
+
+db_profesor_pga=# SELECT setval('practica01.etiquetas_id_seq', (SELECT MAX(id) FROM practi
+ca01.etiquetas));
+ setval
+--------
+      4
+(1 row)
+
+
+db_profesor_pga=# SELECT setval('practica01.roles_id_seq', (SELECT MAX(id) FROM practica01
+.roles));
+ setval
+--------
+      3
+(1 row)
+
+
+db_profesor_pga=# SELECT setval('practica01.imagenes_id_seq', (SELECT MAX(id) FROM practic
+a01.imagenes));
+ setval
+--------
+      4
+(1 row)
+
+
+db_profesor_pga=# SELECT setval('practica01.usuarios_id_seq', (SELECT MAX(id) FROM practic
+a01.usuarios));
+ setval
+--------
+      3
+(1 row)
+
+
+db_profesor_pga=# SELECT setval('practica01.productos_id_seq', (SELECT MAX(id) FROM practi
+ca01.productos));
+ setval
+--------
+      3
+(1 row)
+
+
+db_profesor_pga=# SELECT setval('practica01.calificaciones_id_seq', (SELECT MAX(id) FROM p
+ractica01.calificaciones));
+ setval
+--------
+      4
+(1 row)
+
+
+db_profesor_pga=#
+
+
+Aquí tienes el script SQL para insertar productos de prueba que tengan una **cantidad igual a 0**, asociándolos correctamente a las categorías existentes en tu esquema:
+
+```sql
+-- Asegúrate de que el esquema esté activo
+SET search_path TO practica01;
+
+-- Inserción de productos con cantidad = 0
+-- Se asume que existen categorías con IDs válidos (por ejemplo, 1, 2, 3 correspondientes a Electrónica, Línea Blanca, etc.)
+INSERT INTO practica01.productos (categoria_id, nombre, cantidad, precio, descripcion) VALUES
+(1, 'Smartphone Gama Baja (Agotado)', 0, 120.00, 'Modelo básico de teléfono inteligente sin stock actual en almacén.'),
+(1, 'Smartwatch Deportivo Pro (Sin Stock)', 0, 85.50, 'Reloj inteligente con monitor de ritmo cardíaco, pendiente de reabastecimiento.'),
+(2, 'Licuadora de 3 Velocidades', 0, 45.00, 'Licuadora de vaso de vidrio de 1.5 litros, agotada temporalmente.'),
+(3, 'Audífonos Inalámbricos Bluetooth', 0, 25.00, 'Audífonos supraaurales con cancelación de ruido pasiva, sin existencias.');
+
+```
+
+### Recomendaciones:
+
+* **Verifica el `categoria_id`:** Si tus categorías tienen IDs diferentes en tu base de datos, ajusta el valor del primer campo (`1`, `2`, `3`) para que coincida con registros válidos en la tabla `practica01.categorias` y no violes la restricción de llave foránea.
+* **Manejo de inventario:** Estos registros te servirán perfectamente para realizar pruebas de consultas que filtren productos agotados (`WHERE cantidad = 0`) o para validar reglas de negocio en tu aplicación.
