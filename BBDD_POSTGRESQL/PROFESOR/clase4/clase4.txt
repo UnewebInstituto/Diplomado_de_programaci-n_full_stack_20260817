@@ -1,0 +1,76 @@
+Para insertar datos en una tabla que contiene un campo de un **tipo compuesto** que a su vez incluye **arreglos (arrays)**, puedes utilizar el constructor de filas (`ROW`) o la notación de tupla estándar con su respectivo cast (`::contacto`).
+
+Aquí tienes un par de ejemplos de cómo estructurar la sentencia `INSERT`:
+
+### Ejemplo 1: Utilizando el constructor `ROW()` (Recomendado por legibilidad)
+
+```sql
+INSERT INTO emergencias (trabajador_id, persona, direccion, alergias, notas)
+VALUES (
+    1, -- Asegúrate de que este ID exista en la tabla trabajadores
+    ROW(
+        'Carlos', 
+        'Pérez', 
+        ARRAY['0412-1234567', '0414-9876543'], 
+        ARRAY['carlos.perez@email.com', 'cperez@trabajo.com']
+    )::contacto,
+    'Av. Francisco de Miranda, Torre Este, Caracas',
+    'Ninguna conocida',
+    'Hermano del trabajador, contacto principal'
+);
+
+```
+
+### Ejemplo 2: Utilizando la notación de tupla directa
+
+También puedes pasar los valores del tipo compuesto usando paréntesis tradicionales seguidos del casteo:
+
+```sql
+INSERT INTO emergencias (trabajador_id, persona, direccion, alergias, notas)
+VALUES (
+    2,
+    ('María', 'Gómez', ARRAY['0424-5554433'], ARRAY['maria.gomez@gmail.com'])::contacto,
+    'Urbanización El Rosal, Calle Cuji, Qta. Marel',
+    'Alergia al polen y mariscos',
+    'Cónyuge'
+);
+
+```
+
+### Puntos clave a tener en cuenta:
+
+1. **Orden de los atributos:** Los valores dentro de `ROW(...)` o de la tupla `(...)` deben respetar estricta y exactamente el mismo orden en que fueron creados los atributos en el tipo `contacto` (`nombre`, `apellido`, `telefono`, `correo_electronico`).
+2. **Manejo de Arreglos:** Los campos de tipo `character varying[]` se inicializan utilizando el constructor `ARRAY['val1', 'val2']` o la sintaxis de arreglos de PostgreSQL `{val1,val2}` (ej. `'{0412-1234567,0414-9876543}'`). El uso de `ARRAY[...]` suele ser mucho más limpio y menos propenso a errores de comillas.
+3. **Casteo (`::contacto`):** Aunque PostgreSQL a veces puede inferir el tipo, es una buena práctica añadir explícitamente `::contacto` al final del constructor de la fila para evitar ambigüedades en el analizador sintáctico.
+
+
+
+### Descripción de la Falla (Causa)
+
+El comando `\d` en la consola de PostgreSQL (`psql`) está diseñado exclusivamente para interactuar y describir **relaciones** (es decir, tablas, vistas, secuencias, índices o tablas externas).
+
+Debido a que `cargo_empleado` es un tipo de dato personalizado del tipo **Enumeración (`ENUM`)** —y no una tabla ni una relación—, el sistema de catálogos internos no lo registra bajo ese concepto. Al ejecutar `\d cargo_empleado`, `psql` busca una tabla o vista con ese nombre, no la encuentra y arroja el error indicando que no existe dicha relación.
+
+---
+
+### Corrección
+
+Para consultar y visualizar los detalles de un tipo de dato personalizado o un `ENUM` desde la consola de comandos, debes utilizar el comando **`\dT`** o **`\dT+`** (que significa *describe types*):
+
+```sql
+\dT+ cargo_empleado
+
+```
+
+#### Alternativa mediante SQL directo
+
+Si prefieres consultar los valores o etiquetas (`labels`) del `ENUM` directamente utilizando una consulta SQL estándar sobre las tablas del sistema, puedes ejecutar lo siguiente:
+
+```sql
+SELECT t.typname AS tipo, e.enumlabel AS valor_enum
+FROM pg_type t
+JOIN pg_enum e ON t.oid = e.enumtypid
+WHERE t.typname = 'cargo_empleado'
+ORDER BY e.enumsortorder;
+
+```
