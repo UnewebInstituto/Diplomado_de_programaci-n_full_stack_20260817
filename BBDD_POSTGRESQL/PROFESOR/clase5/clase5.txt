@@ -1,0 +1,992 @@
+En PostgreSQL, cuando trabajas con tipos de datos de fecha y hora (`timestamp`), la resta directa entre dos columnas de tipo `timestamp` (o `timestamp without time zone`) **no** produce directamente un tipo `time` ni un `interval` estricto que pueda asignarse de forma directa sin una función de conversión, ya que la resta de dos timestamps devuelve un tipo de datos **`interval`**.
+
+Dado que en tu script la columna `tiempo_reserva` fue definida como de tipo `time without time zone`, tenemos dos detalles importantes a considerar:
+
+1. Si usas `GENERATED ALWAYS AS`, la expresión debe coincidir exactamente con el tipo de dato de la columna.
+2. Un tipo `time` almacena una hora del día (ej. `14:30:00`), mientras que una diferencia de tiempo (como "2 horas y media") se representa correctamente en PostgreSQL con el tipo **`interval`** o convirtiéndola explícitamente si se requiere `time`.
+
+### Opción Recomendada: Cambiar `tiempo_reserva` a tipo `INTERVAL`
+
+Lo técnicamente correcto para representar una duración o diferencia de tiempo es usar `interval`. De esta manera, la columna generada calculará la diferencia exacta entre la fecha-hora de fin y la de inicio sin pérdida de datos.
+
+Aquí tienes el script adaptado e integrado utilizando `GENERATED ALWAYS AS (...) STORED` con el tipo `interval`:
+
+```sql
+CREATE TABLE IF NOT EXISTS practica02.reservas
+(
+    id serial,
+    espacio_id integer,
+    persona_id integer,
+    evento text,
+    inicio_fecha_hora timestamp without time zone DEFAULT NOW(),
+    fin_fecha_hora timestamp without time zone DEFAULT NOW(),
+    estatus practica02.reserva_estatus,
+    -- Cambiamos a INTERVAL para almacenar correctamente la diferencia de tiempo
+    tiempo_reserva interval GENERATED ALWAYS AS (fin_fecha_hora - inicio_fecha_hora) STORED,
+    PRIMARY KEY (id)
+);
+
+```
+
+---
+
+### ¿Qué pasa si necesitas obligatoriamente que sea de tipo `TIME`?
+
+Si por diseño de tu esquema la columna `tiempo_reserva` **debe** ser estrictamente de tipo `time without time zone`, PostgreSQL requiere que hagas un `CAST` (conversión) explícito del resultado del intervalo al tipo `time`:
+
+```sql
+CREATE TABLE IF NOT EXISTS practica02.reservas
+(
+    id serial,
+    espacio_id integer,
+    persona_id integer,
+    evento text,
+    inicio_fecha_hora timestamp without time zone DEFAULT NOW(),
+    fin_fecha_hora timestamp without time zone DEFAULT NOW(),
+    estatus practica02.reserva_estatus,
+    -- Forzamos la conversión del intervalo resultante a tipo TIME
+    tiempo_reserva time without time zone GENERATED ALWAYS AS (CAST((fin_fecha_hora - inicio_fecha_hora) AS time)) STORED,
+    PRIMARY KEY (id)
+);
+
+```
+
+### ¿Cómo funcionaría en un `INSERT`?
+
+Al tratarse de una columna generada automáticamente, al insertar registros **no debes incluir** `tiempo_reserva` en la sentencia. El motor de PostgreSQL hará el cálculo por ti:
+
+```sql
+INSERT INTO practica02.reservas (espacio_id, persona_id, evento, inicio_fecha_hora, fin_fecha_hora, estatus)
+VALUES (
+    1, 
+    1, 
+    'Reunión de planificación', 
+    '2026-06-10 08:00:00', 
+    '2026-06-10 10:30:00', 
+    'CONFIRMADA'
+);
+
+```
+
+Al consultar la tabla, la columna `tiempo_reserva` mostrará automáticamente el resultado del cálculo (`02:30:00`).
+
+
+Para realizar el sembrado de datos (*data seeding*) de todas las entidades definidas en el esquema `practica02.sql`, debemos respetar el **orden de las dependencias** debido a las llaves foráneas (`FOREIGN KEY`). Primero se deben insertar los registros independientes (`espacios` y `personas`) y por último la tabla dependiente (`reservas`).
+
+Ten en cuenta que la columna `tiempo_reserva` en la tabla `reservas` **no se incluye** en las sentencias `INSERT` porque es una columna generada automáticamente por el motor de la base de datos a partir de las fechas de inicio y fin.
+
+A continuación tienes el script de inserción ordenado:
+
+```sql
+-- =========================================================
+-- 1. SEMBRADO DE DATOS: ESPACIOS
+-- =========================================================
+INSERT INTO practica02.espacios (ubicacion, estatus) VALUES
+('Sala de Conferencias A - Torre Este', 'DISPONIBLE'),
+('Auditorio Principal - Planta Baja', 'DISPONIBLE'),
+('Laboratorio de Computación 1', 'OCUPADO');
+
+
+-- =========================================================
+-- 2. SEMBRADO DE DATOS: PERSONAS
+-- =========================================================
+INSERT INTO practica02.personas (nombre, apellido, tipo) VALUES
+('Carlos', 'Pérez', 'EMPLEADO'),
+('María', 'Gómez', 'PROFESOR'),
+('Ana', 'Rodríguez', 'ESTUDIANTE');
+
+
+-- =========================================================
+-- 3. SEMBRADO DE DATOS: RESERVAS
+-- =========================================================
+-- (Nota: espacio_id y persona_id hacen referencia a los IDs 
+-- generados en los bloques anteriores de espacios y personas)
+INSERT INTO practica02.reservas (espacio_id, persona_id, evento, inicio_fecha_hora, fin_fecha_hora, estatus) VALUES
+(
+    1, 
+    1, 
+    'Reunión de Planificación Estratégica', 
+    '2026-06-10 09:00:00', 
+    '2026-06-10 11:30:00', 
+    'CONFIRMADA'
+),
+(
+    2, 
+    2, 
+    'Defensa de Tesis de Grado', 
+    '2026-06-11 14:00:00', 
+    '2026-06-11 16:00:00', 
+    'PENDIENTE'
+),
+(
+    1, 
+    3, 
+    'Taller de Introducción a Bases de Datos', 
+    '2026-06-12 10:00:00', 
+    '2026-06-12 12:00:00', 
+    'CONFIRMADA'
+);
+
+```
+
+### Comprobación del resultado
+
+Al consultar la tabla `reservas` después de este sembrado mediante un `SELECT`, la columna `tiempo_reserva` mostrará el cálculo automático realizado por PostgreSQL (por ejemplo, `02:30:00` para la primera reserva, `02:00:00` para la segunda, etc.).
+
+
+SERVIDOR alwaysdata
+
+SERVIDOR: postgresql-hduque-test.alwaysdata.net
+USUARIO: hduque-test
+BASE DE DATOS: hduque-test_db_profesor_pga
+
+
+SSH
+SERVIDOR: ssh-hduque-test.alwaysdata.net (accessible also on the Web)
+
+USUARIO: hduque-test
+
+Comando de conexión desde la terminal:
+ssh hduque-test@ssh-hduque-test.alwaysdata.net
+
+-- ORIGINAL
+psql -h tu_servidor.alwaysdata.net -U tu_usuario -d nombre_de_tu_base_de_datos -f db_profesor_pga_20261007.sql
+
+-- ADAPTADO
+psql -h postgresql-hduque-test.alwaysdata.net -U hduque-test -d hduque-test_db_profesor_pga -f db_profesor_pga_20261007.sql
+
+
+RESULTADO DEL ssh
+PROFESOR@WIN-CMUODTI144V MINGW64 /e/.PROFESORES/HENRY_DUQUE/Diplomado_de_programación_full_stack_20260817 (main)
+$ git add .
+warning: in the working copy of 'BBDD_POSTGRESQL/JOSE/respaldos/db_jose_20260928.sql', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'BBDD_POSTGRESQL/PROFESOR/respaldos/db_profesor_20260928.sql', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'BBDD_POSTGRESQL/RICARDO/Respaldos/db_ricardo_20260928.sql', LF will be replaced by CRLF the next time Git touches it
+
+PROFESOR@WIN-CMUODTI144V MINGW64 /e/.PROFESORES/HENRY_DUQUE/Diplomado_de_programación_full_stack_20260817 (main)
+$ git commit -m "BBDD PostgreSQL Clase 1"
+[main 673b7a8] BBDD PostgreSQL Clase 1
+ 25 files changed, 4146 insertions(+)
+ delete mode 100644 BBDD_MYSQL/JOSE/JOSE mysql.rar
+ create mode 100644 BBDD_POSTGRESQL/ANDRES/clase1.sql
+ create mode 100644 BBDD_POSTGRESQL/ANDRES/recupera.bat
+ create mode 100644 BBDD_POSTGRESQL/ANDRES/respaldo.bat
+ create mode 100644 BBDD_POSTGRESQL/JOSE/clase1.sql
+ create mode 100644 BBDD_POSTGRESQL/JOSE/recupera.bat
+ create mode 100644 BBDD_POSTGRESQL/JOSE/respaldos.bat
+ create mode 100644 BBDD_POSTGRESQL/JOSE/respaldos/db_jose_20260928.sql
+ create mode 100644 BBDD_POSTGRESQL/PROFESOR/clase1.sql
+ create mode 100644 BBDD_POSTGRESQL/PROFESOR/clase1.txt
+ create mode 100644 BBDD_POSTGRESQL/PROFESOR/clase1/1.png
+ create mode 100644 BBDD_POSTGRESQL/PROFESOR/clase1/2.png
+ create mode 100644 BBDD_POSTGRESQL/PROFESOR/clase1/3.png
+ create mode 100644 BBDD_POSTGRESQL/PROFESOR/clase1/4.png
+ create mode 100644 BBDD_POSTGRESQL/PROFESOR/clase1/5.png
+ create mode 100644 BBDD_POSTGRESQL/PROFESOR/clase1/6.png
+ create mode 100644 BBDD_POSTGRESQL/PROFESOR/clase1/7.png
+ create mode 100644 BBDD_POSTGRESQL/PROFESOR/clase1/8.png
+ create mode 100644 BBDD_POSTGRESQL/PROFESOR/recupera.bat
+ create mode 100644 BBDD_POSTGRESQL/PROFESOR/respaldo.bat
+ create mode 100644 BBDD_POSTGRESQL/PROFESOR/respaldos/db_profesor_20260928.sql
+ create mode 100644 BBDD_POSTGRESQL/RICARDO/Clase1.sql
+ create mode 100644 BBDD_POSTGRESQL/RICARDO/Respaldos/db_ricardo_20260928.sql
+ create mode 100644 BBDD_POSTGRESQL/RICARDO/recupera.bat
+ create mode 100644 BBDD_POSTGRESQL/RICARDO/respaldo.bat
+
+PROFESOR@WIN-CMUODTI144V MINGW64 /e/.PROFESORES/HENRY_DUQUE/Diplomado_de_programación_full_stack_20260817 (main)
+$ git branch -M main
+
+PROFESOR@WIN-CMUODTI144V MINGW64 /e/.PROFESORES/HENRY_DUQUE/Diplomado_de_programación_full_stack_20260817 (main)
+$ git remote remove origin
+
+PROFESOR@WIN-CMUODTI144V MINGW64 /e/.PROFESORES/HENRY_DUQUE/Diplomado_de_programación_full_stack_20260817 (main)
+$ git remote add origin https://github.com/UnewebInstituto/Diplomado_de_programaci-n_full_stack_20260817.git
+
+PROFESOR@WIN-CMUODTI144V MINGW64 /e/.PROFESORES/HENRY_DUQUE/Diplomado_de_programación_full_stack_20260817 (main)
+$ git push -u origin main
+Enumerating objects: 40, done.
+Counting objects: 100% (40/40), done.
+Delta compression using up to 6 threads
+Compressing objects: 100% (36/36), done.
+Writing objects: 100% (37/37), 1.88 MiB | 1.63 MiB/s, done.
+Total 37 (delta 13), reused 0 (delta 0), pack-reused 0 (from 0)      
+remote: Resolving deltas: 100% (13/13), completed with 3 local objects.
+To https://github.com/UnewebInstituto/Diplomado_de_programaci-n_full_stack_20260817.git
+   42928f6..673b7a8  main -> main
+branch 'main' set up to track 'origin/main'.
+
+PROFESOR@WIN-CMUODTI144V MINGW64 /e/.PROFESORES/HENRY_DUQUE/Diplomado_de_programación_full_stack_20260817 (main)
+$
+PROFESOR@WIN-CMUODTI144V MINGW64 /e/.PROFESORES/HENRY_DUQUE/Diplomado_de_programación_full_stack_20260817 (main)
+$
+ *  History restored 
+
+
+PROFESOR@WIN-CMUODTI144V MINGW64 /e/.PROFESORES/HENRY_DUQUE/Diplomado_de_programación_full_stack_20260817 (main)
+$ 
+ *  History restored 
+
+
+PROFESOR@WIN-CMUODTI144V MINGW64 /e/.PROFESORES/HENRY_DUQUE/Diplomado_de_programación_full_stack_20260817 (main)
+$ 
+ *  History restored 
+
+
+PROFESOR@WIN-CMUODTI144V MINGW64 /e/.PROFESORES/HENRY_DUQUE/Diplomado_de_programación_full_stack_20260817 (main)
+$ 
+ *  History restored 
+
+
+PROFESOR@WIN-CMUODTI144V MINGW64 /e/.PROFESORES/HENRY_DUQUE/Diplomado_de_programación_full_stack_20260817 (main)
+$ 
+ *  History restored 
+
+
+PROFESOR@WIN-CMUODTI144V MINGW64 /e/.PROFESORES/HENRY_DUQUE/Diplomado_de_programación_full_stack_20260817 (main)
+$
+
+PROFESOR@WIN-CMUODTI144V MINGW64 /e/.PROFESORES/HENRY_DUQUE/Diplomado_de_programación_full_stack_20260817 (main)
+$ 
+
+PROFESOR@WIN-CMUODTI144V MINGW64 /e/.PROFESORES/HENRY_DUQUE/Diplomado_de_programación_full_stack_20260817 (main)
+$ ssh ssh-hduque-test.alwaysdata.net@hduque-test
+ssh: Could not resolve hostname hduque-test: Name or service not known
+
+PROFESOR@WIN-CMUODTI144V MINGW64 /e/.PROFESORES/HENRY_DUQUE/Diplomado_de_programación_full_stack_20260817 (main)
+$ ssh hduque-test@ssh-hduque-test.alwaysdata.net
+The authenticity of host 'ssh-hduque-test.alwaysdata.net (185.31.41.85)' can't be established.
+ED25519 key fingerprint is SHA256:TvrGYSwNIKR1WW/1hYH7967mIz5FP1K51XW8OgNO6JU.
+This host key is known by the following other names/addresses:
+    ~/.ssh/known_hosts:1: ssh-luisaalibaba.alwaysdata.net
+Are you sure you want to continue connecting (yes/no/[fingerprint])?
+Host key verification failed.
+
+PROFESOR@WIN-CMUODTI144V MINGW64 /e/.PROFESORES/HENRY_DUQUE/Diplomado_de_programación_full_stack_20260817 (main)
+$ ssh hduque-test@ssh-hduque-test.alwaysdata.net
+The authenticity of host 'ssh-hduque-test.alwaysdata.net (185.31.41.85)' can't be established.
+ED25519 key fingerprint is SHA256:TvrGYSwNIKR1WW/1hYH7967mIz5FP1K51XW8OgNO6JU.
+This host key is known by the following other names/addresses:
+    ~/.ssh/known_hosts:1: ssh-luisaalibaba.alwaysdata.net
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added 'ssh-hduque-test.alwaysdata.net' (ED25519) to the list of known hosts.
+(hduque-test@ssh-hduque-test.alwaysdata.net) Password: 
+Linux ssh1 6.18.52-alwaysdata #1 SMP PREEMPT_DYNAMIC Fri Sep 18 08:28:52 UTC 2026 x86_64
+
+You must not:
+
+  * use too much CPU, RAM, IO or bandwidth
+  * run applications in background (e.g. AI agents, bots)
+  * have processes running for too long (e.g. days)
+
+If you do not comply with these rules, your account may be suspended.
+
+If you want:
+
+  * cron jobs, use scheduled tasks: https://help.alwaysdata.com/en/web-hosting/tasks/
+  * to have processes running 24/7, use services: https://help.alwaysdata.com/en/web-hosting/services/        
+
+Last login: Thu Sep 10 20:02:56 2026 from 146.70.147.102
+hduque-test@ssh1:~$ pwd
+/home/hduque-test
+hduque-test@ssh1:~$ ls
+admin           node-app           personas              www                  www_DOM  www_w  www_z
+apps            node-emergencias   service-details.html  www_bm               www_p    www_x  yummy
+gemini_web_app  package-lock.json  strainer              www_DIPLOMADO_SAB_M  www_sab  www_y
+hduque-test@ssh1:~$ ls
+admin  gemini_web_app    package-lock.json     strainer  www_DIPLOMADO_SAB_M  www_sab  www_y
+apps   node-app          personas              www       www_DOM              www_w    www_z
+bbdd   node-emergencias  service-details.html  www_bm    www_p                www_x    yummy
+hduque-test@ssh1:~$ cd bbdd
+hduque-test@ssh1:~/bbdd$ ls
+db_profesor_pga_20261007.sql
+hduque-test@ssh1:~/bbdd$ psql -h postgresql-hduque-test.alwaysdata.net -U hduque-test -d duque-test_db_profesor_pga -f db_profesor_pga_20261007.sql
+Password for user hduque-test: 
+psql: error: connection to server at "postgresql-hduque-test.alwaysdata.net" (2a00:b6e0:1:102:4::1), port 5432 failed: FATAL:  database "duque-test_db_profesor_pga" does not exist
+hduque-test@ssh1:~/bbdd$ psql -h postgresql-hduque-test.alwaysdata.net -U hduque-test -d hduque-test_db_profesor_pga -f db_profesor_pga_20261007.sql
+Password for user hduque-test: 
+SET
+SET
+SET
+SET
+SET
+ set_config 
+------------
+
+(1 row)
+
+SET
+SET
+SET
+SET
+CREATE SCHEMA
+psql:db_profesor_pga_20261007.sql:29: ERROR:  must be able to SET ROLE "postgres"
+COMMENT
+CREATE SCHEMA
+psql:db_profesor_pga_20261007.sql:48: ERROR:  must be able to SET ROLE "postgres"
+CREATE SCHEMA
+psql:db_profesor_pga_20261007.sql:58: ERROR:  must be able to SET ROLE "postgres"
+COMMENT
+CREATE SCHEMA
+psql:db_profesor_pga_20261007.sql:77: ERROR:  must be able to SET ROLE "postgres"
+COMMENT
+CREATE TYPE
+psql:db_profesor_pga_20261007.sql:100: ERROR:  must be able to SET ROLE "postgres"
+CREATE TYPE
+psql:db_profesor_pga_20261007.sql:113: ERROR:  must be able to SET ROLE "postgres"
+CREATE TYPE
+psql:db_profesor_pga_20261007.sql:127: ERROR:  must be able to SET ROLE "postgres"
+CREATE TYPE
+psql:db_profesor_pga_20261007.sql:143: ERROR:  must be able to SET ROLE "postgres"
+CREATE TYPE
+psql:db_profesor_pga_20261007.sql:158: ERROR:  must be able to SET ROLE "postgres"
+SET
+SET
+CREATE TABLE
+psql:db_profesor_pga_20261007.sql:175: ERROR:  must be able to SET ROLE "postgres"
+CREATE SEQUENCE
+psql:db_profesor_pga_20261007.sql:191: ERROR:  must be able to SET ROLE "postgres"
+ALTER SEQUENCE
+CREATE TABLE
+psql:db_profesor_pga_20261007.sql:213: ERROR:  must be able to SET ROLE "postgres"
+CREATE SEQUENCE
+psql:db_profesor_pga_20261007.sql:229: ERROR:  must be able to SET ROLE "postgres"
+ALTER SEQUENCE
+CREATE TABLE
+psql:db_profesor_pga_20261007.sql:251: ERROR:  must be able to SET ROLE "postgres"
+CREATE SEQUENCE
+psql:db_profesor_pga_20261007.sql:267: ERROR:  must be able to SET ROLE "postgres"
+ALTER SEQUENCE
+CREATE TABLE
+psql:db_profesor_pga_20261007.sql:290: ERROR:  must be able to SET ROLE "postgres"
+CREATE SEQUENCE
+psql:db_profesor_pga_20261007.sql:306: ERROR:  must be able to SET ROLE "postgres"
+ALTER SEQUENCE
+CREATE TABLE
+psql:db_profesor_pga_20261007.sql:332: ERROR:  must be able to SET ROLE "postgres"
+CREATE TABLE
+psql:db_profesor_pga_20261007.sql:346: ERROR:  must be able to SET ROLE "postgres"
+CREATE VIEW
+psql:db_profesor_pga_20261007.sql:368: ERROR:  must be able to SET ROLE "postgres"
+CREATE TABLE
+psql:db_profesor_pga_20261007.sql:381: ERROR:  must be able to SET ROLE "postgres"
+CREATE SEQUENCE
+psql:db_profesor_pga_20261007.sql:397: ERROR:  must be able to SET ROLE "postgres"
+ALTER SEQUENCE
+CREATE TABLE
+psql:db_profesor_pga_20261007.sql:419: ERROR:  must be able to SET ROLE "postgres"
+CREATE SEQUENCE
+psql:db_profesor_pga_20261007.sql:435: ERROR:  must be able to SET ROLE "postgres"
+ALTER SEQUENCE
+CREATE TABLE
+psql:db_profesor_pga_20261007.sql:461: ERROR:  must be able to SET ROLE "postgres"
+CREATE SEQUENCE
+psql:db_profesor_pga_20261007.sql:477: ERROR:  must be able to SET ROLE "postgres"
+ALTER SEQUENCE
+CREATE TABLE
+psql:db_profesor_pga_20261007.sql:499: ERROR:  must be able to SET ROLE "postgres"
+CREATE TABLE
+psql:db_profesor_pga_20261007.sql:513: ERROR:  must be able to SET ROLE "postgres"
+CREATE SEQUENCE
+psql:db_profesor_pga_20261007.sql:529: ERROR:  must be able to SET ROLE "postgres"
+ALTER SEQUENCE
+CREATE TABLE
+psql:db_profesor_pga_20261007.sql:553: ERROR:  must be able to SET ROLE "postgres"
+CREATE SEQUENCE
+psql:db_profesor_pga_20261007.sql:569: ERROR:  must be able to SET ROLE "postgres"
+ALTER SEQUENCE
+CREATE TABLE
+psql:db_profesor_pga_20261007.sql:597: ERROR:  must be able to SET ROLE "postgres"
+CREATE SEQUENCE
+psql:db_profesor_pga_20261007.sql:613: ERROR:  must be able to SET ROLE "postgres"
+ALTER SEQUENCE
+CREATE TABLE
+psql:db_profesor_pga_20261007.sql:636: ERROR:  must be able to SET ROLE "postgres"
+CREATE TABLE
+psql:db_profesor_pga_20261007.sql:650: ERROR:  must be able to SET ROLE "postgres"
+CREATE SEQUENCE
+psql:db_profesor_pga_20261007.sql:666: ERROR:  must be able to SET ROLE "postgres"
+ALTER SEQUENCE
+CREATE TABLE
+psql:db_profesor_pga_20261007.sql:688: ERROR:  must be able to SET ROLE "postgres"
+CREATE SEQUENCE
+psql:db_profesor_pga_20261007.sql:704: ERROR:  must be able to SET ROLE "postgres"
+ALTER SEQUENCE
+CREATE TABLE
+psql:db_profesor_pga_20261007.sql:729: ERROR:  must be able to SET ROLE "postgres"
+CREATE TABLE
+psql:db_profesor_pga_20261007.sql:747: ERROR:  must be able to SET ROLE "postgres"
+COMMENT
+CREATE SEQUENCE
+psql:db_profesor_pga_20261007.sql:772: ERROR:  must be able to SET ROLE "postgres"
+ALTER SEQUENCE
+CREATE TABLE
+psql:db_profesor_pga_20261007.sql:797: ERROR:  must be able to SET ROLE "postgres"
+CREATE TABLE
+psql:db_profesor_pga_20261007.sql:813: ERROR:  must be able to SET ROLE "postgres"
+CREATE SEQUENCE
+psql:db_profesor_pga_20261007.sql:829: ERROR:  must be able to SET ROLE "postgres"
+ALTER SEQUENCE
+CREATE SEQUENCE
+psql:db_profesor_pga_20261007.sql:854: ERROR:  must be able to SET ROLE "postgres"
+ALTER SEQUENCE
+CREATE TABLE
+psql:db_profesor_pga_20261007.sql:879: ERROR:  must be able to SET ROLE "postgres"
+CREATE TABLE
+psql:db_profesor_pga_20261007.sql:895: ERROR:  must be able to SET ROLE "postgres"
+CREATE SEQUENCE
+psql:db_profesor_pga_20261007.sql:911: ERROR:  must be able to SET ROLE "postgres"
+ALTER SEQUENCE
+CREATE SEQUENCE
+psql:db_profesor_pga_20261007.sql:936: ERROR:  must be able to SET ROLE "postgres"
+ALTER SEQUENCE
+CREATE TABLE
+psql:db_profesor_pga_20261007.sql:965: ERROR:  must be able to SET ROLE "postgres"
+CREATE SEQUENCE
+psql:db_profesor_pga_20261007.sql:981: ERROR:  must be able to SET ROLE "postgres"
+ALTER SEQUENCE
+CREATE VIEW
+psql:db_profesor_pga_20261007.sql:1008: ERROR:  must be able to SET ROLE "postgres"
+CREATE VIEW
+psql:db_profesor_pga_20261007.sql:1025: ERROR:  must be able to SET ROLE "postgres"
+CREATE TABLE
+psql:db_profesor_pga_20261007.sql:1043: ERROR:  must be able to SET ROLE "postgres"
+CREATE SEQUENCE
+psql:db_profesor_pga_20261007.sql:1059: ERROR:  must be able to SET ROLE "postgres"
+ALTER SEQUENCE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+COPY 4
+COPY 3
+COPY 4
+COPY 4
+COPY 7
+COPY 3
+COPY 4
+COPY 3
+COPY 3
+COPY 3
+COPY 4
+COPY 3
+COPY 3
+COPY 3
+COPY 9
+COPY 5
+COPY 1
+COPY 6
+COPY 13
+COPY 13
+COPY 3
+COPY 3
+COPY 4
+COPY 0
+ setval
+--------
+      4
+(1 row)
+
+ setval
+--------
+      3
+(1 row)
+
+ setval
+--------
+      4
+(1 row)
+
+ setval 
+--------
+      4
+(1 row)
+
+ setval
+--------
+      7
+(1 row)
+
+ setval
+--------
+      3
+(1 row)
+
+ setval
+--------
+      3
+(1 row)
+
+ setval
+--------
+      4
+(1 row)
+
+ setval 
+--------
+      3
+(1 row)
+
+ setval
+--------
+      9
+(1 row)
+
+ setval
+--------
+      3
+(1 row)
+
+ setval
+--------
+      5
+(1 row)
+
+ setval 
+--------
+      6
+(1 row)
+
+ setval
+--------
+     13
+(1 row)
+
+ setval
+--------
+     13
+(1 row)
+
+ setval 
+--------
+      3
+(1 row)
+
+ setval 
+--------
+      3
+(1 row)
+
+ setval 
+--------
+      5
+(1 row)
+
+ setval 
+--------
+      1
+(1 row)
+
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+ALTER TABLE
+hduque-test@ssh1:~/bbdd$ 
+
+FIN DE LA EJECUCIÓN
+
+**SSH** (Secure Shell o Intérprete Seguro) es un protocolo de red criptográfico que permite a los usuarios —especialmente administradores de sistemas y desarrolladores— conectarse y gestionar computadoras o servidores remotos de forma totalmente segura y cifrada a través de una red no segura (como Internet).
+
+---
+
+### **Funciones Clave**
+
+* **Acceso remoto a terminal:** Permite abrir una línea de comandos interactiva en un servidor remoto para ejecutar instrucciones como si estuvieras frente a él.
+* **Autenticación robusta:** Utiliza contraseñas o, de forma más segura, pares de claves criptográficas (clave pública y clave privada) para validar la identidad sin exponer credenciales.
+* **Transferencia de archivos:** Sirve de base para protocolos seguros de intercambio de datos como SFTP (Secure File Transfer Protocol) y SCP.
+* **Túneles y redireccionamiento:** Permite redirigir puertos y cifrar el tráfico de otras aplicaciones (como bases de datos o conexiones web) de extremo a extremo.
+
+
+Server [localhost]:
+Database [postgres]:
+Port [5432]:
+Username [postgres]:
+Contraseña para usuario postgres:
+psql (15.13)
+ADVERTENCIA: El código de página de la consola (850) difiere del código
+            de página de Windows (1252).
+            Los caracteres de 8 bits pueden funcionar incorrectamente.
+            Vea la página de referencia de psql «Notes for Windows users»
+            para obtener más detalles.
+Digite «help» para obtener ayuda.
+
+postgres=# \c db_profesor_pga
+Ahora está conectado a la base de datos «db_profesor_pga» con el usuario «postgres».
+db_profesor_pga=# \d
+                      Listado de relaciones
+ Esquema |             Nombre              |   Tipo    |  Due±o
+---------+---------------------------------+-----------+----------
+ public  | alumnos                         | tabla     | postgres
+ public  | alumnos_asignaturas_inscripcion | tabla     | postgres
+ public  | alumnos_id_seq                  | secuencia | postgres
+ public  | asignaturas                     | tabla     | postgres
+ public  | asignaturas_id_seq              | secuencia | postgres
+ public  | emergencias                     | tabla     | postgres
+ public  | personas                        | tabla     | postgres
+ public  | personas_id_seq                 | secuencia | postgres
+ public  | productos                       | tabla     | postgres
+ public  | productos_1                     | tabla     | postgres
+ public  | productos_1_id_seq              | secuencia | postgres
+ public  | productos_id_seq                | secuencia | postgres
+ public  | proveedores                     | tabla     | postgres
+ public  | proveedores_1                   | tabla     | postgres
+ public  | proveedores_1_id_seq            | secuencia | postgres
+ public  | proveedores_id_seq              | secuencia | postgres
+ public  | trabajadores                    | tabla     | postgres
+ public  | trabajadores_id_seq             | secuencia | postgres
+ public  | vista_alumnos_asignaturas       | vista     | postgres
+ public  | vista_proveedores_1-productos_1 | vista     | postgres
+(20 filas)
+
+
+db_profesor_pga=#
+db_profesor_pga=# INSERT INTO practica02.reservas (espacio_id, persona_id, evento, inicio_fecha_hora, fin_fecha_hora, estatus) VALUES
+db_profesor_pga-# (
+db_profesor_pga(#     4,
+db_profesor_pga(#     3,
+db_profesor_pga(#     'Juego semifinal torneo futbol interuniversidades',
+db_profesor_pga(#     '2026-10-13 09:00:00',
+db_profesor_pga(#     '2026-10-13 12:30:00',
+db_profesor_pga(#     'abierta'
+db_profesor_pga(# ),
+db_profesor_pga-# (
+db_profesor_pga(#     2,
+db_profesor_pga(#     2,
+db_profesor_pga(#     'Defensa de Trabajo de Grado',
+db_profesor_pga(#     '2026-10-13 14:00:00',
+db_profesor_pga(#     '2026-10-13 16:00:00',
+db_profesor_pga(#     'abierta'
+db_profesor_pga(# ),
+db_profesor_pga-# (
+db_profesor_pga(#     1,
+db_profesor_pga(#     3,
+db_profesor_pga(#     'Inducción de nuevos estudiantes',
+db_profesor_pga(#     '2026-10-14 10:00:00',
+db_profesor_pga(#     '2026-10-14 12:00:00',
+db_profesor_pga(#     'abierta'
+db_profesor_pga(# );
+INSERT 0 3
+db_profesor_pga=# select * practica02.reservas;
+ERROR:  error de sintaxis en o cerca de «practica02»
+LÍNEA 1: select * practica02.reservas;
+                  ^
+db_profesor_pga=# select * from practica02.reservas;
+ id | espacio_id | persona_id |                      evento                      |  inicio_fecha_hora  |   fin_fecha_hora    | estatus | tiempo_reserva
+----+------------+------------+--------------------------------------------------+---------------------+---------------------+---------+----------------
+  1 |          4 |          3 | Juego semifinal torneo futbol interuniversidades | 2026-10-13 09:00:00 | 2026-10-13 12:30:00 | abierta |
+  2 |          2 |          2 | Defensa de Trabajo de Grado                      | 2026-10-13 14:00:00 | 2026-10-13 16:00:00 | abierta |
+  3 |          1 |          3 | Inducción de nuevos estudiantes                  | 2026-10-14 10:00:00 | 2026-10-14 12:00:00 | abierta |
+(3 filas)
+
+
+db_profesor_pga=# select * from practica02.reservas;
+ id | espacio_id | persona_id |                      evento                      |  inicio_fecha_hora  |   fin_fecha_hora    | estatus | tiempo_reserva
+----+------------+------------+--------------------------------------------------+---------------------+---------------------+---------+----------------
+  1 |          4 |          3 | Juego semifinal torneo futbol interuniversidades | 2026-10-13 09:00:00 | 2026-10-13 12:30:00 | abierta |
+  2 |          2 |          2 | Defensa de Trabajo de Grado                      | 2026-10-13 14:00:00 | 2026-10-13 16:00:00 | abierta |
+  3 |          1 |          3 | Inducción de nuevos estudiantes                  | 2026-10-14 10:00:00 | 2026-10-14 12:00:00 | abierta |
+(3 filas)
+
+
+db_profesor_pga=# \dt practica02.reservas;
+          Listado de relaciones
+  Esquema   |  Nombre  | Tipo  |  Due±o
+------------+----------+-------+----------
+ practica02 | reservas | tabla | postgres
+(1 fila)
+
+
+db_profesor_pga=# \d practica02.reservas;
+                                                 Tabla ½practica02.reservas╗
+      Columna      |            Tipo             | Ordenamiento | Nulable  |                   Por omisi¾n
+-------------------+-----------------------------+--------------+----------+-------------------------------------------------
+ id                | integer                     |              | not null | nextval('practica02.reservas_id_seq'::regclass)
+ espacio_id        | integer                     |              |          |
+ persona_id        | integer                     |              |          |
+ evento            | text                        |              |          |
+ inicio_fecha_hora | timestamp without time zone |              |          | now()
+ fin_fecha_hora    | timestamp without time zone |              |          | now()
+ estatus           | practica02.reserva_estatus  |              |          |
+ tiempo_reserva    | time without time zone      |              |          |
+═ndices:
+    "reservas_pkey" PRIMARY KEY, btree (id)
+Restricciones de llave forßnea:
+    "reservas_espacio_id_fkey" FOREIGN KEY (espacio_id) REFERENCES practica02.espacios(id) NOT VALID
+    "reservas_persona_id_fkey" FOREIGN KEY (persona_id) REFERENCES practica02.personas(id) NOT VALID
+
+
+db_profesor_pga=# \d practica02.reservas;
+                                                 Tabla ½practica02.reservas╗
+      Columna      |            Tipo             | Ordenamiento | Nulable  |                   Por omisi¾n
+-------------------+-----------------------------+--------------+----------+-------------------------------------------------
+ id                | integer                     |              | not null | nextval('practica02.reservas_id_seq'::regclass)
+ espacio_id        | integer                     |              |          |
+ persona_id        | integer                     |              |          |
+ evento            | text                        |              |          |
+ inicio_fecha_hora | timestamp without time zone |              |          | now()
+ fin_fecha_hora    | timestamp without time zone |              |          | now()
+ estatus           | practica02.reserva_estatus  |              |          |
+ tiempo_reserva    | time without time zone      |              |          |
+═ndices:
+    "reservas_pkey" PRIMARY KEY, btree (id)
+Restricciones de llave forßnea:
+    "reservas_espacio_id_fkey" FOREIGN KEY (espacio_id) REFERENCES practica02.espacios(id) NOT VALID
+    "reservas_persona_id_fkey" FOREIGN KEY (persona_id) REFERENCES practica02.personas(id) NOT VALID
+
+
+db_profesor_pga=# \d practica02.reservas;
+                                                 Tabla ½practica02.reservas╗
+      Columna      |            Tipo             | Ordenamiento | Nulable  |                   Por omisi¾n
+-------------------+-----------------------------+--------------+----------+-------------------------------------------------
+ id                | integer                     |              | not null | nextval('practica02.reservas_id_seq'::regclass)
+ espacio_id        | integer                     |              |          |
+ persona_id        | integer                     |              |          |
+ evento            | text                        |              |          |
+ inicio_fecha_hora | timestamp without time zone |              |          | now()
+ fin_fecha_hora    | timestamp without time zone |              |          | now()
+ estatus           | practica02.reserva_estatus  |              |          |
+ tiempo_reserva    | interval                    |              |          |
+═ndices:
+    "reservas_pkey" PRIMARY KEY, btree (id)
+Restricciones de llave forßnea:
+    "reservas_espacio_id_fkey" FOREIGN KEY (espacio_id) REFERENCES practica02.espacios(id) NOT VALID
+    "reservas_persona_id_fkey" FOREIGN KEY (persona_id) REFERENCES practica02.personas(id) NOT VALID
+
+
+db_profesor_pga=# select * from practica02.reservas;
+ id | espacio_id | persona_id |                      evento                      |  inicio_fecha_hora  |   fin_fecha_hora    | estatus | tiempo_reserva
+----+------------+------------+--------------------------------------------------+---------------------+---------------------+---------+----------------
+  1 |          4 |          3 | Juego semifinal torneo futbol interuniversidades | 2026-10-13 09:00:00 | 2026-10-13 12:30:00 | abierta |
+  2 |          2 |          2 | Defensa de Trabajo de Grado                      | 2026-10-13 14:00:00 | 2026-10-13 16:00:00 | abierta |
+  3 |          1 |          3 | Inducción de nuevos estudiantes                  | 2026-10-14 10:00:00 | 2026-10-14 12:00:00 | abierta |
+(3 filas)
+
+
+db_profesor_pga=# truncate reservas;
+ERROR:  no existe la relación «reservas»
+db_profesor_pga=#
+db_profesor_pga=# truncate practica02.}reservas;
+ERROR:  error de sintaxis en o cerca de «}»
+LÍNEA 1: truncate practica02.}reservas;
+                             ^
+db_profesor_pga=# truncate practica02.reservas;
+TRUNCATE TABLE
+db_profesor_pga=#     INSERT INTO practica02.reservas (espacio_id, persona_id, evento, inicio_fecha_hora, fin_fecha_hora, estatus) VALUES
+db_profesor_pga-#     (
+db_profesor_pga(#         4,
+db_profesor_pga(#         3,
+db_profesor_pga(#         'Juego semifinal torneo futbol interuniversidades',
+db_profesor_pga(#         '2026-10-13 09:00:00',
+db_profesor_pga(#         '2026-10-13 12:30:00',
+db_profesor_pga(#         'abierta'
+db_profesor_pga(#     ),
+db_profesor_pga-#     (
+db_profesor_pga(#         2,
+db_profesor_pga(#         2,
+db_profesor_pga(#         'Defensa de Trabajo de Grado',
+db_profesor_pga(#         '2026-10-13 14:00:00',
+db_profesor_pga(#         '2026-10-13 16:00:00',
+db_profesor_pga(#         'abierta'
+db_profesor_pga(#     ),
+db_profesor_pga-#     (
+db_profesor_pga(#         1,
+db_profesor_pga(#         3,
+db_profesor_pga(#         'Inducción de nuevos estudiantes',
+db_profesor_pga(#         '2026-10-14 10:00:00',
+db_profesor_pga(#         '2026-10-14 12:00:00',
+db_profesor_pga(#         'abierta'
+db_profesor_pga(#     );
+INSERT 0 3
+db_profesor_pga=# select tiempo_reserva from practica02.reservas;
+ tiempo_reserva
+----------------
+
+
+
+(3 filas)
+
+
+db_profesor_pga=# \d
+                      Listado de relaciones
+ Esquema |             Nombre              |   Tipo    |  Due±o
+---------+---------------------------------+-----------+----------
+ public  | alumnos                         | tabla     | postgres
+ public  | alumnos_asignaturas_inscripcion | tabla     | postgres
+ public  | alumnos_id_seq                  | secuencia | postgres
+ public  | asignaturas                     | tabla     | postgres
+ public  | asignaturas_id_seq              | secuencia | postgres
+ public  | emergencias                     | tabla     | postgres
+ public  | personas                        | tabla     | postgres
+ public  | personas_id_seq                 | secuencia | postgres
+ public  | productos                       | tabla     | postgres
+ public  | productos_1                     | tabla     | postgres
+ public  | productos_1_id_seq              | secuencia | postgres
+ public  | productos_id_seq                | secuencia | postgres
+ public  | proveedores                     | tabla     | postgres
+ public  | proveedores_1                   | tabla     | postgres
+ public  | proveedores_1_id_seq            | secuencia | postgres
+ public  | proveedores_id_seq              | secuencia | postgres
+ public  | trabajadores                    | tabla     | postgres
+ public  | trabajadores_id_seq             | secuencia | postgres
+ public  | vista_alumnos_asignaturas       | vista     | postgres
+ public  | vista_proveedores_1-productos_1 | vista     | postgres
+(20 filas)
+
+
+db_profesor_pga=# \d practica02.reservas;
+                                                 Tabla ½practica02.reservas╗
+      Columna      |            Tipo             | Ordenamiento | Nulable  |                   Por omisi¾n
+-------------------+-----------------------------+--------------+----------+-------------------------------------------------
+ id                | integer                     |              | not null | nextval('practica02.reservas_id_seq'::regclass)
+ espacio_id        | integer                     |              |          |
+ persona_id        | integer                     |              |          |
+ evento            | text                        |              |          |
+ inicio_fecha_hora | timestamp without time zone |              |          | now()
+ fin_fecha_hora    | timestamp without time zone |              |          | now()
+ estatus           | practica02.reserva_estatus  |              |          |
+ tiempo_reserva    | interval                    |              |          |
+═ndices:
+    "reservas_pkey" PRIMARY KEY, btree (id)
+Restricciones de llave forßnea:
+    "reservas_espacio_id_fkey" FOREIGN KEY (espacio_id) REFERENCES practica02.espacios(id) NOT VALID
+    "reservas_persona_id_fkey" FOREIGN KEY (persona_id) REFERENCES practica02.personas(id) NOT VALID
+
+
+db_profesor_pga=# truncate reservas;
+ERROR:  no existe la relación «reservas»
+db_profesor_pga=# truncate practica02.reservas;
+TRUNCATE TABLE
+db_profesor_pga=# drop column tiempo_reserva practica02.reservas
+db_profesor_pga-# ;
+ERROR:  error de sintaxis en o cerca de «column»
+LÍNEA 1: drop column tiempo_reserva practica02.reservas
+              ^
+db_profesor_pga=# alter table drop column tiempo_reserva practica02.reservas
+db_profesor_pga-# :
+db_profesor_pga-# ;
+ERROR:  error de sintaxis en o cerca de «column»
+LÍNEA 1: alter table drop column tiempo_reserva practica02.reservas
+                          ^
+db_profesor_pga=# alter table drop column tiempo_reserva practica02.reservas;
+ERROR:  error de sintaxis en o cerca de «column»
+LÍNEA 1: alter table drop column tiempo_reserva practica02.reservas;
+                          ^
+db_profesor_pga=# alter table practica02.reservas drop column tiempo_reserva ;
+ALTER TABLE
+db_profesor_pga=# alter table practica02.reservas add column     tiempo_reserva interval GENERATED ALWAYS AS (fin_fecha_hora - inicio_fecha_hora) STORED,
+db_profesor_pga-# \c
+Ahora está conectado a la base de datos «db_profesor_pga» con el usuario «postgres».
+db_profesor_pga-# alter table practica02.reservas add column     tiempo_reserva interval GENERATED ALWAYS AS (fin_fecha_hora - inicio_fecha_hora) STORED;
+ERROR:  error de sintaxis en o cerca de «table»
+LÍNEA 2: alter table practica02.reservas add column     tiempo_reserv...
+               ^
+db_profesor_pga=# alter table practica02.reserva add column     tiempo_reserva interval GENERATED ALWAYS AS (fin_fecha_hora - inicio_fecha_hora) STORED;
+ERROR:  no existe la relación «practica02.reserva»
+db_profesor_pga=# alter table practica02.reservas add column tiempo_reserva interval GENERATED ALWAYS AS (fin_fecha_hora - inicio_fecha_hora) STORED;
+ALTER TABLE
+db_profesor_pga=# \d practica02.reservas;
+                                                         Tabla ½practica02.reservas╗
+      Columna      |            Tipo             | Ordenamiento | Nulable  |                           Por omisi¾n
+-------------------+-----------------------------+--------------+----------+-----------------------------------------------------------------
+ id                | integer                     |              | not null | nextval('practica02.reservas_id_seq'::regclass)
+ espacio_id        | integer                     |              |          |
+ persona_id        | integer                     |              |          |
+ evento            | text                        |              |          |
+ inicio_fecha_hora | timestamp without time zone |              |          | now()
+ fin_fecha_hora    | timestamp without time zone |              |          | now()
+ estatus           | practica02.reserva_estatus  |              |          |
+ tiempo_reserva    | interval                    |              |          | generated always as (fin_fecha_hora - inicio_fecha_hora) stored
+═ndices:
+    "reservas_pkey" PRIMARY KEY, btree (id)
+Restricciones de llave forßnea:
+    "reservas_espacio_id_fkey" FOREIGN KEY (espacio_id) REFERENCES practica02.espacios(id) NOT VALID
+    "reservas_persona_id_fkey" FOREIGN KEY (persona_id) REFERENCES practica02.personas(id) NOT VALID
+
+
+db_profesor_pga=# INSERT INTO practica02.reservas (espacio_id, persona_id, evento, inicio_fecha_hora, fin_fecha_hora, estatus) VALUES
+db_profesor_pga-#     (
+db_profesor_pga(#         4,
+db_profesor_pga(#         3,
+db_profesor_pga(#         'Juego semifinal torneo futbol interuniversidades',
+db_profesor_pga(#         '2026-10-13 09:00:00',
+db_profesor_pga(#         '2026-10-13 12:30:00',
+db_profesor_pga(#         'abierta'
+db_profesor_pga(#     ),
+db_profesor_pga-#     (
+db_profesor_pga(#         2,
+db_profesor_pga(#         2,
+db_profesor_pga(#         'Defensa de Trabajo de Grado',
+db_profesor_pga(#         '2026-10-13 14:00:00',
+db_profesor_pga(#         '2026-10-13 16:00:00',
+db_profesor_pga(#         'abierta'
+db_profesor_pga(#     ),
+db_profesor_pga-#     (
+db_profesor_pga(#         1,
+db_profesor_pga(#         3,
+db_profesor_pga(#         'Inducción de nuevos estudiantes',
+db_profesor_pga(#         '2026-10-14 10:00:00',
+db_profesor_pga(#         '2026-10-14 12:00:00',
+db_profesor_pga(#         'abierta'
+db_profesor_pga(#     );
+INSERT 0 3
+db_profesor_pga=# select * from practica02.reservas;
+ id | espacio_id | persona_id |                      evento                      |  inicio_fecha_hora  |   fin_fecha_hora    | estatus | tiempo_reserva
+----+------------+------------+--------------------------------------------------+---------------------+---------------------+---------+----------------
+  7 |          4 |          3 | Juego semifinal torneo futbol interuniversidades | 2026-10-13 09:00:00 | 2026-10-13 12:30:00 | abierta | 03:30:00
+  8 |          2 |          2 | Defensa de Trabajo de Grado                      | 2026-10-13 14:00:00 | 2026-10-13 16:00:00 | abierta | 02:00:00
+  9 |          1 |          3 | Inducción de nuevos estudiantes                  | 2026-10-14 10:00:00 | 2026-10-14 12:00:00 | abierta | 02:00:00
+(3 filas)
+
+
+db_profesor_pga=#
+

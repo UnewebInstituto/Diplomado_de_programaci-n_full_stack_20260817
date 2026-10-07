@@ -309,3 +309,21 @@ INSERT INTO personas_serial(cedula, nombre, apellido, correo, telefono, direccio
 UPDATE personas_serial SET direccion = 'GUATIRE' WHERE cedula = 'V9012';
 
 DELETE FROM personas_serial WHERE cedula = 'V1234';
+
+ALWAYSDATA.NET
+SERVIDOR: postgresql-josemedinaproyecto.alwaysdata.net
+USUARIO: josemedinaproyecto_psql
+BASE DE DATOS: josemedinaproyecto_psql_db_jose_pga
+
+
+Comando de conexion desde la terminal gitbash
+
+SSH
+SERVIDOR: SSH host: ssh-josemedinaproyecto_psql_db_jose_pga.alwaysdata.net
+USUARIO: josemedinaproyecto_psql
+
+ssh josemedinaproyecto@ssh-josemedinaproyecto.alwaysdata.net
+
+psql -h tu_servidor.alwaysdata.net -U tu_usuario -d nombre_de_tu_base_de_datos -f db_profesor_pga_20261007.sql
+
+psql -h postgresql-josemedinaproyecto.alwaysdata.net -U josemedinaproyecto_psql -d josemedinaproyecto_psql_db_jose_pga -f db_profesor_pga_20261007.sql 

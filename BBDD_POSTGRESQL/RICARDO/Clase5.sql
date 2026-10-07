@@ -1,0 +1,1 @@
+psql -h postgresql-ricardosilva.alwaysdata.net -U ricardosilva -d ricardosilva_db_ricardo_pga_testcmd -f db_ricardo_pga_20261007.sql 
