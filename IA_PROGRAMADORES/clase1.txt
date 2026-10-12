@@ -1,0 +1,116 @@
+https://dolarhoy.com/empresas/jensen-huang-ceo-de-nvidia-afirmo-que-el-65-del-pbi-mundial-sera-aumentado-por-la-ia-202510171240
+
+https://www.elespanol.com/omicrono/20260721/demis-hassabis-ceo-google-deepmind-hacer-carrera-no-redundante-hace-veces-mejor-ia/1003744325543_0.amp.html
+
+
+1) PROMPT: Incitador de comandos.
+
+2) Estructura general de un prompt para IA es:
+R: ROL
+T: TAREA
+C: CONTEXTO
+F: FORMATO
+L: LIMITACIÓN
+
+Ejemplo:
+https://bootstrapmade.com/
+
+Enunciado del prompt, para la practica 1:
+
+Asume el rol de experto en desarrollo, diseño web y seo (optimización de motores de búsqueda). Toma el archivo anexo y adapta todo el contenido para un sitio web que proyecte la imagen empresarial de la compañia "Soluciones tecnológicas e Informáticas IA, C.A", se trata de una empresa dedicada al diseño, arquitectura y desarrollo de soluciones de tecnologías de la información a la medida, apoyándose en lenguajes de programación, manejadores de Bases de Datos, Marcos de desarrollo e Inteligencia Artificial, conformado por equipo de trabajo multidiscplinario en arás de satisfacer los requerimientos de sus clientes.El archivo a producir debe ser un html, donde se conserven todos los aspectos de diseño e imagen, contenidos en la plantilla, se debe mantener el estilo de fuentes, así como la organización del contenido.
+
+¿Caso en el que no se plantear?
+Caso ventas e instalación de persianas.
+
+Dame 3 ejemplos de prompt para adaptar una plantilla html 
+de bootstrapmade para un sitio de ventas e instalación de 
+persianas.
+
+
+Aquí tienes 3 prompts listos para usar, de menos a más detallado. Adáptalos con los datos reales del negocio (entre corchetes).
+
+## Ejemplo 1: Adaptación general de contenido
+
+```
+Adjunto el index.html de una plantilla de BootstrapMade. Adáptalo para
+un negocio de venta e instalación de persianas llamado [NOMBRE DEL NEGOCIO]
+en [CIUDAD, PAÍS].
+
+Requisitos:
+- Mantén intacta la estructura HTML, las clases de Bootstrap y las rutas
+  de CSS/JS.
+- Reemplaza todos los textos (hero, about, servicios, testimonios, FAQ,
+  contacto, footer) por contenido relacionado con persianas.
+- Servicios a destacar: persianas enrollables, venecianas, screen/solar,
+  roller, verticales y cortinas blackout, con medición e instalación a domicilio.
+- Tono: profesional, cercano y orientado a conseguir cotizaciones.
+- Cambia los CTA por "Solicita tu cotización gratis".
+- Entrégame el archivo completo, listo para copiar.
+```
+
+## Ejemplo 2: Enfoque en SEO y conversión
+
+```
+Actúa como especialista en SEO local y conversión web. Con la plantilla
+HTML de BootstrapMade adjunta, crea la versión para [NOMBRE DEL NEGOCIO],
+empresa de venta e instalación de persianas en [CIUDAD].
+
+Haz lo siguiente:
+1. Reescribe el <title>, meta description y Open Graph usando las
+   palabras clave: "persianas en [CIUDAD]", "instalación de persianas",
+   "persianas a medida".
+2. Usa un solo H1 y jerarquía H2/H3 coherente.
+3. Agrega atributos alt descriptivos a todas las imágenes.
+4. Incluye datos estructurados JSON-LD de tipo LocalBusiness (dirección,
+   teléfono, horario).
+5. Reorganiza las secciones así: hero con CTA, tipos de persianas,
+   proceso (medición, fabricación, instalación), galería de trabajos,
+   testimonios, preguntas frecuentes y contacto.
+6. Añade un botón flotante de WhatsApp con el número [NÚMERO].
+
+No modifiques los scripts ni las rutas de assets. Entrega el código
+completo y una lista breve de los cambios realizados.
+```
+
+## Ejemplo 3: Cambios visuales y de marca
+
+```
+Tengo una plantilla HTML de BootstrapMade (adjunta). Quiero personalizarla
+visualmente para una marca de persianas llamada [NOMBRE].
+
+Identidad de marca:
+- Colores principales: [#HEX1] y [#HEX2]
+- Tipografía: [FUENTE DE GOOGLE FONTS]
+- Estilo: moderno, limpio, transmite confort y luminosidad en el hogar.
+
+Tareas:
+- Modifica las variables CSS (:root) para aplicar la paleta.
+- Sustituye los íconos de Bootstrap Icons por otros relacionados con
+  ventanas, medidas, herramientas y hogar.
+- Indica qué imágenes debo reemplazar y sugiere una descripción para cada
+  una (hero, servicios, galería), con el nombre de archivo que debo usar.
+- Añade una sección de "Cotizador rápido" con un formulario simple
+  (tipo de persiana, medidas aproximadas, ciudad, teléfono).
+- Mantén el diseño responsive.
+
+Devuélveme solo el código modificado por secciones, indicando dónde
+va cada bloque.
+```
+
+## Consejos para mejores resultados
+
+- **Adjunta el archivo completo**, no solo fragmentos, para que respete la estructura.
+- **Trabaja por secciones** si el HTML es muy largo (hero, servicios, contacto, etc.).
+- **Indica qué no tocar** (scripts, rutas, clases) para evitar que se rompa la plantilla.
+- **Itera**: después del primer resultado, pide ajustes puntuales como "hazlo más corto" o "cambia el tono a más formal".
+
+¿Quieres que adapte alguno de estos prompts a una plantilla específica de BootstrapMade (por ejemplo Appland, Arsha o Medilab)?
+
+Investigar:
+
+Chat Bots en IA
+¿Qué es TawkTo?
+¿Qué es Botpress?
+¿Qué es Tidio?
+
+¿Qué son bases de conocimientos?

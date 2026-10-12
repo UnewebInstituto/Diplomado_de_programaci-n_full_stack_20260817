@@ -1,0 +1,8 @@
+███ TEACHER ███
+Asume el rol de experto en desarrollo, diseño web y seo (optimización de motores de búsqueda). Toma el archivo anexo y adapta todo el contenido para un sitio web que proyecte la imagen empresarial de la compañia "Soluciones tecnológicas e Informáticas IA, C.A", se trata de una empresa dedicada al diseño, arquitectura y desarrollo de soluciones de tecnologías de la información a la medida, apoyándose en lenguajes de programación, manejadores de Bases de Datos, Marcos de desarrollo e Inteligencia Artificial, conformado por equipo de trabajo multidiscplinario en arás de satisfacer los requerimientos de sus clientes.El archivo a producir debe ser un html, donde se conserven todos los aspectos de diseño e imagen, contenidos en la plantilla, se debe mantener el estilo de fuentes, así como la organización del contenido.
+███         ███
+
+I'm sending this "CoreBiz" index.html file from bootstrapmade and I want you to do the following changes to it:
+ - Adapt the contents for a company named "Tech-Info LLC".
+ - The company is about technological design, web architecture, and how to effectively use and read digital information. The professional teams involved are multi-disciplinary experts, web developers, database managers, and AI researchers.
+ - Produce an HTML file that follows the structure, try keeping most of the original layout intact, such as images, fonts, colors, etc.

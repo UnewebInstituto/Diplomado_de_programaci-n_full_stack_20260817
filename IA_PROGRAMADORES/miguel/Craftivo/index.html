@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Olympus Gym | Crossfit, Musculación, Yoga y Spinning</title>
+  <meta name="description" content="Olympus Gym: gimnasio con clases de crossfit, musculación, yoga y spinning. Elige entre el plan Básico o el Premium y empieza con tu primera clase gratis.">
+  <meta name="keywords" content="gimnasio, olympus gym, crossfit, musculación, yoga, spinning, planes de gimnasio, entrenador personal, clases grupales, fitness">
+  <meta name="author" content="Olympus Gym">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.olympusgym.com/">
+
+  <!-- Open Graph / Redes sociales -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_ES">
+  <meta property="og:site_name" content="Olympus Gym">
+  <meta property="og:title" content="Olympus Gym | Crossfit, Musculación, Yoga y Spinning">
+  <meta property="og:description" content="Entrena con clases de crossfit, musculación, yoga y spinning. Plan Básico y plan Premium. Primera clase gratis.">
+  <meta property="og:url" content="https://www.olympusgym.com/">
+  <meta property="og:image" content="https://www.olympusgym.com/assets/img/profile/profile-bg-5.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Olympus Gym | Crossfit, Musculación, Yoga y Spinning">
+  <meta name="twitter:description" content="Entrena con clases de crossfit, musculación, yoga y spinning. Plan Básico y plan Premium.">
+  <meta name="twitter:image" content="https://www.olympusgym.com/assets/img/profile/profile-bg-5.webp">
+
+  <!-- Favicons -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Mulish:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet">
+
+  <!-- Ajuste mínimo para las listas con viñetas de los planes (usa las variables de color de la plantilla) -->
+  <style>
+    .plan-list {
+      list-style: none;
+      padding: 0;
+      margin: 20px 0 24px;
+      text-align: left;
+    }
+    .plan-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 7px 0;
+      font-size: 15px;
+    }
+    .plan-list li i {
+      color: var(--accent-color);
+      font-size: 18px;
+      line-height: 1.3;
+    }
+    .plan-list li.no-incluye {
+      opacity: .55;
+    }
+    .plan-list li.no-incluye i {
+      color: inherit;
+    }
+    .plan-price {
+      font-family: var(--heading-font);
+      font-size: 40px;
+      font-weight: 700;
+      margin: 6px 0 0;
+      color: var(--heading-color);
+    }
+    .plan-price small {
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--default-color);
+    }
+  </style>
+
+  <!-- Datos estructurados (SEO local). Reemplaza los datos de ejemplo por los reales -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ExerciseGym",
+    "name": "Olympus Gym",
+    "url": "https://www.olympusgym.com/",
+    "image": "https://www.olympusgym.com/assets/img/profile/profile-bg-5.webp",
+    "description": "Gimnasio con clases de crossfit, musculación, yoga y spinning, y planes Básico y Premium.",
+    "telephone": "+00 000 000 000",
+    "email": "info@olympusgym.com",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Calle Olimpo 123",
+      "addressLocality": "Tu ciudad",
+      "postalCode": "00000",
+      "addressCountry": "XX"
+    },
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "06:00",
+        "closes": "22:00"
+      },
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Saturday"],
+        "opens": "08:00",
+        "closes": "14:00"
+      }
+    ],
+    "priceRange": "$$",
+    "makesOffer": [
+      {
+        "@type": "Offer",
+        "name": "Plan Básico",
+        "price": "29",
+        "priceCurrency": "USD"
+      },
+      {
+        "@type": "Offer",
+        "name": "Plan Premium",
+        "price": "49",
+        "priceCurrency": "USD"
+      }
+    ],
+    "sameAs": [
+      "https://www.instagram.com/olympusgym",
+      "https://www.facebook.com/olympusgym"
+    ]
+  }
+  </script>
+
+  <!-- =======================================================
+  * Template Name: Craftivo
+  * Template URL: https://bootstrapmade.com/craftivo-bootstrap-portfolio-template/
+  * Updated: Oct 04 2025 with Bootstrap v5.3.8
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body class="index-page">
+
+  <header id="header" class="header d-flex align-items-center fixed-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center">
+
+      <a href="index.html" class="logo d-flex align-items-center me-auto" aria-label="Olympus Gym, ir al inicio">
+        <!-- Descomenta la línea siguiente si quieres usar un logo en imagen -->
+        <!-- <img src="assets/img/logo.webp" alt="Logotipo de Olympus Gym"> -->
+        <h1 class="sitename">Olympus Gym</h1>
+      </a>
+
+      <nav id="navmenu" class="navmenu" aria-label="Navegación principal">
+        <ul>
+          <li><a href="#hero" class="active">Inicio</a></li>
+          <li><a href="#about">Nosotros</a></li>
+          <li><a href="#clases">Clases</a></li>
+          <li><a href="#planes">Planes</a></li>
+          <li><a href="#galeria">Galería</a></li>
+          <li class="dropdown"><a href="#clases"><span>Disciplinas</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+              <li><a href="#clases">Crossfit</a></li>
+              <li><a href="#clases">Musculación</a></li>
+              <li><a href="#clases">Yoga</a></li>
+              <li><a href="#clases">Spinning</a></li>
+            </ul>
+          </li>
+          <li><a href="#contact">Contacto</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list" aria-label="Abrir o cerrar el menú"></i>
+      </nav>
+
+      <a class="btn-getstarted" href="#planes">Empieza hoy</a>
+
+    </div>
+  </header>
+
+  <main class="main">
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero section dark-background">
+
+      <img src="assets/img/profile/profile-bg-5.webp" alt="Sala de entrenamiento de Olympus Gym con equipos de crossfit y musculación" data-aos="fade-in">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 text-center">
+            <h2>Bienvenido a Olympus Gym</h2>
+            <p>Aquí entrenas <span class="typed" data-typed-items="Crossfit, Musculación, Yoga, Spinning"></span><span class="typed-cursor" aria-hidden="true"></span></p>
+            <div class="social-links">
+              <a href="#" aria-label="Olympus Gym en X"><i class="bi bi-twitter-x"></i></a>
+              <a href="#" aria-label="Olympus Gym en Facebook"><i class="bi bi-facebook"></i></a>
+              <a href="#" aria-label="Olympus Gym en Instagram"><i class="bi bi-instagram"></i></a>
+              <a href="#" aria-label="Olympus Gym en YouTube"><i class="bi bi-youtube"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section><!-- /Hero Section -->
+
+    <!-- About Section -->
+    <section id="about" class="about section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <span class="subtitle">Nosotros</span>
+        <h2>Sobre Olympus Gym</h2>
+        <p>Somos un gimnasio pensado para quienes quieren mejorar su fuerza, su resistencia y su bienestar, con entrenadores certificados y un ambiente que motiva.</p>
+      </div><!-- End Section Title -->
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row gy-5">
+          <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="150">
+            <div class="profile-card">
+              <div class="profile-header">
+                <div class="profile-avatar">
+                  <img src="assets/img/profile/profile-square-3.webp" class="img-fluid" alt="Entrenador de Olympus Gym guiando a un socio en la sala de musculación">
+                  <div class="status-indicator"></div>
+                </div>
+                <h3>Olympus Gym</h3>
+                <span class="role">Gimnasio y centro de entrenamiento</span>
+                <div class="rating">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-half"></i>
+                  <span>4.8</span>
+                </div>
+              </div>
+
+              <div class="profile-stats">
+                <div class="stat-item">
+                  <h4>1200+</h4>
+                  <p>Socios</p>
+                </div>
+                <div class="stat-item">
+                  <h4>15</h4>
+                  <p>Entrenadores</p>
+                </div>
+                <div class="stat-item">
+                  <h4>4</h4>
+                  <p>Disciplinas</p>
+                </div>
+              </div>
+
+              <div class="profile-actions">
+                <a href="#planes" class="btn-primary"><i class="bi bi-lightning-charge"></i> Ver planes</a>
+                <a href="#contact" class="btn-secondary"><i class="bi bi-envelope"></i> Contacto</a>
+              </div>
+
+              <div class="social-connect">
+                <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                <a href="#" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                <a href="#" aria-label="TikTok"><i class="bi bi-tiktok"></i></a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-8" data-aos="fade-left" data-aos-delay="200">
+            <div class="content-wrapper">
+              <div class="bio-section">
+                <div class="section-tag">Nosotros</div>
+                <h2>Entrena con disciplina, supera tus límites</h2>
+                <p>En Olympus Gym creemos que cada persona puede alcanzar su mejor versión. Por eso reunimos en un solo lugar una sala de musculación completa, un box de crossfit, un estudio de yoga y una sala de spinning, todo con equipos modernos y un equipo de entrenadores que te acompaña en cada paso.</p>
+                <p>Ya sea tu primera vez en un gimnasio o llevas años entrenando, tenemos un plan y una clase para ti. Empieza con una clase gratis y descubre por qué más de mil socios eligen Olympus Gym.</p>
+              </div>
+
+              <div class="details-grid">
+                <div class="detail-item" data-aos="fade-up" data-aos-delay="250">
+                  <i class="bi bi-clock"></i>
+                  <div class="detail-content">
+                    <span>Horario</span>
+                    <strong>Lun - Vie 6:00 a 22:00</strong>
+                  </div>
+                </div>
+
+                <div class="detail-item" data-aos="fade-up" data-aos-delay="300">
+                  <i class="bi bi-people"></i>
+                  <div class="detail-content">
+                    <span>Entrenadores</span>
+                    <strong>Certificados</strong>
+                  </div>
+                </div>
+
+                <div class="detail-item" data-aos="fade-up" data-aos-delay="350">
+                  <i class="bi bi-geo-alt"></i>
+                  <div class="detail-content">
+                    <span>Ubicación</span>
+                    <strong>Calle Olimpo 123</strong>
+                  </div>
+                </div>
+
+                <div class="detail-item" data-aos="fade-up" data-aos-delay="100">
+                  <i class="bi bi-envelope"></i>
+                  <div class="detail-content">
+                    <span>Correo</span>
+                    <strong>info@olympusgym.com</strong>
+                  </div>
+                </div>
+
+                <div class="detail-item" data-aos="fade-up" data-aos-delay="150">
+                  <i class="bi bi-phone"></i>
+                  <div class="detail-content">
+                    <span>Teléfono</span>
+                    <strong>+00 000 000 000</strong>
+                  </div>
+                </div>
+
+                <div class="detail-item" data-aos="fade-up" data-aos-delay="200">
+                  <i class="bi bi-calendar-check"></i>
+                  <div class="detail-content">
+                    <span>Primera clase</span>
+                    <strong>Gratis</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div class="skills-showcase" data-aos="fade-up" data-aos-delay="250">
+                <div class="section-tag">Entrenamiento</div>
+                <h3>Qué vas a mejorar</h3>
+
+                <div class="skills-list skills-animation">
+                  <div class="skill-item">
+                    <div class="skill-info">
+                      <span class="skill-name">Fuerza y masa muscular</span>
+                      <span class="skill-percent">95%</span>
+                    </div>
+                    <div class="progress">
+                      <div class="progress-bar" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </div>
+
+                  <div class="skill-item">
+                    <div class="skill-info">
+                      <span class="skill-name">Resistencia cardiovascular</span>
+                      <span class="skill-percent">90%</span>
+                    </div>
+                    <div class="progress">
+                      <div class="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </div>
+
+                  <div class="skill-item">
+                    <div class="skill-info">
+                      <span class="skill-name">Flexibilidad y movilidad</span>
+                      <span class="skill-percent">88%</span>
+                    </div>
+                    <div class="progress">
+                      <div class="progress-bar" role="progressbar" aria-valuenow="88" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </div>
+
+                  <div class="skill-item">
+                    <div class="skill-info">
+                      <span class="skill-name">Pérdida de grasa</span>
+                      <span class="skill-percent">85%</span>
+                    </div>
+                    <div class="progress">
+                      <div class="progress-bar" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </div>
+
+                  <div class="skill-item">
+                    <div class="skill-info">
+                      <span class="skill-name">Bienestar y manejo del estrés</span>
+                      <span class="skill-percent">80%</span>
+                    </div>
+                    <div class="progress">
+                      <div class="progress-bar" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section><!-- /About Section -->
+
+    <!-- Clases Section (estructura de Resume) -->
+    <section id="clases" class="resume section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <span class="subtitle">Clases</span>
+        <h2>Nuestras clases</h2>
+        <p>Cuatro disciplinas para que entrenes como te guste: fuerza, intensidad, calma o ritmo. Consulta los horarios y elige la que mejor se adapte a tu día.</p>
+      </div><!-- End Section Title -->
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row gy-5">
+          <div class="col-lg-6">
+            <div class="experience-section">
+              <div class="section-header" data-aos="fade-right" data-aos-delay="200">
+                <div class="header-content">
+                  <span class="section-badge">Disciplinas</span>
+                  <h2>Elige tu clase</h2>
+                  <p>Todas las clases las dirige un entrenador certificado y se adaptan a tu nivel, desde principiante hasta avanzado.</p>
+                </div>
+              </div>
+
+              <div class="experience-cards">
+                <div class="exp-card featured" data-aos="zoom-in" data-aos-delay="300">
+                  <div class="card-header">
+                    <div class="company-logo">
+                      <i class="bi bi-lightning-charge"></i>
+                    </div>
+                    <div class="period-badge">Más popular</div>
+                  </div>
+                  <div class="card-body">
+                    <h3>Clases de Crossfit</h3>
+                    <p class="company-name">Alta intensidad, 60 minutos</p>
+                    <span class="duration">Todos los niveles</span>
+                    <p class="description">Entrenamientos diarios (WOD) que combinan levantamiento de pesas, gimnasia y ejercicios cardiovasculares. Cada ejercicio se escala a tu nivel.</p>
+                    <div class="skills-tags">
+                      <span class="skill-tag">Fuerza</span>
+                      <span class="skill-tag">Resistencia</span>
+                      <span class="skill-tag">Trabajo en equipo</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="exp-card" data-aos="zoom-in" data-aos-delay="350">
+                  <div class="card-header">
+                    <div class="company-logo">
+                      <i class="bi bi-trophy"></i>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <h3>Musculación</h3>
+                    <p class="company-name">Sala de pesas y máquinas</p>
+                    <span class="duration">Acceso libre y rutinas guiadas</span>
+                    <p class="description">Máquinas, mancuernas y barras para ganar fuerza y masa muscular, con rutinas personalizadas y supervisión de nuestros entrenadores.</p>
+                    <div class="skills-tags">
+                      <span class="skill-tag">Hipertrofia</span>
+                      <span class="skill-tag">Técnica</span>
+                      <span class="skill-tag">Rutinas</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="exp-card" data-aos="zoom-in" data-aos-delay="400">
+                  <div class="card-header">
+                    <div class="company-logo">
+                      <i class="bi bi-flower1"></i>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <h3>Clases de Yoga</h3>
+                    <p class="company-name">Hatha y vinyasa, 60 minutos</p>
+                    <span class="duration">Principiantes y avanzados</span>
+                    <p class="description">Posturas, respiración y relajación para ganar flexibilidad, mejorar la postura y reducir el estrés en un estudio tranquilo.</p>
+                    <div class="skills-tags">
+                      <span class="skill-tag">Flexibilidad</span>
+                      <span class="skill-tag">Respiración</span>
+                      <span class="skill-tag">Calma</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="exp-card" data-aos="zoom-in" data-aos-delay="450">
+                  <div class="card-header">
+                    <div class="company-logo">
+                      <i class="bi bi-bicycle"></i>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <h3>Spinning</h3>
+                    <p class="company-name">Ciclismo indoor, 45 minutos</p>
+                    <span class="duration">Todos los niveles</span>
+                    <p class="description">Clases de ciclismo en grupo con música e intervalos de intensidad para quemar calorías y mejorar tu resistencia cardiovascular.</p>
+                    <div class="skills-tags">
+                      <span class="skill-tag">Cardio</span>
+                      <span class="skill-tag">Quema de calorías</span>
+                      <span class="skill-tag">Ritmo</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="education-section">
+              <div class="section-header" data-aos="fade-left" data-aos-delay="200">
+                <div class="header-content">
+                  <span class="section-badge">Horarios</span>
+                  <h2>Cuándo entrenar</h2>
+                  <p>Abrimos desde temprano hasta la noche para que entrenes antes o después del trabajo. Reserva tu lugar en recepción o por teléfono.</p>
+                </div>
+              </div>
+
+              <div class="education-timeline" data-aos="fade-left" data-aos-delay="300">
+                <div class="timeline-track">
+                  <div class="timeline-item">
+                    <div class="timeline-marker">
+                      <i class="bi bi-sunrise"></i>
+                    </div>
+                    <div class="timeline-content">
+                      <div class="education-meta">
+                        <span class="year-range">Lun - Vie</span>
+                        <span class="degree-level">Mañana</span>
+                      </div>
+                      <h4>Entrena antes del trabajo</h4>
+                      <p class="institution">6:00 a 12:00</p>
+                      <div class="certifications-list">
+                        <div class="cert-item">
+                          <span class="cert-name">Crossfit</span>
+                          <span class="cert-year">6:30</span>
+                        </div>
+                        <div class="cert-item">
+                          <span class="cert-name">Yoga</span>
+                          <span class="cert-year">8:00</span>
+                        </div>
+                        <div class="cert-item">
+                          <span class="cert-name">Spinning</span>
+                          <span class="cert-year">9:30</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="timeline-item">
+                    <div class="timeline-marker">
+                      <i class="bi bi-moon-stars"></i>
+                    </div>
+                    <div class="timeline-content">
+                      <div class="education-meta">
+                        <span class="year-range">Lun - Vie</span>
+                        <span class="degree-level">Tarde y noche</span>
+                      </div>
+                      <h4>Entrena después del trabajo</h4>
+                      <p class="institution">16:00 a 22:00</p>
+                      <div class="certifications-list">
+                        <div class="cert-item">
+                          <span class="cert-name">Spinning</span>
+                          <span class="cert-year">18:00</span>
+                        </div>
+                        <div class="cert-item">
+                          <span class="cert-name">Crossfit</span>
+                          <span class="cert-year">19:00</span>
+                        </div>
+                        <div class="cert-item">
+                          <span class="cert-name">Yoga</span>
+                          <span class="cert-year">20:30</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="timeline-item">
+                    <div class="timeline-marker">
+                      <i class="bi bi-calendar-week"></i>
+                    </div>
+                    <div class="timeline-content">
+                      <div class="education-meta">
+                        <span class="year-range">Sábados</span>
+                        <span class="degree-level">Fin de semana</span>
+                      </div>
+                      <h4>Clases de sábado</h4>
+                      <p class="institution">8:00 a 14:00</p>
+                      <div class="certifications-list">
+                        <div class="cert-item">
+                          <span class="cert-name">Crossfit</span>
+                          <span class="cert-year">9:00</span>
+                        </div>
+                        <div class="cert-item">
+                          <span class="cert-name">Yoga</span>
+                          <span class="cert-year">11:00</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section><!-- /Clases Section -->
+
+    <!-- Planes Section (estructura de Services) -->
+    <section id="planes" class="services section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <span class="subtitle">Planes</span>
+        <h2>Planes y precios</h2>
+        <p>Dos planes mensuales sin matrícula ni permanencia. Elige el que mejor se ajuste a tus objetivos y cámbiate cuando quieras.</p>
+      </div><!-- End Section Title -->
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row gy-4 justify-content-center">
+          <div class="col-lg-5 col-md-6" data-aos="zoom-in" data-aos-delay="100">
+            <div class="service-item">
+              <div class="icon-wrapper">
+                <i class="bi bi-person-check"></i>
+              </div>
+              <h4>Plan Básico</h4>
+              <p class="plan-price">$29 <small>/ mes</small></p>
+              <p>Ideal para empezar a entrenar con constancia.</p>
+              <ul class="plan-list">
+                <li><i class="bi bi-check-circle-fill"></i><span>Acceso a la sala de musculación y cardio</span></li>
+                <li><i class="bi bi-check-circle-fill"></i><span>Clases de yoga y spinning</span></li>
+                <li><i class="bi bi-check-circle-fill"></i><span>Horario de lunes a viernes, de 6:00 a 16:00</span></li>
+                <li><i class="bi bi-check-circle-fill"></i><span>Evaluación física inicial</span></li>
+                <li><i class="bi bi-check-circle-fill"></i><span>Casilleros y duchas</span></li>
+                <li class="no-incluye"><i class="bi bi-dash-circle"></i><span>Crossfit no incluido</span></li>
+                <li class="no-incluye"><i class="bi bi-dash-circle"></i><span>Sin entrenador personal</span></li>
+              </ul>
+              <a href="#contact" class="read-more">
+                <span>Elegir plan Básico</span>
+                <i class="bi bi-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="col-lg-5 col-md-6" data-aos="zoom-in" data-aos-delay="200">
+            <div class="service-item featured">
+              <div class="featured-tag">Recomendado</div>
+              <div class="icon-wrapper">
+                <i class="bi bi-award"></i>
+              </div>
+              <h4>Plan Premium</h4>
+              <p class="plan-price">$49 <small>/ mes</small></p>
+              <p>Todo Olympus Gym, sin límites y con acompañamiento.</p>
+              <ul class="plan-list">
+                <li><i class="bi bi-check-circle-fill"></i><span>Acceso ilimitado los 7 días de la semana</span></li>
+                <li><i class="bi bi-check-circle-fill"></i><span>Todas las clases: crossfit, musculación, yoga y spinning</span></li>
+                <li><i class="bi bi-check-circle-fill"></i><span>2 sesiones al mes con entrenador personal</span></li>
+                <li><i class="bi bi-check-circle-fill"></i><span>Plan de nutrición y seguimiento de progreso</span></li>
+                <li><i class="bi bi-check-circle-fill"></i><span>2 pases de invitado al mes</span></li>
+                <li><i class="bi bi-check-circle-fill"></i><span>Casilleros, duchas y toalla incluidos</span></li>
+              </ul>
+              <a href="#contact" class="read-more">
+                <span>Elegir plan Premium</span>
+                <i class="bi bi-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="row mt-5">
+          <div class="col-12" data-aos="fade-up" data-aos-delay="200">
+            <div class="cta-box">
+              <div class="row align-items-center">
+                <div class="col-lg-8">
+                  <h3>Tu primera clase es gratis</h3>
+                  <p>Ven a conocer Olympus Gym, prueba una clase y elige tu plan sin compromiso.</p>
+                </div>
+                <div class="col-lg-4 text-lg-end text-center">
+                  <a href="#contact" class="cta-btn">Reserva tu clase</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section><!-- /Planes Section -->
+
+    <!-- Galería Section (estructura de Portfolio) -->
+    <section id="galeria" class="portfolio section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <span class="subtitle">Galería</span>
+        <h2>Nuestras instalaciones</h2>
+        <p>Conoce los espacios donde entrenas: un box de crossfit, una sala de musculación, un estudio de yoga y una sala de spinning.</p>
+      </div><!-- End Section Title -->
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
+          <ul class="portfolio-filters isotope-filters" data-aos="fade-up" data-aos-delay="200">
+            <li data-filter="*" class="filter-active">Todo</li>
+            <li data-filter=".filter-crossfit">Crossfit</li>
+            <li data-filter=".filter-musculacion">Musculación</li>
+            <li data-filter=".filter-yoga">Yoga</li>
+            <li data-filter=".filter-spinning">Spinning</li>
+          </ul>
+
+          <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="300">
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-crossfit">
+              <div class="portfolio-card">
+                <div class="portfolio-image-container">
+                  <img src="assets/img/portfolio/portfolio-1.webp" alt="Clase de crossfit en el box de Olympus Gym" class="img-fluid" loading="lazy">
+                  <div class="portfolio-overlay">
+                    <div class="portfolio-info">
+                      <span class="project-category">Crossfit</span>
+                      <h4>Box de entrenamiento funcional</h4>
+                    </div>
+                    <div class="portfolio-actions">
+                      <a href="assets/img/portfolio/portfolio-1.webp" class="glightbox portfolio-link" aria-label="Ampliar imagen del box de crossfit">
+                        <i class="bi bi-plus-lg"></i>
+                      </a>
+                      <a href="#clases" class="portfolio-details" aria-label="Ver clases de crossfit">
+                        <i class="bi bi-arrow-right"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="portfolio-meta">
+                  <div class="project-tags">
+                    <span class="tag">WOD</span>
+                    <span class="tag">Fuerza</span>
+                  </div>
+                  <div class="project-year">Box</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-musculacion">
+              <div class="portfolio-card">
+                <div class="portfolio-image-container">
+                  <img src="assets/img/portfolio/portfolio-2.webp" alt="Sala de musculación con máquinas y pesas libres" class="img-fluid" loading="lazy">
+                  <div class="portfolio-overlay">
+                    <div class="portfolio-info">
+                      <span class="project-category">Musculación</span>
+                      <h4>Sala de pesas y máquinas</h4>
+                    </div>
+                    <div class="portfolio-actions">
+                      <a href="assets/img/portfolio/portfolio-2.webp" class="glightbox portfolio-link" aria-label="Ampliar imagen de la sala de musculación">
+                        <i class="bi bi-plus-lg"></i>
+                      </a>
+                      <a href="#clases" class="portfolio-details" aria-label="Ver información de musculación">
+                        <i class="bi bi-arrow-right"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="portfolio-meta">
+                  <div class="project-tags">
+                    <span class="tag">Pesas</span>
+                    <span class="tag">Máquinas</span>
+                  </div>
+                  <div class="project-year">Sala 1</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-yoga">
+              <div class="portfolio-card">
+                <div class="portfolio-image-container">
+                  <img src="assets/img/portfolio/portfolio-3.webp" alt="Estudio de yoga de Olympus Gym durante una clase" class="img-fluid" loading="lazy">
+                  <div class="portfolio-overlay">
+                    <div class="portfolio-info">
+                      <span class="project-category">Yoga</span>
+                      <h4>Estudio de yoga</h4>
+                    </div>
+                    <div class="portfolio-actions">
+                      <a href="assets/img/portfolio/portfolio-3.webp" class="glightbox portfolio-link" aria-label="Ampliar imagen del estudio de yoga">
+                        <i class="bi bi-plus-lg"></i>
+                      </a>
+                      <a href="#clases" class="portfolio-details" aria-label="Ver clases de yoga">
+                        <i class="bi bi-arrow-right"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="portfolio-meta">
+                  <div class="project-tags">
+                    <span class="tag">Hatha</span>
+                    <span class="tag">Vinyasa</span>
+                  </div>
+                  <div class="project-year">Estudio</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-spinning">
+              <div class="portfolio-card">
+                <div class="portfolio-image-container">
+                  <img src="assets/img/portfolio/portfolio-4.webp" alt="Sala de spinning con bicicletas estáticas" class="img-fluid" loading="lazy">
+                  <div class="portfolio-overlay">
+                    <div class="portfolio-info">
+                      <span class="project-category">Spinning</span>
+                      <h4>Sala de ciclismo indoor</h4>
+                    </div>
+                    <div class="portfolio-actions">
+                      <a href="assets/img/portfolio/portfolio-4.webp" class="glightbox portfolio-link" aria-label="Ampliar imagen de la sala de spinning">
+                        <i class="bi bi-plus-lg"></i>
+                      </a>
+                      <a href="#clases" class="portfolio-details" aria-label="Ver clases de spinning">
+                        <i class="bi bi-arrow-right"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="portfolio-meta">
+                  <div class="project-tags">
+                    <span class="tag">Cardio</span>
+                    <span class="tag">Intervalos</span>
+                  </div>
+                  <div class="project-year">Sala 2</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-crossfit">
+              <div class="portfolio-card">
+                <div class="portfolio-image-container">
+                  <img src="assets/img/portfolio/portfolio-5.webp" alt="Socios entrenando en equipo durante una clase de crossfit" class="img-fluid" loading="lazy">
+                  <div class="portfolio-overlay">
+                    <div class="portfolio-info">
+                      <span class="project-category">Crossfit</span>
+                      <h4>Entrenamiento en equipo</h4>
+                    </div>
+                    <div class="portfolio-actions">
+                      <a href="assets/img/portfolio/portfolio-5.webp" class="glightbox portfolio-link" aria-label="Ampliar imagen de entrenamiento en equipo">
+                        <i class="bi bi-plus-lg"></i>
+                      </a>
+                      <a href="#clases" class="portfolio-details" aria-label="Ver clases de crossfit">
+                        <i class="bi bi-arrow-right"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="portfolio-meta">
+                  <div class="project-tags">
+                    <span class="tag">Equipo</span>
+                    <span class="tag">Motivación</span>
+                  </div>
+                  <div class="project-year">Box</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-musculacion">
+              <div class="portfolio-card">
+                <div class="portfolio-image-container">
+                  <img src="assets/img/portfolio/portfolio-6.webp" alt="Entrenador personal asesorando a un socio con pesas" class="img-fluid" loading="lazy">
+                  <div class="portfolio-overlay">
+                    <div class="portfolio-info">
+                      <span class="project-category">Entrenador personal</span>
+                      <h4>Asesoría personalizada</h4>
+                    </div>
+                    <div class="portfolio-actions">
+                      <a href="assets/img/portfolio/portfolio-6.webp" class="glightbox portfolio-link" aria-label="Ampliar imagen de asesoría personalizada">
+                        <i class="bi bi-plus-lg"></i>
+                      </a>
+                      <a href="#planes" class="portfolio-details" aria-label="Ver planes con entrenador personal">
+                        <i class="bi bi-arrow-right"></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="portfolio-meta">
+                  <div class="project-tags">
+                    <span class="tag">Técnica</span>
+                    <span class="tag">Rutinas</span>
+                  </div>
+                  <div class="project-year">Premium</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="portfolio-bottom" data-aos="fade-up" data-aos-delay="400">
+          <div class="row align-items-center">
+            <div class="col-lg-8">
+              <h3>¿Te gusta lo que ves?</h3>
+              <p>Visítanos, recorre las instalaciones y prueba una clase gratis con uno de nuestros entrenadores.</p>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+              <a href="#contact" class="btn btn-accent">Agenda tu visita</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section><!-- /Galería Section -->
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <span class="subtitle">Contacto</span>
+        <h2>Contacto</h2>
+        <p>Escríbenos para reservar tu primera clase gratis, resolver tus dudas o elegir tu plan. Te respondemos en menos de 24 horas.</p>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-4">
+            <div class="info-item">
+              <div class="icon-wrapper">
+                <i class="bi bi-geo-alt"></i>
+              </div>
+              <div>
+                <h3>Dirección</h3>
+                <p>Calle Olimpo 123, Tu ciudad</p>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <div class="icon-wrapper">
+                <i class="bi bi-telephone"></i>
+              </div>
+              <div>
+                <h3>Llámanos</h3>
+                <p>+00 000 000 000</p>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <div class="icon-wrapper">
+                <i class="bi bi-envelope"></i>
+              </div>
+              <div>
+                <h3>Escríbenos</h3>
+                <p>info@olympusgym.com</p>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="col-lg-8">
+            <form action="forms/contact.php" method="post" class="php-email-form">
+              <div class="row gy-4">
+
+                <div class="col-md-6">
+                  <input type="text" name="name" class="form-control" placeholder="Tu nombre" aria-label="Tu nombre" required="">
+                </div>
+
+                <div class="col-md-6">
+                  <input type="email" class="form-control" name="email" placeholder="Tu correo electrónico" aria-label="Tu correo electrónico" required="">
+                </div>
+
+                <div class="col-md-12">
+                  <input type="text" class="form-control" name="subject" placeholder="Asunto (por ejemplo: plan Premium)" aria-label="Asunto" required="">
+                </div>
+
+                <div class="col-md-12">
+                  <textarea class="form-control" name="message" rows="6" placeholder="Mensaje" aria-label="Mensaje" required=""></textarea>
+                </div>
+
+                <div class="col-md-12 text-center">
+                  <div class="loading">Enviando</div>
+                  <div class="error-message"></div>
+                  <div class="sent-message">Tu mensaje fue enviado. ¡Gracias por escribirnos!</div>
+
+                  <button type="submit">Enviar mensaje</button>
+                </div>
+
+              </div>
+            </form>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section><!-- /Contact Section -->
+
+  </main>
+
+  <footer id="footer" class="footer">
+
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-5 col-md-12 footer-about">
+          <a href="index.html" class="logo d-flex align-items-center" aria-label="Olympus Gym, ir al inicio">
+            <span class="sitename">Olympus Gym</span>
+          </a>
+          <p>Gimnasio con clases de crossfit, musculación, yoga y spinning. Entrenadores certificados, equipos modernos y planes para todos los objetivos.</p>
+          <div class="social-links d-flex mt-4">
+            <a href="" aria-label="Olympus Gym en X"><i class="bi bi-twitter-x"></i></a>
+            <a href="" aria-label="Olympus Gym en Facebook"><i class="bi bi-facebook"></i></a>
+            <a href="" aria-label="Olympus Gym en Instagram"><i class="bi bi-instagram"></i></a>
+            <a href="" aria-label="Olympus Gym en YouTube"><i class="bi bi-youtube"></i></a>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-6 footer-links">
+          <h4>Enlaces útiles</h4>
+          <ul>
+            <li><a href="#hero">Inicio</a></li>
+            <li><a href="#about">Nosotros</a></li>
+            <li><a href="#planes">Planes</a></li>
+            <li><a href="#">Términos del servicio</a></li>
+            <li><a href="#">Política de privacidad</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-6 footer-links">
+          <h4>Nuestras clases</h4>
+          <ul>
+            <li><a href="#clases">Crossfit</a></li>
+            <li><a href="#clases">Musculación</a></li>
+            <li><a href="#clases">Yoga</a></li>
+            <li><a href="#clases">Spinning</a></li>
+            <li><a href="#planes">Plan Básico y Premium</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-3 col-md-12 footer-contact text-center text-md-start">
+          <h4>Contáctanos</h4>
+          <p>Calle Olimpo 123</p>
+          <p>Tu ciudad, CP 00000</p>
+          <p>Tu país</p>
+          <p class="mt-4"><strong>Teléfono:</strong> <span>+00 000 000 000</span></p>
+          <p><strong>Correo:</strong> <span>info@olympusgym.com</span></p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="container copyright text-center mt-4">
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">Olympus Gym</strong> <span>Todos los derechos reservados</span></p>
+      <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you've purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+        Diseñado por <a href="https://bootstrapmade.com/">BootstrapMade</a> | <a href="https://bootstrapmade.com/tools/">DevTools</a>
+      </div>
+    </div>
+
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center" aria-label="Volver arriba"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/typed.js/typed.umd.js"></script>
+  <script src="assets/vendor/waypoints/noframework.waypoints.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+  <!-- Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>
