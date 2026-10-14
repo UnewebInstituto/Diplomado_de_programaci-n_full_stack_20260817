@@ -1,0 +1,12 @@
+SERVIDOR:
+ftp-josemedinaproyecto.alwaysdata.net
+
+USUARIO:
+josemedinaproyecto 
+
+CLAVE:
+Aforma47
+
+
+SITE:
+

@@ -1,0 +1,35 @@
+https://bootstrapmade.com/bootstrap-business-templates/
+
+
+SERVIDOR:
+ftp-hduque-test.alwaysdata.net
+
+NAME:
+hduque-test
+
+Settings (Rueda de engranaje)
+PASSWORD
+
+Acceder a través de Filezilla
+
+https://hduque-test.alwaysdata.net/
+https://karlaramirez.alwaysdata.net/
+https://andresfranco.alwaysdata.net/
+https://josemedinaproyecto.alwaysdata.net/
+https://ricardosilva.alwaysdata.net/
+https://luisfernadop.alwaysdata.net/
+https://alejandrorivas.alwaysdata.net/
+https://miguelt.alwaysdata.net/
+
+
+https://www.tidio.com/?a_bucket=sem&a_source=google&a_g_campaignid=16694699883&a_g_keyword=tidio&a_g_creative=701095043402&a_type=brand&utm_source=google&utm_medium=cpc&utm_campaign=16694699883&utm_term=tidio&hsa_acc=1286770856&hsa_cam=16694699883&hsa_grp=135895462798&hsa_ad=701095043402&hsa_src=g&hsa_tgt=aud-952572799635:kwd-111279180878&hsa_kw=tidio&hsa_mt=b&hsa_net=adwords&hsa_ver=3&gad_source=1&gad_campaignid=16694699883&gbraid=0AAAAADRcL5732nRJgM5hnljgUC-3pJ9vl&gclid=CjwKCAjw0LzWBhBOEiwAKQd0cKuTsyNv8BH2F-fhhi2MVxy8s-4Nm_lcX9OQDC88UYyjuYP3pyhGThoC8HkQAvD_BwE
+
+
+
+¿QUÉ ES UNA API?
+¿QUÉ ES UNA API KEY?
+¿QUÉ ES UN MODELO DE IA?
+¿CUÁLES SON LOS MODELOS GRATUITOS OFRECIDOS POR GOOGLE GEMINI?
+¿QUÉ SON TOKENS?
+¿CÓMO SE EXPRESA SU CONSUMO A TRAVÉS DE LÓGICA
+INTERACCIÓN DEL USUARIO CON LA IA?

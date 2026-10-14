@@ -1,0 +1,17 @@
+Actúa como desarrollador front-end senior. Te adjunto el index.html de la plantilla
+iPortfolio (BootstrapMade, Bootstrap 5.3.3). Quiero convertirla en el sitio de
+karla, estudiante, dirigido a todo publico
+
+1. Contenido (en español): reescribe todas las secciones (Acerca de, Estadísticas,
+   Habilidades, Currículum, Portafolio, Servicios, Testimonios, Contacto) con los
+   datos que te doy abajo. completa el contenido con los conocimiento y experiencia de un desarrollador front-end profesional
+2. Diseño: cambia el color de acento a [#0d9488] y la tipografía a [Inter],
+   modificando únicamente las variables CSS en :root de main.css (dime qué
+   líneas editar).
+3. SEO y accesibilidad: completa title, meta description y keywords, agrega alt
+   descriptivos a las imágenes, etiquetas Open Graph y lang="es".
+4. Limpieza: quita el dropdown de ejemplo y los íconos de redes que no uso
+   (dejo solo [LinkedIn, GitHub, Instagram]) con mis enlaces reales.
+5. Formulario: sustituye forms/contact.php por [Formspree] y muéstrame el
+   cambio en el atributo action.
+Genera el codigo final html.
