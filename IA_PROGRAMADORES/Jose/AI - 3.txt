@@ -1,0 +1,40 @@
+API KEY
+IGNORARAb8RN6IlFQyjpGgt6gKbWLfo5NQxlTns_4yLf56RQXYju0ikaA
+
+-- CURL
+
+curl "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent"        -H 'Content-Type: application/json'       -H "x-goog-api-key: IGNORARAb8RN6IlFQyjpGgt6gKbWLfo5NQxlTns_4yLf56RQXYju0ikaA"       -X POST       -d '{
+    "contents": [
+      {
+        "parts": [
+          {
+            "text": "In a quick, simple response, tell me how many tokens are in this message, and how many tokens are in a 10 word response."
+          }
+        ]
+      }
+    ]
+  }'
+
+
+-- PYTHON
+
+from google import genai
+
+client = genai.Client(api_key="IGNORARAb8RN6IlFQyjpGgt6gKbWLfo5NQxlTns_4yLf56RQXYju0ikaA")
+
+response = client.models.generate_content(
+    model="gemini-3.8-flash",
+    contents="In a quick, simple response, tell me how many tokens are in this message, and how many tokens are in a 10 word response."
+)
+print(response.text)
+
+
+POWER SHELL
+export GEMINI_API_KEY=<IGNORARAb8RN6IlFQyjpGgt6gKbWLfo5NQxlTns_4yLf56RQXYju0ikaA>
+
+COMMAND PROMPT
+set GEMINI_API_KEY=IGNORARAb8RN6IlFQyjpGgt6gKbWLfo5NQxlTns_4yLf56RQXYju0ikaA
+
+echo %GEMINI_API_KEY%
+
+RUN PY

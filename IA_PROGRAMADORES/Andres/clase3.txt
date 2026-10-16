@@ -1,0 +1,60 @@
+1-) Acceder a documentación en línea de Google Gemini
+
+https://ai.google.dev/
+
+https://ai.google.dev/gemini-api/docs?hl=es-419
+
+Obtención de llave de api (API KEY)
+https://aistudio.google.com/api-keys?hl=es-419&_gl=1*qfwq6l*_ga*NjEyNTYyNTI1LjE3OTA3ODg1Mjc.*_ga_P1DBVKWT6V*czE3OTIxMzM3ODQkbzIkZzEkdDE3OTIxMzQwMTIkajUzJGwwJGgyMTM2MzU3MTg4
+
+mi api key
+
+IGNORARAb8RN6L56eng0VRoOrm6ansKSLSYN-SKpj9CsyAmL1XEke-Fbw
+
+Prueba vía curl
+
+curl -X POST "https://generativelanguage.googleapis.com/v1beta/interactions" \
+  -H "x-goog-api-key: IGNORARAb8RN6L56eng0VRoOrm6ansKSLSYN-SKpj9CsyAmL1XEke-Fbw" \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "gemini-3.8-flash",
+    "input": "Describe la relación de consumo de tokens pregunta versus respuestas"
+  }'
+
+Correccion
+
+curl -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent" \
+  -H "x-goog-api-key: IGNORARAb8RN6L56eng0VRoOrm6ansKSLSYN-SKpj9CsyAmL1XEke-Fbw" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [
+      {
+        "parts": [
+          {
+            "text": "Describe la relación de consumo de tokens pregunta versus respuesta"
+          }
+        ]
+      }
+    ]
+  }'
+
+pip install -U google-genai
+
+SE DEBE DECLARAR LA VARIABLE DE ENTORNO QUE ALMACENE
+LA API KEY, QUE USARÁ GEMINI PARA CONSULTAR SU API:
+
+Power Shell
+export GEMINI_API_KEY="IGNORARAb8RN6L56eng0VRoOrm6ansKSLSYN-SKpj9CsyAmL1XEke-Fbw"
+
+COMMAND PROMPT
+set GEMINI_API_KEY=IGNORARAb8RN6L56eng0VRoOrm6ansKSLSYN-SKpj9CsyAmL1XEke-Fbw
+
+CONSULTAR VALOR ALMACENADO EN LA SESIÓN
+echo %GEMINI_API_KEY%
+
+EJECUCIÓN DEL PROGRAMA:
+py consulta01_api_gemini.py
+
+que es huggingface?
+como esta organizado?
+que es una matriz de confucion y como esta organizada?

@@ -1,0 +1,495 @@
+1-) Acceder a documentación en línea de Google Gemini
+
+https://ai.google.dev/
+
+https://ai.google.dev/gemini-api/docs?hl=es-419
+
+Obtención de llave de api (API KEY)
+https://aistudio.google.com/api-keys?hl=es-419&_gl=1*qfwq6l*_ga*NjEyNTYyNTI1LjE3OTA3ODg1Mjc.*_ga_P1DBVKWT6V*czE3OTIxMzM3ODQkbzIkZzEkdDE3OTIxMzQwMTIkajUzJGwwJGgyMTM2MzU3MTg4
+
+
+IGNORARAb8RN6K6Y36Gx4faKTnCMUnT9pNv9BmaYUYpxLlcRsYm9OgmYg
+
+Prueba vía curl
+
+curl -X POST "https://generativelanguage.googleapis.com/v1beta/interactions" \
+  -H "x-goog-api-key: IGNORARAb8RN6K6Y36Gx4faKTnCMUnT9pNv9BmaYUYpxLlcRsYm9OgmYg" \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "gemini-3.8-flash",
+    "input": "Describe la relación de consumo de tokens pregunta versus respuesta"
+  }'
+
+Como experto en las APIs de Gemini, te comento que el problema principal en tu comando `curl` es doble: hay un error de sintaxis en el cuerpo JSON y, además, estás utilizando un endpoint y un modelo que no corresponden a la estructura estándar de la API de Gemini (por ejemplo, `gemini-3.8-flash` no existe como modelo oficial y el endpoint `/v1beta/interactions` no es el correcto para inferencia de texto básica).
+
+Para solucionar esto rápidamente, te comparto la forma correcta de enviar una solicitud usando el endpoint estándar `generateContent` con un modelo actual como `gemini-2.5-flash` (o `gemini-1.5-flash`).
+
+---
+
+### Comando `curl` corregido
+
+```bash
+curl -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent" \
+  -H "x-goog-api-key: IGNORARAb8RN6K6Y36Gx4faKTnCMUnT9pNv9BmaYUYpxLlcRsYm9OgmYg" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [
+      {
+        "parts": [
+          {
+            "text": "Describe la relación de consumo de tokens pregunta versus respuesta"
+          }
+        ]
+      }
+    ]
+  }'
+
+```
+
+---
+
+### Explicación de los cambios:
+
+1. **Endpoint correcto:** El formato estándar para llamadas directas de generación de contenido utiliza la ruta `/v1beta/models/{modelo}:generateContent`.
+2. **Modelo válido:** Se reemplazó el nombre del modelo por uno soportado (como `gemini-2.5-flash` o `gemini-1.5-flash`).
+3. **Estructura del Payload (JSON):** La API de Gemini espera el parámetro `"contents"` estructurado en arreglos de `parts` y `text`, en lugar del campo simplificado `"input"`. Esto también elimina el error de sintaxis que estabas experimentando debido a caracteres ocultos o mal anidamiento en el cuerpo anterior.
+
+---
+
+### Relación de consumo de tokens (Pregunta vs. Respuesta)
+
+Aprovechando tu consulta sobre los tokens, aquí te detallo cómo funciona esta relación en los modelos Gemini:
+
+* **Tokens de Entrada (Prompt / Pregunta):**
+* Incluyen todo el texto que envías en la solicitud (instrucciones del sistema, historial de chat, contexto e imágenes si aplica).
+* Se facturan o procesan en función del volumen total de caracteres/palabras que recibe el modelo en cada petición.
+
+
+* **Tokens de Salida (Generación / Respuesta):**
+* Es el texto que el modelo genera como respuesta.
+* Su costo en términos de procesamiento suele ser computacionalmente más alto por token que la entrada, y está limitado por el parámetro `maxOutputTokens`.
+
+
+* **Proporción típica:** No existe una regla fija, ya que depende totalmente de tu caso de uso. Sin embargo, en aplicaciones de chat conversacional o consultas directas, la relación suele inclinarse hacia entradas más largas (contexto enriquecido) y respuestas concisas, optimizando así la ventana de contexto disponible.
+
+¿Te gustaría ver cómo estructurar este mismo llamado utilizando el SDK oficial en Python o Node.js?
+
+
+curl -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent" \
+  -H "x-goog-api-key: TU_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [
+      {
+        "parts": [
+          {
+            "text": "Describe la relación de consumo de tokens pregunta versus respuesta"
+          }
+        ]
+      }
+    ]
+  }'
+
+
+RESPUESTA OBTENIDA:
+curl -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent" \
+  -H "x-goog-api-key: IGNORARAb8RN6K6Y36Gx4faKTnCMUnT9pNv9BmaYUYpxLlcRsYm9OgmYg" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [
+      {
+        "parts": [
+          {
+            "text": "Describe la relación de consumo de tokens pregunta versus respuesta"
+          }
+        ]
+      }
+    ]
+  }'
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "La relación de consumo de tokens entre una pregunta (input) y una respuesta (output) en un modelo de lenguaje (como GPT-3.5, GPT-4, etc.) es fundamental para entender cómo funcionan y cómo se cobran estos servicios. No es una relación uno a uno, sino que está influenciada por varios factores.\n\nAquí te detallo esta relación:\n\n### 1. ¿Qué son los Tokens?\n\nAntes de entrar en la relación, es clave entender que los tokens no son lo mismo que palabras.\n*   Un token es una unidad más pequeña de texto. Una palabra común puede ser un token, pero palabras más largas o compuestas pueden ser dos o más tokens. La puntuación y los espacios también suelen contar como tokens separados.\n*   Los modelos procesan texto en tokens, no en palabras.\n*   El costo de uso de estos modelos se basa generalmente en el número de tokens procesados (input) y generados (output).\n\n### 2. Consumo de Tokens de la \"Pregunta\" (Input)\n\nLa pregunta es el texto que tú envías al modelo. Su consumo de tokens depende directamente de:\n\n*   **Longitud y Detalle:** Cuanto más larga y detallada sea tu pregunta, más tokens consumirá.\n    *   **Ejemplo:** \"Dame el resumen de X\" (pocos tokens) vs. \"Dame un resumen detallado del libro 'Cien años de soledad', enfócate en los personajes principales, los temas recurrentes y el estilo literario, y no excedas las 500 palabras.\" (muchos más tokens).\n*   **Contexto Adicional:** En conversaciones (chatbots), la \"pregunta\" no es solo lo que escribes en ese momento, sino que a menudo **incluye todo el historial de la conversación previa** (preguntas y respuestas anteriores) que se le reenvía al modelo para que mantenga el contexto. Esto puede aumentar drásticamente el consumo de tokens de input en turnos posteriores de la conversación.\n*   **Instrucciones del Sistema (System Prompt):** Algunos modelos o aplicaciones utilizan una \"instrucción del sistema\" que no es visible para el usuario pero se envía junto con cada pregunta (ej: \"Eres un asistente de IA útil y conciso\"). Esto también se suma a los tokens de input.\n\n### 3. Consumo de Tokens de la \"Respuesta\" (Output)\n\nLa respuesta es el texto que el modelo genera. Su consumo de tokens depende de:\n\n*   **Longitud Deseada:** Si tu pregunta o el diseño de la aplicación especifican una longitud máxima o un nivel de detalle, la respuesta intentará ajustarse.\n    *   **Ejemplo:** Si pides \"un resumen conciso\", la respuesta será más corta (menos tokens) que si pides \"una explicación exhaustiva\".\n*   **Complejidad de la Información:** Una pregunta que requiere una explicación detallada, múltiples puntos o argumentos, o datos específicos, generará una respuesta más larga.\n*   **Límites del Modelo/API:** Al hacer una llamada a la API de un modelo, generalmente se especifica un parámetro `max_tokens` para la respuesta. El modelo generará texto hasta alcanzar esa cantidad o hasta que determine que ha completado la respuesta.\n*   **Estilo del Modelo:** Algunos modelos pueden ser intrínsecamente más verbosos que otros, incluso para la misma pregunta.\n\n### 4. La Relación entre Pregunta y Respuesta\n\n*   **No es lineal ni simétrica:** Una pregunta corta puede generar una respuesta muy larga si la información es compleja y no se especifica un límite. Una pregunta larga puede generar una respuesta corta si es muy específica y la respuesta es directa.\n*   **La Pregunta Influye en la Respuesta:** La forma en que formulas tu pregunta es crucial para controlar la longitud y la calidad de la respuesta, y por ende, el consumo de tokens de output.\n    *   **Preguntas abiertas/vagas:** Tienden a generar respuestas más largas y generales.\n    *   **Preguntas específicas/con restricciones:** Tienden a generar respuestas más cortas y precisas.\n    *   **Instrucciones de formato/longitud:** \"Responde en dos frases\", \"Usa viñetas\", \"Explica en detalle\", etc., impactarán directamente la longitud del output.\n*   **Contexto Recíproco (en Conversaciones):** En un chat, una respuesta larga aumenta el número de tokens que se tendrán que volver a enviar como parte del contexto en la *siguiente* pregunta. Esto significa que respuestas largas en un turno pueden aumentar el costo del *input* en turnos futuros.\n\n### Implicaciones Prácticas\n\n1.  **Costo:** El costo de una interacción es la suma de los tokens de input y los tokens de output. Entender la relación te ayuda a prever y gestionar los gastos.\n2.  **Eficiencia:** Saber cómo formular las preguntas puede hacer que las interacciones sean más eficientes, tanto en términos de costo como de tiempo de procesamiento.\n3.  **Calidad:** Al controlar la longitud y el detalle de la pregunta y la respuesta, puedes obtener resultados más relevantes y útiles.\n\nEn resumen, la relación de consumo de tokens entre pregunta y respuesta es dinámica y multifactorial. Una buena comprensión de cómo funcionan los tokens y cómo influyen las directrices en la pregunta es clave para usar estos modelos de manera efectiva y económica."
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 12,
+    "candidatesTokenCount": 1154,
+    "totalTokenCount": 2363,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 12
+      }
+    ],
+    "thoughtsTokenCount": 1197,
+    "serviceTier": "standard"
+  },
+  "modelVersion": "gemini-2.5-flash",
+  "responseId": "lyTSauaKDf2VmtkPmvrRoQQ"
+}
+
+Si encuentras un error o inconsistencia en la documentación oficial de Google AI, existen **tres vías principales para reportarlo** directamente al equipo de desarrolladores y documentación de Google:
+
+---
+
+### 1. Botón de Feedback en la Documentación (El más rápido)
+
+En la parte superior o inferior de la mayoría de las páginas de **Google AI for Developers** (y en Google AI Studio), hay una opción directa para enviar comentarios:
+
+* **En la Web de Documentación:** Busca el botón que dice **"Send feedback"** / **"Enviar comentarios"** o el ícono de bandera/mensaje (usualmente en la esquina superior derecha de la página donde viste el ejemplo).
+* **Al hacer clic:** Podrás seleccionar directamente la sección o fragmento de código que está incorrecto y describir que la sintaxis JSON arroja el error `Invalid JSON payload`.
+
+---
+
+### 2. Google AI Developer Forum (Comunidad Oficial)
+
+Puedes publicar el hallazgo en la comunidad oficial de desarrolladores de Google AI, donde los *Developer Advocates* y moderadores de Google revisan constantemente los reportes:
+
+* **Sitio Web:** [discuss.ai.google.dev](https://discuss.ai.google.dev/)
+* **Sección:** *Gemini API* o *Documentation feedback*
+* **Cómo reportarlo:** Crea una entrada indicando la URL exacta de la documentación, el bloque de código copiado y el mensaje de error obtenido (`Invalid JSON payload`).
+
+---
+
+### 3. Google Issue Tracker (Seguimiento formal de Bugs)
+
+Si deseas hacer un seguimiento estructurado del reporte mediante un ticket:
+
+* **Sitio Web:** [issuetracker.google.com](https://issuetracker.google.com)
+* Busca la categoría/componente de **Google AI Studio / Gemini API** para abrir un ticket de tipo **Bug**.
+
+---
+
+> ⚠️ **Nota de seguridad:** Recuerda que al reportar el error o tomar capturas de pantalla, **nunca incluyas tu API Key privada** (`x-goog-api-key`). Reemplázala siempre por un marcador de posición como `"TU_API_KEY"`.
+
+
+En la API de **Google AI Studio**, los modelos se dividen entre los disponibles en la capa gratuita (*Free Tier*) y aquellos que requieren una cuenta de facturación activa (*Pay-as-you-go*).
+
+A continuación se detalla la lista de modelos con cuota **gratuita** disponible y las excepciones importantes a tener en cuenta.
+
+---
+
+## 1. Modelos de Texto y Multimodal (Recomendados)
+
+| Modelo | Identificador API | Uso recomendado |
+| --- | --- | --- |
+| **Gemini 3.8 Flash** | `gemini-3.8-flash` | **Recomendado por defecto.** Modelo de producción rápido y versátil. |
+| **Gemini 3.5 Flash** | `gemini-3.5-flash` | Generación intermedia muy estable. |
+| **Gemini 3.5 Flash-Lite** | `gemini-3.5-flash-lite` | Tareas livianas, clasificación y procesamiento rápido a gran volumen. |
+| **Gemini 3.1 Flash-Lite** | `gemini-3.1-flash-lite` | Alternativa ultraligera de alta velocidad. |
+| **Gemini 2.5 Flash** | `gemini-2.5-flash` | Ampliamente compatible con integraciones existentes. |
+| **Gemini 2.5 Pro** | `gemini-2.5-pro` | Razonamiento avanzado en la capa gratuita (versión anterior de la familia Pro). |
+
+---
+
+## 2. Modelos Open-Weight (Pesos Abiertos)
+
+* **Gemma 4** (`gemma-4`): Disponible de forma gratuita mediante la misma API Key de Google AI Studio.
+
+---
+
+## 3. Modelos de Audio y Voz
+
+* **Gemini 3.8 Live** (`gemini-3.8-live`): Para interacción conversacional en tiempo real.
+* **Gemini 3.8 Flash TTS** / **3.5 Flash TTS**: Texto a voz (Speech generation) en nivel gratuito.
+
+---
+
+## ❌ Modelos NO disponibles en la capa gratuita (Requieren Facturación)
+
+Si intentas consumir estos modelos sin una tarjeta o cuenta de pago configurada, la API devolverá un error de cuota agotada (`HTTP 429` con `limit: 0`):
+
+1. **Gemini 3.1 Pro** (`gemini-3.1-pro`): La versión más avanzada de razonamiento para la serie 3.x es exclusiva de pago.
+2. **Modelos de generación de imágenes**: Modelos de la familia *Imagen* o *Gemini Flash Image* no tienen capa gratuita vía API.
+3. **Gemini Omni Flash**.
+
+---
+
+### Consideraciones sobre la Capa Gratuita (*Free Tier*)
+
+* **Límites de uso:** Están limitados por peticiones por minuto (RPM) y peticiones por día (RPD). Puedes consultar tus límites exactos actualizados en [aistudio.google.com/rate-limit](https://aistudio.google.com/rate-limit).
+* **Privacidad de datos:** En la capa gratuita, Google puede procesar los prompts y respuestas para el entrenamiento de modelos. Para garantizar la confidencialidad total de tus datos, se requiere activar una cuenta de facturación.
+
+
+curl -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent" \
+  -H "x-goog-api-key: IGNORARAb8RN6K6Y36Gx4faKTnCMUnT9pNv9BmaYUYpxLlcRsYm9OgmYg" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [
+      {
+        "parts": [
+          {
+            "text": "Describe la relación de consumo de tokens pregunta versus respuesta"
+          }
+        ]
+      }
+    ]
+  }'
+
+
+Microsoft Windows [Versión 10.0.20348.5386]
+(c) Microsoft Corporation. Todos los derechos reservados.
+
+C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817>dir                               
+ El volumen de la unidad C no tiene etiqueta.
+ El número de serie del volumen es: 22B3-C35E
+
+ Directorio de C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817
+
+12/10/2026  08:20 a. m.    <DIR>          .
+12/10/2026  08:19 a. m.    <DIR>          ..
+12/10/2026  08:19 a. m.                28 .gitignore
+12/10/2026  08:19 a. m.    <DIR>          .vscode
+12/10/2026  08:19 a. m.    <DIR>          BBDD_MYSQL
+12/10/2026  08:19 a. m.    <DIR>          BBDD_POSTGRESQL
+14/10/2026  11:04 a. m.               470 correos.txt
+12/10/2026  08:19 a. m.               279 git.txt
+12/10/2026  08:19 a. m.    <DIR>          HTML5_NIVEL_2
+16/10/2026  08:54 a. m.    <DIR>          IA_PROGRAMADORES
+12/10/2026  08:19 a. m.    <DIR>          LÓGICA_DE_PROGRAMACIÓN
+               3 archivos            777 bytes
+               8 dirs  386.039.234.560 bytes libres
+
+C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817>dir
+ El volumen de la unidad C no tiene etiqueta.
+ El número de serie del volumen es: 22B3-C35E
+
+ Directorio de C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817
+
+12/10/2026  08:20 a. m.    <DIR>          .
+12/10/2026  08:19 a. m.    <DIR>          ..
+12/10/2026  08:19 a. m.                28 .gitignore
+12/10/2026  08:19 a. m.    <DIR>          .vscode
+12/10/2026  08:19 a. m.    <DIR>          BBDD_MYSQL
+12/10/2026  08:19 a. m.    <DIR>          BBDD_POSTGRESQL
+14/10/2026  11:04 a. m.               470 correos.txt
+12/10/2026  08:19 a. m.               279 git.txt
+12/10/2026  08:19 a. m.    <DIR>          HTML5_NIVEL_2
+16/10/2026  08:54 a. m.    <DIR>          IA_PROGRAMADORES
+12/10/2026  08:19 a. m.    <DIR>          LÓGICA_DE_PROGRAMACIÓN
+               3 archivos            777 bytes
+               8 dirs  386.037.616.640 bytes libres
+
+C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817>cd IA_PROGRAMADORES               
+
+C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817\IA_PROGRAMADORES>cd PROFESOR      
+
+C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817\IA_PROGRAMADORES\PROFESOR>python -
+C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817\IA_PROGRAMADORES\PROFESOR>
+C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817\IA_PROGRAMADORES\PROFESOR>
+C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817\IA_PROGRAMADORES\PROFESOR>
+
+
+C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817\IA_PROGRAMADORES>cd PROFESOR      
+
+C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817\IA_PROGRAMADORES\PROFESOR>python -
+C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817\IA_PROGRAMADORES\PROFESOR>
+C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817\IA_PROGRAMADORES\PROFESOR>
+C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817\IA_PROGRAMADORES\PROFESOR>venv\scripts\activate
+El sistema no puede encontrar la ruta especificada.
+
+C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817\IA_PROGRAMADORES\PROFESOR>.venv\scripts\activate
+
+(.venv) C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817\IA_PROGRAMADORES\PROFESOR>pip list
+Package Version
+------- -------
+pip     26.1.1
+
+(.venv) C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817\IA_PROGRAMADORES\PROFESOR>
+
+https://ai.google.dev/gemini-api/docs/get-started?hl=es-419
+
+pip install -U google-genai
+
+(.venv) C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_202608
+Package Version
+------- -------
+pip     26.1.1
+
+(.venv) C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_202608 -U google-genai
+Collecting google-genai
+  Downloading google_genai-2.31.0-py3-none-any.whl.metadata (58 kB)
+Collecting anyio<5.0.0,>=4.8.0 (from google-genai)
+  Downloading anyio-4.15.1-py3-none-any.whl.metadata (4.7 kB)
+Collecting google-auth<3.0.0,>=2.56.0 (from google-auth[requests]<3.0.0,>=2.5
+  Downloading google_auth-2.62.0-py3-none-any.whl.metadata (6.0 kB)
+Collecting httpx<1.0.0,>=0.28.1 (from google-genai)
+  Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+Collecting pydantic<3.0.0,>=2.12.5 (from google-genai)
+  Downloading pydantic-2.14.1-py3-none-any.whl.metadata (133 kB)
+Collecting requests<3.0.0,>=2.28.1 (from google-genai)
+  Downloading requests-2.34.2-py3-none-any.whl.metadata (4.8 kB)
+Collecting tenacity<9.2.0,>=8.2.3 (from google-genai)
+  Downloading tenacity-9.1.4-py3-none-any.whl.metadata (1.2 kB)
+Collecting websockets<17.0,>=13.0.0 (from google-genai)
+  Downloading websockets-16.1.1-cp314-cp314-win_amd64.whl.metadata (7.0 kB)
+Collecting typing-extensions<5.0.0,>=4.14.0 (from google-genai)
+  Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+Collecting distro<2,>=1.7.0 (from google-genai)
+  Downloading distro-1.9.0-py3-none-any.whl.metadata (6.8 kB)
+Collecting sniffio (from google-genai)
+  Downloading sniffio-1.3.1-py3-none-any.whl.metadata (3.9 kB)
+Collecting idna>=2.8 (from anyio<5.0.0,>=4.8.0->google-genai)
+  Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+Collecting pyasn1-modules>=0.2.1 (from google-auth<3.0.0,>=2.56.0->google-aut)
+  Downloading pyasn1_modules-0.4.2-py3-none-any.whl.metadata (3.5 kB)
+Collecting cryptography>=41.0.5 (from google-auth<3.0.0,>=2.56.0->google-auth  Downloading cryptography-50.0.2-cp311-abi3-win_amd64.whl.metadata (4.4 kB)
+Collecting certifi (from httpx<1.0.0,>=0.28.1->google-genai)
+  Downloading certifi-2026.7.22-py3-none-any.whl.metadata (2.5 kB)
+Collecting httpcore==1.* (from httpx<1.0.0,>=0.28.1->google-genai)
+  Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+Collecting h11>=0.16 (from httpcore==1.*->httpx<1.0.0,>=0.28.1->google-genai)
+  Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+Collecting annotated-types>=0.6.0 (from pydantic<3.0.0,>=2.12.5->google-genai
+  Downloading annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+Collecting pydantic-core==2.50.1 (from pydantic<3.0.0,>=2.12.5->google-genai)
+  Downloading pydantic_core-2.50.1-cp314-cp314-win_amd64.whl.metadata (6.7 kB
+Collecting typing-inspection>=0.4.4 (from pydantic<3.0.0,>=2.12.5->google-gen
+  Downloading typing_inspection-0.4.4-py3-none-any.whl.metadata (2.6 kB)
+Collecting charset_normalizer<4,>=2 (from requests<3.0.0,>=2.28.1->google-gen
+  Downloading charset_normalizer-3.5.2-cp314-cp314-win_amd64.whl.metadata (47
+Collecting urllib3<3,>=1.26 (from requests<3.0.0,>=2.28.1->google-genai)
+  Downloading urllib3-2.8.0-py3-none-any.whl.metadata (7.4 kB)
+Collecting cffi>=2.0.0 (from cryptography>=41.0.5->google-auth<3.0.0,>=2.56.0google-genai)
+  Downloading cffi-2.1.1-cp314-cp314-win_amd64.whl.metadata (2.6 kB)
+Collecting pycparser (from cffi>=2.0.0->cryptography>=41.0.5->google-auth<3.0,>=2.56.0->google-genai)
+  Downloading pycparser-3.11-py3-none-any.whl.metadata (8.2 kB)
+Collecting pyasn1<0.7.0,>=0.6.1 (from pyasn1-modules>=0.2.1->google-auth<3.0.>=2.56.0->google-genai)
+  Downloading pyasn1-0.6.4-py3-none-any.whl.metadata (8.4 kB)
+Downloading google_genai-2.31.0-py3-none-any.whl (1.2 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.2/1.2 MB 10.9 MB/s  0:00:00
+Downloading anyio-4.15.1-py3-none-any.whl (132 kB)
+Downloading distro-1.9.0-py3-none-any.whl (20 kB)
+Downloading google_auth-2.62.0-py3-none-any.whl (267 kB)
+Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+Downloading pydantic-2.14.1-py3-none-any.whl (488 kB)
+Downloading pydantic_core-2.50.1-cp314-cp314-win_amd64.whl (2.2 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.2/2.2 MB 21.7 MB/s  0:00:00
+Downloading requests-2.34.2-py3-none-any.whl (73 kB)
+Downloading charset_normalizer-3.5.2-cp314-cp314-win_amd64.whl (210 kB)
+Downloading idna-3.20-py3-none-any.whl (69 kB)
+Downloading tenacity-9.1.4-py3-none-any.whl (28 kB)
+Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+Downloading urllib3-2.8.0-py3-none-any.whl (135 kB)
+Downloading websockets-16.1.1-cp314-cp314-win_amd64.whl (179 kB)
+Downloading annotated_types-0.8.0-py3-none-any.whl (13 kB)
+Downloading certifi-2026.7.22-py3-none-any.whl (136 kB)
+Downloading cryptography-50.0.2-cp311-abi3-win_amd64.whl (3.8 MB)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.8/3.8 MB 22.8 MB/s  0:00:00
+Downloading cffi-2.1.1-cp314-cp314-win_amd64.whl (187 kB)
+Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+Downloading pyasn1_modules-0.4.2-py3-none-any.whl (181 kB)
+Downloading pyasn1-0.6.4-py3-none-any.whl (84 kB)
+Downloading typing_inspection-0.4.4-py3-none-any.whl (14 kB)
+Downloading pycparser-3.11-py3-none-any.whl (51 kB)
+Downloading sniffio-1.3.1-py3-none-any.whl (10 kB)
+Installing collected packages: websockets, urllib3, typing-extensions, tenaci1, distro, charset_normalizer, certifi, annotated-types, typing-inspection, rhttpcore, cffi, anyio, pydantic, httpx, cryptography, google-auth, google-gen
+Successfully installed annotated-types-0.8.0 anyio-4.15.1 certifi-2026.7.22 c_normalizer-3.5.2 cryptography-50.0.2 distro-1.9.0 google-auth-2.62.0 google-0.16.0 httpcore-1.0.9 httpx-0.28.1 idna-3.20 pyasn1-0.6.4 pyasn1-modules-0.4.pydantic-2.14.1 pydantic-core-2.50.1 requests-2.34.2 sniffio-1.3.1 tenacity-9sions-4.16.0 typing-inspection-0.4.4 urllib3-2.8.0 websockets-16.1.1
+
+[notice] A new release of pip is available: 26.1.1 -> 26.2.1
+[notice] To update, run: python.exe -m pip install --upgrade pip
+
+(.venv) C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_202608ES\PROFESOR>
+
+
+SE DEBE DECLARAR LA VARIABLE DE ENTORNO QUE ALMACENE
+LA API KEY, QUE USARÁ GEMINI PARA CONSULTAR SU API:
+
+POWER SHELL
+export GEMINI_API_KEY="IGNORARAb8RN6K6Y36Gx4faKTnCMUnT9pNv9BmaYUYpxLlcRsYm9OgmYg"
+
+COMMAND PROMPT
+set GEMINI_API_KEY=IGNORARAb8RN6K6Y36Gx4faKTnCMUnT9pNv9BmaYUYpxLlcRsYm9OgmYg
+
+CONSULTAR VALOR ALMACENADO EN LA SESIÓN
+echo %GEMINI_API_KEY%
+
+EJECUCIÓN DEL PROGRAMA:
+py consulta01_api_gemini.py
+
+
+RESULTADO:
+py consulta01_api_gemini.py
+Construir una aplicación de Inteligencia Artificial basada en **RAG (Retrieval-Augmented Generation)** o *Generación Aumentada por Recuperación* es el estándar de la industria para conectar Modelos de Lenguaje Grande (LLMs) con datos privados o específicos de una organización, evitando alucinaciones y sin necesidad de reentrenar el modelo.
+
+A continuación, te presento el proceso paso a paso para construir una aplicación RAG robusta:
+
+---
+
+### Fase 1: Preparación y Definición
+1. **Definir el Caso de Uso:** ¿Qué problema resolverá la app? (Ej. Un bot de atención al cliente para manuales técnicos, un buscador inteligente de políticas de recursos humanos).
+2. **Definir la Fuente de Datos:** Identificar dónde reside la información (PDFs, bases de datos SQL/NoSQL, Notion, Confluence, APIs, etc.).
+3. **Establecer Requisitos:** Definir latencia aceptable, presupuesto, privacidad de los datos (¿puede usarse la nube pública o se requiere on-premise?) y volumen de usuarios.
+
+---
+
+### Fase 2: Ingesta y Procesamiento de Datos (El Pipeline ETL)
+Esta es la fase donde los datos brutos se preparan para que la IA pueda entenderlos.
+
+1. **Extracción (Load):** Recopilar los documentos de las fuentes de datos.
+2. **Limpieza y Parseo:** Eliminar ruido (anuncios, pie de página, formato basura) y extraer texto limpio de diferentes formatos (PDF, Word, HTML).
+3. **Fragmentación (Chunking):** Los LLMs tienen un límite de contexto y funcionan mejor con fragmentos pequeños. 
+   * *Estrategia:* Dividir el texto en bloques de un tamaño determinado (ej. 500 tokens) con cierto solapamiento (*overlap*, ej. 50 tokens) para no perder el contexto entre cortes.
+4. **Vectorización (Embedding):** 
+   * Pasar cada fragmento de texto por un **modelo de embeddings** (como OpenAI *text-embedding-3*, Cohere Embed, o modelos open-source de HuggingFace).
+   * Esto convierte el texto en vectores numéricos que capturan el significado semántico.
+5. **Almacenamiento (Vector Database):** Guardar estos vectores junto con el texto original y sus metadatos en una **Base de Datos Vectorial** (ej. Pinecone, ChromaDB, Weaviate, Milvus, pgvector en PostgreSQL).
+
+---
+
+### Fase 3: El Pipeline de Recuperación y Generación (En tiempo de consulta)
+Aquí es donde ocurre la magia cuando un usuario hace una pregunta.
+
+1. **Consulta del Usuario (Query):** El usuario escribe una pregunta (ej. *"¿Cuál es la política de reembolso para vuelos internacionales?"*).
+2. **Vectorización de la Consulta:** La pregunta del usuario se convierte en vector usando el mismo modelo de embeddings de la Fase 2.
+3. **Búsqueda por Similitud (Retrieval):** 
+   * Se busca en la base de datos vectorial aquellos fragmentos cuyos vectores estén más "cercanos" (por similitud de Coseno) al vector de la pregunta.
+   * Se recuperan los *Top-K* fragmentos más relevantes (ej. los 3 o 5 mejores).
+4. **Construcción del Prompt Aumentado:** 
+   * Se toma la pregunta original del usuario y se le inyectan los fragmentos recuperados utilizando una plantilla (Prompt Template).
+   * *Ejemplo de estructura:*
+     > "Usa el siguiente contexto para responder la pregunta del usuario. Si no sabes la respuesta, di que no la sabes.
+     > Contexto: [Fragmentos recuperados]
+     > Pregunta: [Pregunta del usuario]"
+5. **Generación (LLM):** Se envía este prompt enriquecido a un LLM (como GPT-4, Claude 3, Llama 3) para que redacte una respuesta coherente, precisa y basada **únicamente** en el contexto provisto.
+
+---
+
+### Fase 4: Interfaz de Usuario (UI) y Despliegue
+1. **Crear la Interfaz:** Desarrollar una interfaz amigable (puede ser un chat web usando Streamlit o Chainlit para prototipos, o Next.js/React para producción).
+2. **Orquestación:** Usar frameworks como **LangChain** o **LlamaIndex** para conectar fácilmente todos los pasos (Carga -> Vector DB -> LLM).
+3. **Backend y API:** Construir una API (con FastAPI o Node.js) que gestione las sesiones de los usuarios y la comunicación con el motor RAG.
+4. **Despliegue:** Subir la aplicación a la nube (AWS, GCP, Azure o plataformas como HuggingFace Spaces / Vercel).
+
+---
+
+### Fase 5: Evaluación y Optimización (Mejora Continua)
+Un RAG rara vez funciona perfecto al 100% en el primer intento. Es necesario medir su rendimiento:
+
+1. **Evaluación (Frameworks como Ragas o TruLens):**
+   * *Relevancia del contexto:* ¿Los fragmentos recuperados realmente responden a la pregunta?
+   * *Fidelidad (Groundedness):* ¿La respuesta del LLM se inventó algo que no estaba en el contexto (alucinación)?
+   * *Relevancia de la respuesta:* ¿La respuesta satisface la necesidad del usuario?
+2. **Optimización Avanzada (si es necesario):**
+   * **Re-ranking (Cohere Rerank):** Añadir un paso después de la búsqueda vectorial para ordenar con mayor precisión los fragmentos recuperados.
+   * **HyDE (Hypothetical Document Embeddings):** Hacer que el LLM genere una respuesta hipotética antes de buscar en la base de datos para mejorar la recuperación.
+   * **Gestión del Historial de Chat:** Permitir que el RAG entienda preguntas de seguimiento ("¿Y cuáles son las excepciones para esos vuelos?").
+
+### Resumen del Stack Tecnológico Típico:
+* **Orquestación:** LangChain / LlamaIndex
+* **Embeddings & LLM:** OpenAI (GPT-4o), Anthropic (Claude 3.5) u Open Source (Llama 3 con Ollama).
+* **Base de Datos Vectorial:** Chroma (local/desarrollo), Pinecone o Qdrant (producción).
+* **Interfaz:** Streamlit (rápido) o React/Next.js (producción).
+
+(.venv) C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817\IA_PROGRAMADORES\PROFESOR>

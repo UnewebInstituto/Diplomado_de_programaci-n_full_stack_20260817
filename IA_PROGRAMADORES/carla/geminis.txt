@@ -1,0 +1,40 @@
+IGNORARAb8RN6KkAYbvz2u8GWOCmWYpCC0Bs3Jm1Y1PFQhmUgZuDAhyLA
+
+
+curl -X POST "https://generativelanguage.googleapis.com/v1beta/interactions" \
+  -H "x-goog-api-key: IGNORARAb8RN6KkAYbvz2u8GWOCmWYpCC0Bs3Jm1Y1PFQhmUgZuDAhyLA" \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "gemini-3.8-flash",
+    "input": "Describes la relacion de consumo de tokens pregunta versus respuesta"
+  }'
+
+  curl -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent" \
+  -H "x-goog-api-key: IGNORARAb8RN6KkAYbvz2u8GWOCmWYpCC0Bs3Jm1Y1PFQhmUgZuDAhyLA" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [
+      {
+        "parts": [
+          {
+            "text": "Describe la relación de consumo de tokens pregunta versus respuesta"
+          }
+        ]
+      }
+    ]
+  }'
+
+curl -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent" \
+  -H "x-goog-api-key: IGNORARAb8RN6KkAYbvz2u8GWOCmWYpCC0Bs3Jm1Y1PFQhmUgZuDAhyLA" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [
+      {
+        "parts": [
+          {
+            "text": "Describe la relación de consumo de tokens pregunta versus respuesta"
+          }
+        ]
+      }
+    ]
+  }'

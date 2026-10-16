@@ -1,0 +1,158 @@
+IGNORARAb8RN6KW6YJEqhXlcdykmVTERl5He5YBdO4aVoNwoKlPChnWQw
+
+curl -X POST "https://generativelanguage.googleapis.com/v1beta/interactions" \
+  -H "x-goog-api-key: IGNORARAb8RN6KW6YJEqhXlcdykmVTERl5He5YBdO4aVoNwoKlPChnWQw" \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "gemini-3.8-flash",
+    "input": "describe la relacion de consumo de tokens IA de preguntas versus res"
+  }'
+
+  curl -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent" \
+  -H "x-goog-api-key: IGNORARAb8RN6KW6YJEqhXlcdykmVTERl5He5YBdO4aVoNwoKlPChnWQw" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [
+      {
+        "parts": [
+          {
+            "text": "Describe la relación de consumo de tokens pregunta versus respuesta"
+          }
+        ]
+      }
+    ]
+  }'
+
+
+curl -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent" \
+  -H "x-goog-api-key: IGNORARAb8RN6KW6YJEqhXlcdykmVTERl5He5YBdO4aVoNwoKlPChnWQw" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [
+      {
+        "parts": [
+          {
+            "text": "Describe la relación de consumo de tokens pregunta versus respuesta"
+          }
+        ]
+      }
+    ]
+  }'
+
+respuesta
+
+
+curl -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8-flash:generateContent" \
+  -H "x-goog-api-key: IGNORARAb8RN6KW6YJEqhXlcdykmVTERl5He5YBdO4aVoNwoKlPChnWQw" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [
+      {
+        "parts": [
+          {
+            "text": "Describe la relación de consumo de tokens pregunta versus respuesta"
+          }
+        ]
+      }
+    ]
+  }'
+{
+  "candidates": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "La relación de consumo de tokens entre la **pregunta (input/prompt)** y la **respuesta (output/completion)** en los modelos de lenguaje (LLMs) es **asimétrica, dinámica y dependiente del caso de uso**. No existe una proporción fija de 1:1.\n\nEsta relación se puede analizar desde cuatro perspectivas principales: **volumen, coste económico, coste computacional (latencia) y límites de contexto**.\n\n---\n\n### 1. Relación en Volumen (Cantidad de tokens)\nLa cantidad de tokens que consume la pregunta frente a la respuesta depende de la tarea:\n\n*   **Pregunta corta $\\rightarrow$ Respuesta larga (Expansión):**\n    *   *Ejemplo:* \"Escribe un ensayo sobre la Revolución Francesa\" (8 tokens de entrada $\\rightarrow$ 800 tokens de salida).\n    *   *Ratio típico:* 1:10 o superior.\n*   **Pregunta larga $\\rightarrow$ Respuesta corta (Compresión / Extracción):**\n    *   *Ejemplo típico:* Sistemas RAG (Generación Aumentada por Recuperación) o análisis de documentos. Le pasas un PDF de 20 páginas y preguntas: \"¿Cuál fue el beneficio neto en 2023?\" (5,000 tokens de entrada $\\rightarrow$ 15 tokens de salida).\n    *   *Ratio típico:* 100:1 o superior.\n*   **Conversacional balanceado:**\n    *   En un chat estándar de preguntas y respuestas, suele haber un equilibrio relativo donde la respuesta suele ser entre 1.5 y 3 veces más larga que la pregunta.\n\n### 2. Relación Económica (Coste financiero)\nEn casi todas las APIs comerciales (OpenAI, Anthropic, Google), **los tokens de respuesta son significativamente más caros que los de pregunta**.\n\n*   **Proporción de precio:** Generalmente, los tokens de salida cuestan entre **3 y 4 veces más** que los de entrada.\n    *   *Ejemplo (GPT-4o):* ~$2.50 por millón de tokens de entrada vs. ~$10.00 por millón de tokens de salida (Ratio 1:4).\n*   **Implicación:** Generar texto largo es mucho más costoso financieramente que procesar textos largos de entrada.\n\n### 3. Relación Computacional y de Latencia (Tiempo)\nLa forma en que las GPUs procesan las preguntas y las respuestas es fundamentalmente distinta:\n\n*   **Tokens de Pregunta (Fase de Prefill):** Se procesan todos **en paralelo**. La GPU puede leer miles de tokens casi instantáneamente. Esto determina el *TTFT (Time to First Token)* o tiempo hasta que empieza a responder.\n*   **Tokens de Respuesta (Fase de Decodificación):** Se generan de forma **secuencial (autorregresiva)**, es decir, token por token (cada token nuevo necesita calcularse usando todos los anteriores).\n*   **Impacto:** Los tokens de respuesta son los que **ralentizan el sistema**. Una respuesta de 1,000 tokens tardará notablemente más en completarse que una lectura de 1,000 tokens de entrada.\n\n### 4. Relación en la Ventana de Contexto (Espacio compartido)\nLos modelos tienen un límite máximo de memoria por interacción llamado **Ventana de Contexto** (ej. 128k tokens en GPT-4o, 2M en Gemini 1.5 Pro).\n\n*   La relación es una suma de suma cero:\n    $$\\text{Tokens Totales} = \\text{Tokens de Entrada} + \\text{Tokens de Salida} \\le \\text{Límite del Modelo}$$\n*   Si consumes el 90% de la ventana con la pregunta (documentos adjuntos, historial de chat largo), solo te quedará el 10% para que el modelo pueda responder. Además, la mayoría de los modelos tienen un tope máximo específico para la salida (habitualmente entre 4,096 y 8,192 tokens por respuesta), independientemente del tamaño del contexto de entrada.\n\n### Resumen\n| Dimensión | Pregunta (Input) | Respuesta (Output) |\n| :--- | :--- | :--- |\n| **Precio** | Más barato | **3x a 4x más caro** |\n| **Velocidad** | Muy rápida (procesamiento paralelo) | Lenta (generación secuencial) |\n| **Control** | Tú decides exactamente cuántos enviar | Difícil de predecir con exactitud (salvo con límites de `max_tokens`) |\n| **Uso óptimo** | Ideal para aportar contexto masivo | Ideal para respuestas concisas y accionables |",
+            "thoughtSignature": "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"
+          }
+        ],
+        "role": "model"
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 12,
+    "candidatesTokenCount": 1029,
+    "totalTokenCount": 2097,
+    "promptTokensDetails": [
+      {
+        "modality": "TEXT",
+        "tokenCount": 12
+      }
+    ],
+    "thoughtsTokenCount": 1056,
+    "serviceTier": "standard"
+  },
+  "modelVersion": "gemini-3.8-flash",
+  "responseId": "GyfSaqrILvrrz7IP-cGi8A8"
+
+  curl -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent" \
+  -H "x-goog-api-key: IGNORARAb8RN6KW6YJEqhXlcdykmVTERl5He5YBdO4aVoNwoKlPChnWQw" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [
+      {
+        "parts": [
+          {
+            "text": "Describe la relación de consumo de tokens pregunta versus respuesta"
+          }
+        ]
+      }
+    ]
+  }'
+
+ porwer SHELL
+  export GEMINI_API_KEY="IGNORARAb8RN6KW6YJEqhXlcdykmVTERl5He5YBdO4aVoNwoKlPChnWQw"
+
+  con prompt
+  set GEMINI_API_KEY=IGNORARAb8RN6KW6YJEqhXlcdykmVTERl5He5YBdO4aVoNwoKlPChnWQw
+
+  consultar valor 
+  echo %GEMINI_API_KEY%
+
+  error
+(.venv) C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817\IA_PROGRAMADORES\luisFernando>py consulta01ApiGemeni.py
+
+  Traceback (most recent call last):
+  File "C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817\IA_PROGRAMADORES\luisFernando\.venv\Lib\site-packages\google\genai\_gaos\interactions.py", line 618, in create
+    return _speakeasy_parse_response(http_res)
+  File "C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817\IA_PROGRAMADORES\luisFernando\.venv\Lib\site-packages\google\genai\_gaos\interactions.py", line 549, in _speakeasy_parse_response
+    raise errors.CreateInteractionServerError(
+        response_data, http_res, http_res_text
+    )
+google.genai._gaos.errors.createinteraction.CreateInteractionServerError: gemini-3.5-flash-lite is currently experiencing high demand, spikes in demand are usually temporary. Please try again later.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817\IA_PROGRAMADORES\luisFernando\consulta01ApiGemeni.py", line 5, in <module>
+    interaction = client.interactions.create(
+        model="gemini-3.5-flash-lite",
+        input="describe el proceso para contruir una aplicacion de IA basada en RAG"
+    )
+  File "C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817\IA_PROGRAMADORES\luisFernando\.venv\Lib\site-packages\google\genai\_gaos\google_genai.py", line 291, in create
+    response = wrap_sdk_call(
+        super().create,
+    ...<5 lines>...
+        timeout=timeout,
+    )
+  File "C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817\IA_PROGRAMADORES\luisFernando\.venv\Lib\site-packages\google\genai\_gaos\lib\compat_errors.py", line 369, in wrap_sdk_call
+    return fn(*args, **kwargs)
+  File "C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817\IA_PROGRAMADORES\luisFernando\.venv\Lib\site-packages\google\genai\_gaos\interactions.py", line 620, in create
+    response_helpers.raise_parse_error(
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        self.sdk_configuration.__dict__["_hooks"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+        parse_exc_,
+        ^^^^^^^^^^^
+    )
+    ^
+  File "C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817\IA_PROGRAMADORES\luisFernando\.venv\Lib\site-packages\google\genai\_gaos\utils\response_helpers.py", line 94, in raise_parse_error
+    raise parse_error from exc
+google.genai._gaos.lib.compat_errors.InternalServerError: Error code: 503 - {'error': {'message': 'gemini-3.5-flash-lite is currently experiencing high demand, spikes in demand are usually temporary. Please try again later.', 'code': 'service_unavailable'}}
+
+que es HuggingFace y como esta organizado 
+que es una matriz de confusion y como esta organizada

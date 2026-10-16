@@ -1,0 +1,20 @@
+curl -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent" \
+  -H "x-goog-api-key: IGNORARAb8RN6KkAYbvz2u8GWOCmWYpCC0Bs3Jm1Y1PFQhmUgZuDAhyLA" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [
+      {
+        "parts": [
+          {
+            "text": "Describe la relación de consumo de tokens pregunta versus respuesta"
+          }
+        ]
+      }
+    ]
+  }'
+
+
+export GEMINI_API_KEY="IGNORARAb8RN6KkAYbvz2u8GWOCmWYpCC0Bs3Jm1Y1PFQhmUgZuDAhyLA"
+
+COMMAND PROMPT
+set GEMINI_API_KEY=IGNORARAb8RN6KkAYbvz2u8GWOCmWYpCC0Bs3Jm1Y1PFQhmUgZuDAhyLA
