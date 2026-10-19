@@ -3,7 +3,7 @@ from google import genai
 client = genai.Client()
 
 while True:
-    input_text = input("¿Pregunta a Gemini IA?")
+    input_text = input("¿Pregunta a Gemini IA? ")
     interaction = client.interactions.create(
         model="gemini-3.5-flash-lite",
         input=input_text

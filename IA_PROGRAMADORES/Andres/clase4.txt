@@ -1,0 +1,59 @@
+ENTORNO VIRTUAL REPASO:
+1) UBICARSE EN EL DIRECTORIO DONDE SE IMPLEMENTARA
+cd nombre_directorio 
+2) CREACIÓN DE ENTORNO VIRTUAL
+python -m venv .venv
+3) ACTIVACIÓN DEL ENTORNO VIRTUAL
+.venv\scripts\activate
+4) CREACIÓN DE LA API:
+https://ai.google.dev/gemini-api/docs?hl=es-419
+
+IGNORARAb8RN6L56eng0VRoOrm6ansKSLSYN-SKpj9CsyAmL1XEke-Fbw
+
+5) ASIGNACIÓN DE CLAVE AL ENTORNO DEL SISTEMA OPERATIVO:
+set GEMINI_API_KEY=IGNORARAb8RN6L56eng0VRoOrm6ansKSLSYN-SKpj9CsyAmL1XEke-Fbw
+
+6) VERIFICACIÓN:
+echo %GEMINI_API_KEY%
+
+7) INSTALACIÓN DE DEPENDENCIA 
+pip install -U google-genai
+
+8) VERIFICACIÓN DE LA INSTALACIÓN:
+pip list 
+
+GOOGLE GEMINI API:
+
+https://ai.google.dev/gemini-api/docs?hl=es-419
+
+Verificación de la instalación de:
+nodejs
+
+nodejs
+https://nodejs.org/es
+
+node --version
+
+npm --version
+
+Prompt:
+Se requiere contruir una aplicación en nodejs, para 
+implementar el ejemplo de Google Gemini para Javascript
+considera que la api key, debe encontrarse declarada
+fuera del código, así mismo este programa se ejecutara
+vía command prompt y debe permitir al usuario
+ingresar una nueva pregunta al prompt cada vez que los requiera. El código en cuestión es el siguiente:
+import { GoogleGenAI } from "@google/genai";
+
+const ai = new GoogleGenAI({});
+
+const interaction = await ai.interactions.create({
+  model: "gemini-4-argon",
+  input: "Explain how AI works in a few words",
+});
+
+console.log(interaction.output_text);
+
+No generes el código aún, describe el procedimiento 
+que vas a realizar.
+

@@ -2,3 +2,5 @@ video/
 audio/
 zz/
 *.zip
+.env/
+node_modules/

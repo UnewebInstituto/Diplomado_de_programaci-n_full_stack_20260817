@@ -1,0 +1,14 @@
+{
+  "name": "gemini-cli-node",
+  "version": "1.0.0",
+  "description": "Aplicación CLI para consultar Gemini desde Node.js usando variable de entorno",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "@google/genai": "^1.0.0",
+    "dotenv": "^16.4.5"
+  }
+}

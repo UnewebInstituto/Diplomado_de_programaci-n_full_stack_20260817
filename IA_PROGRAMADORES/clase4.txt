@@ -1,0 +1,163 @@
+ENTORNO VIRTUAL REPASO:
+1) UBICARSE EN EL DIRECTORIO DONDE SE IMPLEMENTARA
+cd nombre_directorio
+
+2) CREACIÓN DE ENTORNO VIRTUAL
+python -m venv .venv
+
+3) ACTIVACIÓN DEL ENTORNO VIRTUAL
+.venv\scripts\activate
+
+4) CREACIÓN DE LA API:
+https://ai.google.dev/gemini-api/docs?hl=es-419
+
+IGNORARAb8RN6K6Y36Gx4faKTnCMUnT9pNv9BmaYUYpxLlcRsYm9OgmYg
+
+5) ASIGNACIÓN DE CLAVE AL ENTORNO DEL SISTEMA OPERATIVO:
+set GEMINI_API_KEY=IGNORARAb8RN6K6Y36Gx4faKTnCMUnT9pNv9BmaYUYpxLlcRsYm9OgmYg
+
+6) VERIFICACIÓN:
+echo %GEMINI_API_KEY%
+
+7) INSTALACIÓN DE DEPENDENCIA 
+pip install -U google-genai
+
+8) VERIFICACIÓN DE LA INSTALACIÓN:
+pip list 
+
+Python 3.14.5 (tags/v3.14.5:5607950, May 10 2026, 10:43:50) [MSC v.1944 64 bit (AMD64)] on win32
+Enter "help" below or click "Help" above for more information.
+
+= RESTART: C:\Profesores\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817\IA_PROGRAMADORES\PROFESOR\consulta02_api_gemini.py
+¿Pregunta a Gemini IA? Asume el rol de experto en IA, describe qué es Hugging Face
+¡Hola! Con gusto. Asumiendo mi rol de experto en Inteligencia Artificial, permíteme explicarte qué es **Hugging Face** y por qué ha revolucionado nuestra industria.
+
+Si tuviera que resumirlo en una sola frase, diría que **Hugging Face es "el GitHub de la Inteligencia Artificial"**, pero en la práctica es mucho más que eso. Es la plataforma colaborativa definitiva para el ecosistema de Machine Learning (ML) y Deep Learning, especialmente en el área de **Procesamiento de Lenguaje Natural (PLN)**, Visión por Computadora y, más recientemente, modelos multimodales.
+
+Aquí te desgrano los componentes clave que hacen de Hugging Face el gigante que es hoy:
+
+### 1. El Repositorios de Modelos (Model Hub)
+Antes de Hugging Face, entrenar un modelo de IA desde cero era prohibitivo para la mayoría de las empresas y desarrolladores. Hugging Face centralizó miles de modelos pre-entrenados (como BERT, GPT, LLaMA, Stable Diffusion, Whisper, etc.). Con solo dos líneas de código, puedes descargar y utilizar un modelo de última generación. Esto democratizó la IA.
+
+### 2. La Biblioteca `transformers`
+Este es el corazón técnico de su éxito. `transformers` es una librería de Python de código abierto que estandarizó la forma en que interactuamos con los modelos de Deep Learning. Antes, cada investigador usaba su propio framework y sintaxis; Hugging Face creó una API unificada. Ya sea que uses PyTorch o TensorFlow, con unos pocos comandos puedes cargar un tokenizador, un modelo y hacer inferencia o fine-tuning (ajuste fino).
+
+### 3. Datasets y Spaces
+Hugging Face entendió que la IA no es solo código y modelos, también son datos. 
+* **Datasets:** Tienen un repositorio masivo de conjuntos de datos limpios y listos para usar con una sola línea de código (`load_dataset`).
+* **Spaces:** Permiten a los desarrolladores alojar y desplegar aplicaciones de IA interactivas (usando Streamlit o Gradio) directamente en la plataforma, de forma gratuita. Esencialmente, puedes crear una "demo" de tu modelo y compartir el enlace con el mundo en minutos.
+
+### 4. Más allá del Lenguaje (Multimodalidad)
+Aunque nacieron centrados en texto (NLP), hoy en día Hugging Face abarca prácticamente cualquier disciplina de la IA moderna:
+* Procesamiento de audio (voz a texto, generación de música).
+* Visión por computadora (generación de imágenes, segmentación, detección de objetos).
+* IA Generativa y modelos de lenguaje grande (LLMs).
+
+### ¿Por qué es tan importante para nosotros los expertos en IA?
+Porque **acelera el tiempo de desarrollo (Time-to-Market)** de meses a días. En lugar de reinventar la rueda entrenando modelos fundamentales costosos, nos permite tomar la tecnología base de gigantes (como Meta, Google o Mistral) y adaptarla (hacer *fine-tuning*) a problemas específicos de negocio utilizando su infraestructura (como *AutoTrain* y *Accelerate*).
+
+En resumen, Hugging Face no es solo una empresa; es la comunidad global que está construyendo la infraestructura abierta sobre la cual descansa la revolución actual de la Inteligencia Artificial.
+¿Desea efectuar una nueva consulta a Gemini (S/N)?n
+Fin del programa...
+
+GOOGLE GEMINI API:
+
+https://ai.google.dev/gemini-api/docs?hl=es-419
+
+Verificación de la instalación de:
+
+nodejs
+https://nodejs.org/es
+https://nodejs.org/en/download
+
+node --version
+
+npm --version
+
+Prompt:
+Se requiere contruir una aplicación en nodejs, para 
+implementar el ejemplo de Google Gemini para Javascript
+considera que la api key, debe encontrarse declarada
+fuera del código, así mismo este programa se ejecutara
+vía command prompt y debe permitir al usuario
+ingresar una nueva pregunta al prompt cada vez que los requiera. El código en cuestión es el siguiente:
+import { GoogleGenAI } from "@google/genai";
+
+const ai = new GoogleGenAI({});
+
+const interaction = await ai.interactions.create({
+  model: "gemini-4-argon",
+  input: "Explain how AI works in a few words",
+});
+
+console.log(interaction.output_text);
+
+No generes el código aún, describe el procedimiento 
+que vas a realizar.
+
+
+RESPUESTA OBTENIDA:
+Voy a plantear el procedimiento exacto antes de escribir nada, para dejar claro cómo preparar la clave, el entorno, la ejecución desde consola y el flujo de preguntas repetidas.
+
+## Procedimiento que voy a seguir
+
+Antes de escribir el código, haré esta secuencia para dejar la app funcionando correctamente en Node.js desde consola:
+
+### 1. Preparar el entorno del proyecto
+- Crear una carpeta para la aplicación.
+- Inicializar npm con `npm init -y`.
+- Instalar el SDK de Google Gemini:
+  - `npm install @google/genai`
+- Si queremos cargar la clave desde un archivo externo, también podríamos usar `dotenv` para leer variables desde un `.env`, pero la clave debe quedar fuera del código fuente.
+
+### 2. Guardar la API key fuera del código
+- En Windows CMD, la forma más simple es declarar la variable antes de ejecutar el programa:
+  - `set GEMINI_API_KEY=TU_CLAVE_AQUI`
+- Para que quede disponible en una sesión persistente, podría usarse también una variable de entorno del sistema, pero para fines de prueba lo más práctico es usar `set` desde la consola.
+- La app leerá la clave con `process.env.GEMINI_API_KEY`, y nunca la escribiremos directamente en el archivo JavaScript.
+
+### 3. Diseñar la estructura de la app
+- Crear un archivo principal, por ejemplo `app.js`.
+- Validar que la variable existe antes de hacer la llamada a Gemini.
+- Cargar SDK de Google GenAI.
+- Crear una instancia con la API key desde `process.env`.
+
+### 4. Implementar la interacción por consola
+- Usar `readline` de Node.js para leer la entrada del usuario desde el prompt.
+- Mostrar un mensaje inicial tipo:
+  - “Escribe tu pregunta o escribe salir para terminar”
+- En un bucle:
+  - Leer la pregunta
+  - Enviar la pregunta a Gemini
+  - Mostrar la respuesta
+  - Preguntar nuevamente si el usuario quiere continuar
+
+### 5. Manejar la repetición de preguntas
+- El flujo será:
+  1. pedir pregunta
+  2. llamar a la API
+  3. mostrar respuesta
+  4. volver a preguntar
+- Si el usuario escribe `salir`, `exit` o `q`, el programa termina.
+
+### 6. Verificar con pruebas manuales
+- Ejecutar el programa desde CMD:
+  - `node app.js`
+- Probar varias preguntas consecutivas.
+- Confirmar que:
+  - la clave no está escrita en el código
+  - cada pregunta nueva se envía de forma independiente
+  - la respuesta llega correctamente
+  - el programa termina limpio al salir
+
+---
+
+## En resumen
+
+La solución que voy a implementar será una app CLI en Node.js que:
+- usa una variable de entorno para la API key,
+- recibe preguntas desde la consola,
+- llama a Gemini por cada entrada del usuario,
+- repite el proceso hasta que el usuario decida salir.
+
+Si quieres, en el siguiente paso sí te preparo el código completo listo para ejecutar en Windows CMD.

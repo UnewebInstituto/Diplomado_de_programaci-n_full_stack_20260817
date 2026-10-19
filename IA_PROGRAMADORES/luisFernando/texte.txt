@@ -1,4 +1,4 @@
-IGNORARAb8RN6KW6YJEqhXlcdykmVTERl5He5YBdO4aVoNwoKlPChnWQw
+IGNORARAb8RN6KW6YJEqhXlcdykmVTERl5He5YBdO4aVoNwoKlPChnWQwsa
 
 curl -X POST "https://generativelanguage.googleapis.com/v1beta/interactions" \
   -H "x-goog-api-key: IGNORARAb8RN6KW6YJEqhXlcdykmVTERl5He5YBdO4aVoNwoKlPChnWQw" \
@@ -104,10 +104,10 @@ curl -X POST "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.8
   }'
 
  porwer SHELL
-  export GEMINI_API_KEY="IGNORARAb8RN6KW6YJEqhXlcdykmVTERl5He5YBdO4aVoNwoKlPChnWQw"
+  export GEMINI_API_KEY="llave"
 
   con prompt
-  set GEMINI_API_KEY=IGNORARAb8RN6KW6YJEqhXlcdykmVTERl5He5YBdO4aVoNwoKlPChnWQw
+  set GEMINI_API_KEY= llave
 
   consultar valor 
   echo %GEMINI_API_KEY%
@@ -156,3 +156,84 @@ google.genai._gaos.lib.compat_errors.InternalServerError: Error code: 503 - {'er
 
 que es HuggingFace y como esta organizado 
 que es una matriz de confusion y como esta organizada
+
+
+IGNORARAb8RN6KQwSJNGLoMb3LG-c4w4IyhCLD2fTTLFUqqTBhR6h02Eg
+
+prompt
+
+Se requiere contruir una aplicación en nodejs, para 
+implementar el ejemplo de Google Gemini para Javascript
+considera que la api key, debe encontrarse declarada
+fuera del código, así mismo este programa se ejecutara
+vía command prompt y debe permitir al usuario
+ingresar una nueva pregunta al prompt cada vez que los requiera. El código em cuestión es el siguiente:
+import { GoogleGenAI } from "@google/genai";
+
+const ai = new GoogleGenAI({});
+
+const interaction = await ai.interactions.create({
+  model: "gemini-4-argon",
+  input: "Explain how AI works in a few words",
+});
+
+console.log(interaction.output_text);
+
+No generes el código aún, describe el procedimiento que vas a realizar.
+
+respuesta IA
+
+Voy a describir primero el procedimiento correcto para dejar esa app en Node.js con la clave fuera del código y ejecutable desde consola, sin escribir el programa todavía.
+
+## Procedimiento que voy a seguir
+
+1. Verificar el entorno de Node.js
+   - Confirmar que Node.js y npm están instalados en la máquina.
+   - Comprobar la versión para asegurar compatibilidad con la SDK de Gemini.
+
+2. Crear el proyecto en la carpeta de trabajo
+   - Iniciar un proyecto con npm.
+   - Generar el archivo principal del servidor o script de consola.
+   - Instalar la dependencia oficial de Google Gemini para JavaScript.
+
+3. Definir la configuración de la API key
+   - Guardar la clave en una variable de entorno, por ejemplo:
+     - `GEMINI_API_KEY`
+   - Esto evita que la clave quede escrita dentro del código fuente.
+   - En Windows se puede definir temporalmente desde el command prompt para pruebas.
+
+4. Diseñar la lógica de la aplicación
+   - Crear una instancia del cliente de Gemini.
+   - Preparar un bucle que permita al usuario enviar preguntas en consola.
+   - Solicitar una nueva pregunta cada vez que el usuario lo desee.
+   - Mostrar la respuesta del modelo en pantalla.
+
+5. Implementar la interacción con Gemini
+   - Usar el método apropiado de la SDK para enviar la pregunta al modelo.
+   - Mantener el formato del ejemplo, pero adaptándolo a un flujo interactivo por consola.
+
+6. Ejecutar desde command prompt
+   - Correr el script con Node.js desde PowerShell o cmd.
+   - Ingresar preguntas en tiempo real y repetir el ciclo hasta que el usuario decida salir.
+
+7. Validar la funcionalidad
+   - Probar con una pregunta simple.
+   - Verificar que se lee la API key desde variables de entorno.
+   - Confirmar que la app responde correctamente y maneja errores si la clave no está definida.
+
+---
+
+## Estructura lógica que se va a usar
+
+- Archivo principal: `app.js` o `server.js`
+- Variable de entorno: `GEMINI_API_KEY`
+- Bucle de consola:
+  - mostrar “Ingrese su pregunta:”
+  - leer texto desde teclado
+  - enviar a Gemini
+  - mostrar respuesta
+  - preguntar si desea continuar
+
+> La clave nunca se escribirá dentro del archivo fuente; se cargará desde el entorno del sistema o desde un archivo local no rastreado, por ejemplo `.env` con configuración de desarrollo.
+
+Si quieres, en el siguiente paso sí puedo escribir el código completo y dejarlo listo para ejecutar en Windows desde command prompt.

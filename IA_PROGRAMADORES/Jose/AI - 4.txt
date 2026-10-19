@@ -1,0 +1,15 @@
+ENTORNO VIRTUAL REPASO:
+1) UBICARSE EN EL DIRECTORIO DONDE SE IMPLEMENTARA
+cd nombre_directorio 
+2) CREACIÓN DE ENTORNO VIRTUAL
+python -m venv .venv
+3) ACTIVACIÓN DEL ENTORNO VIRTUAL
+.venv\scripts\activate
+
+python -m idlelib
+
+nodejs
+
+-- JAVASCRIPT
+node --version
+npm --version
