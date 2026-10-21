@@ -237,3 +237,46 @@ Voy a describir primero el procedimiento correcto para dejar esa app en Node.js 
 > La clave nunca se escribirá dentro del archivo fuente; se cargará desde el entorno del sistema o desde un archivo local no rastreado, por ejemplo `.env` con configuración de desarrollo.
 
 Si quieres, en el siguiente paso sí puedo escribir el código completo y dejarlo listo para ejecutar en Windows desde command prompt.
+
+
+
+
+
+Asume el rol de desarrollador experto en el área Web, se tiene la Api de Gemini y se quiere construir aplicación Web, basada
+en HTML, CSS, JavaScript. La Api Key te lasuministro: key go
+Se quiere que esta api key, se almacene en
+archivo .env, asi mismo la aplicación objetivo
+debe producirse en el directorio app1.
+
+2
+
+Asume el rol de desarrollador experto en 
+el área Web, se tiene la Api de Gemini y 
+se quiere construir aplicación Web, basada
+en HTML, CSS, JavaScript. La Api Key te la
+suministro: key go
+
+
+Se quiere que esta api key, se almacene en
+archivo .env, asi mismo la aplicación objetivo
+debe producirse en el directorio app1.
+
+Describe procedimiento antes de producir el código.
+
+El código de referencia para esta aplicación es:
+
+import { GoogleGenAI } from "@google/genai";
+
+const ai = new GoogleGenAI({});
+
+const interaction = await ai.interactions.create({
+  model: "gemini-4-argon",
+  input: "Explain how AI works in a few words",
+});
+
+console.log(interaction.output_text);
+
+
+prompt 3
+
+añade un archivo de auditoria que registre las preguntas que se hacen a traves de la aplicacion. el archivo se llamar auditoria.log, debe incluir fecha de sistema, hora del sistema y pregunta afectuada

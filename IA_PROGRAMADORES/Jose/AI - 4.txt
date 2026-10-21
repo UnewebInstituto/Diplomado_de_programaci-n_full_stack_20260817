@@ -6,6 +6,8 @@ python -m venv .venv
 3) ACTIVACIÓN DEL ENTORNO VIRTUAL
 .venv\scripts\activate
 
+deactivate
+
 python -m idlelib
 
 nodejs

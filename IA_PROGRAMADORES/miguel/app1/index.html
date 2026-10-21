@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gemini Web App</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="container">
+      <section class="card">
+        <h1>Gemini Chat</h1>
+        <p class="subtitle">Consulta a la API de Gemini desde tu aplicación web.</p>
+
+        <form id="chat-form">
+          <label for="prompt">Escribe tu pregunta</label>
+          <textarea id="prompt" rows="5" placeholder="Ejemplo: Explica cómo funciona la IA en pocas palabras"></textarea>
+          <button type="submit">Enviar</button>
+        </form>
+
+        <div class="response-box">
+          <h2>Respuesta</h2>
+          <p id="response">Aquí aparecerá la respuesta del modelo.</p>
+        </div>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

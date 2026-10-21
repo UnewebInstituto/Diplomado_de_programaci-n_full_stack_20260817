@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gemini Chat</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="chat-panel">
+        <header class="chat-header">
+          <div>
+            <p class="eyebrow">Asistente IA</p>
+            <h1>Gemini Chat</h1>
+          </div>
+          <button id="clear-chat" class="secondary-btn" type="button">Limpiar chat</button>
+        </header>
+
+        <div id="chat-log" class="chat-log" aria-live="polite">
+          <div class="message bot">
+            <strong>Bot:</strong>
+            <span>Hola, ¿en qué puedo ayudarte hoy?</span>
+          </div>
+        </div>
+
+        <form id="chat-form" class="chat-form">
+          <textarea id="prompt" rows="4" placeholder="Escribe tu mensaje aquí..."></textarea>
+          <button type="submit">Enviar</button>
+        </form>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

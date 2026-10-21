@@ -1,0 +1,16 @@
+{
+  "name": "gemini-web-app",
+  "version": "1.0.0",
+  "description": "Aplicación web con Gemini y Node.js",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "@google/genai": "^1.21.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  }
+}

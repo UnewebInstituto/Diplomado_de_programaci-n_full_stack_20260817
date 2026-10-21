@@ -1,0 +1,22 @@
+{
+  "name": "gemini-web-app1",
+  "version": "1.0.0",
+  "description": "Aplicación web con Gemini y .env",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "gemini",
+    "web",
+    "ai"
+  ],
+  "author": "",
+  "license": "MIT",
+  "type": "commonjs",
+  "dependencies": {
+    "@google/genai": "^1.15.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  }
+}

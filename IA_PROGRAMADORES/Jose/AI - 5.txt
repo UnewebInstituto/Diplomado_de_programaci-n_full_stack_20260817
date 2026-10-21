@@ -1,0 +1,15 @@
+-- JAVASCRIPT
+node --version
+npm --version
+
+Setup
+In a terminal, inside your project folder, run:
+
+	`npm init -y`
+	`npm install express dotenv @google/genai`
+
+Then start the server:
+
+	`node server.js`
+
+Open http://localhost:3000 in your browser, type a question, and press Enter.

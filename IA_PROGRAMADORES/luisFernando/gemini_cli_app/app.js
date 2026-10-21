@@ -14,12 +14,27 @@ if (!apiKey) {
 
 const ai = new GoogleGenAI({ apiKey });
 const rl = readline.createInterface({ input, output });
+let inputClosed = false;
+
+rl.on("close", () => {
+  inputClosed = true;
+});
 
 console.log("=== Chat con Gemini ===");
 console.log("Escribe una pregunta. Escribe 'salir' para terminar.\n");
 
 while (true) {
-  const question = (await rl.question("Pregunta: ")).trim();
+  if (inputClosed || rl.closed) {
+    break;
+  }
+
+  let question;
+
+  try {
+    question = (await rl.question("Pregunta: ")).trim();
+  } catch (error) {
+    break;
+  }
 
   if (!question) {
     console.log("Debes escribir una pregunta.");
@@ -29,7 +44,7 @@ while (true) {
   if (question.toLowerCase() === "salir" || question.toLowerCase() === "exit") {
     console.log("Hasta luego.");
     rl.close();
-    process.exit(0);
+    break;
   }
 
   try {
@@ -49,7 +64,18 @@ while (true) {
     console.log(text);
     console.log("\n");
   } catch (error) {
+    const message = error?.message || String(error);
     console.error("Error al consultar Gemini:");
-    console.error(error?.message || error);
+    console.error(message);
+
+    if (
+      message.includes("fetch failed") ||
+      message.includes("ECONNRESET") ||
+      message.includes("ENOTFOUND") ||
+      message.includes("ETIMEDOUT") ||
+      message.includes("503")
+    ) {
+      console.error("La red falló al contactar a Gemini. Verifica tu conexión e inténtalo de nuevo.");
+    }
   }
 }

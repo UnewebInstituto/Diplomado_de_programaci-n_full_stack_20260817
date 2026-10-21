@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ask me anything!</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h1>Ask me anything!</h1>
+
+    <form id="chat-form">
+      <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="10" cy="10" r="6" />
+        <line x1="14.5" y1="14.5" x2="20" y2="20" />
+      </svg>
+      <input
+        type="text"
+        id="user-input"
+        placeholder="User message. Press &quot;ENTER&quot; to send."
+        autocomplete="off"
+        aria-label="Your message"
+      >
+    </form>
+
+    <section id="response-area">
+      <ul>
+        <li>
+          <strong>Gemini Response:</strong>
+          <p id="response-text">...</p>
+        </li>
+      </ul>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+PROMPT:
+1-Rol a personificar
+2-Contexto
+3-Tarea a efectuar
+4-Formato debe producir resultado
+5-Establecer restricciones o límites.
+
+desactivacion de:
+(.venv)C:\.....>
+>.venv\scrpits\desactivate
+
+API key: IGNORAR.Ab8RN6L56eng0VRoOrm6ansKSLSYN-SKpj9CsyAmL1XEke-Fbw
+
+PROMPT:
+
+Asume el rol de desarrollador experto en 
+el área Web, se tiene la Api de Gemini y 
+se quiere construir aplicación Web, basada
+en HTML, CSS, JavaScript. La Api Key te la
+suministro: 
+IGNORAR.Ab8RN6L56eng0VRoOrm6ansKSLSYN-SKpj9CsyAmL1XEke-Fbw
+
+Se quiere que esta api key, se almacene en
+archivo .env, asi mismo la aplicación objetivo
+debe producirse en el directorio app1.
+
+Describe procedimiento antes de producir el código.
+
+El código de referencia para esta aplicación es:
+
+import { GoogleGenAI } from "@google/genai";
+
+const ai = new GoogleGenAI({});
+
+const interaction = await ai.interactions.create({
+  model: "gemini-4-argon",
+  input: "Explain how AI works in a few words",
+});
+
+console.log(interaction.output_text);
+
+añade un archivo de auditoria que registre las preguntas que se hacen a traves de la aplicacion. el archivo se llamara auditoria.log. debe incluir: fecha del sistema, hora del sistema y pregunta efectuada
