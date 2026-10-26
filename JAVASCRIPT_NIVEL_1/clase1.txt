@@ -1,0 +1,48 @@
+https://www.genbeta.com/desarrollo/hace-30-anos-programador-netscape-creo-10-dias-primera-version-uno-lenguajes-usados-hoy-internet
+
+Operador Ternario
+https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Operators/Conditional_operator
+
+En JavaScript, el acento grave (`) se utiliza principalmente para crear Plantillas literales (también llamadas template strings o cadenas de plantilla). [1] (https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Template_literals)
+
+Usos Principales
+
+• Interpolación de variables: Permite insertar variables y expresiones directamente dentro de una cadena de texto usando la sintaxis ${}. [1] (https://translate.google.com/translate?u=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals&hl=es&sl=en&tl=es&client=sge), [2] (https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Template_literals)
+• Cadenas multilínea: Permite escribir textos que ocupan varias líneas en el código fuente de forma natural, sin necesidad de usar el carácter de salto de línea explícito \n. [1] (https://translate.google.com/translate?u=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals&hl=es&sl=en&tl=es&client=sge), [2] (https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Template_literals)
+• Plantillas etiquetadas (tagged templates): Permite procesar las cadenas de plantilla mediante una función personalizada antes de que se devuelvan. [1] (https://translate.google.com/translate?u=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals&hl=es&sl=en&tl=es&client=sge), [2] (https://developer.mozilla.org/es/docs/Web/JavaScript/Reference/Template_literals)
+
+Ejemplos Prácticos
+
+
+1. Interpolación de variables y expresiones
+
+En lugar de concatenar texto con el operador +, puedes insertar valores de manera limpia: [1] (https://developer.mozilla.org/es/docs/MDN/Writing_guidelines/Code_style_guide/JavaScript), [2] (https://platzi.com/blog/los-templates-literales-y-su-uso/)
+javascript
+const nombre = "Ana";
+const edad = 30;
+
+// Con acentos graves (Template Literals)
+const mensaje = `Hola, mi nombre es ${nombre} y tengo ${edad + 2} años.`;
+
+console.log(mensaje); 
+// Resultado: "Hola, mi nombre es Ana y tengo 32 años."
+Usa el código con precaución.
+
+2. Textos en varias líneas
+
+Puedes presionar Enter dentro de los acentos graves para cambiar de línea directamente: [1] (https://translate.google.com/translate?u=https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals&hl=es&sl=en&tl=es&client=sge), [2] (https://medium.com/@imadrianzamora/funciones-avanzadas-template-literals-en-javascript-25352662c077)
+javascript
+const html = `
+  <div>
+    <h1>Título</h1>
+    <p>Párrafo en otra línea</p>
+  </div>
+`;
+Usa el código con precaución.
+Si lo deseas, dime:
+• ¿Quieres ver un ejemplo de plantillas etiquetadas?
+• ¿Buscas solucionar un error de sintaxis específico con este carácter?
+Te puedo dar más detalles adaptados a tu código.
+
+ASIGNACIÓN:
+SERIE FIBONACCI.
