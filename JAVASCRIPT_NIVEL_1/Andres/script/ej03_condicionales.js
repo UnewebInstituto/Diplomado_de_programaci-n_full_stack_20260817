@@ -58,7 +58,7 @@ try {
     IVA = 0.17
 } catch (error) {
     console.error('No se puede actualizar el valor de una constante');
-    console.log(error);
+    //console.log(error);
 }finally {
     console.warn('Fin de la evaluación de la excepción');
 }

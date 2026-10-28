@@ -1,0 +1,22 @@
+*{
+    font-family: Arial, Helvetica, sans-serif;
+}
+table{
+    width: 50%;
+    margin-left: 25%;
+}
+#botones{
+    text-align: center;
+}
+.error{
+    color:black;
+    background-color: red;
+}
+.alerta{
+    color: gray;
+    background-color: orange;
+}
+.exito{
+    color: white;
+    background-color: green;
+}
