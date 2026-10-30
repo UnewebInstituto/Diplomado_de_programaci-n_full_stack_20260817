@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style/ej10_expreg.css">
+</head>
+<body>
+    <h1>Ejemplo10 Registro de usuarios</h1>
+    <form action="">
+        <table>
+            <tr>
+                <td>Nombre:</td>
+                <td><input type="text" name="nombre" id="nombre" required onblur="validarNombre()"></td>
+                <td id="msjNom"></td>
+            </tr>
+            <tr>
+                <td>Apellido:</td>
+                <td>
+                    <input type="text" name="apellido" id="apellido" required onblur="validarApellido()">
+                </td>
+                <td id="msjApe"></td>
+            </tr>
+            <tr>
+                <td>Correo electrónico:</td>
+                <td>
+                    <input type="email" name="correo" id="correo" required onblur="validarCorreoElectronico()">
+                </td>
+                <td id="msjCor"></td>
+            </tr>
+            <tr>
+                <td>Clave:</td>
+                <td>
+                    <input type="password" name="clave1" id="clave1" required onblur="validarClave1()">
+                </td>
+                <td id="msjCv1"></td>
+            </tr>
+            <tr>
+                <td>Repetir Clave:</td>
+                <td>
+                    <input type="password" name="clave2" id="clave2" required onblur="validarClave2()"
+                    >
+                </td>
+                <td id="msjCv2"></td>
+            </tr>
+            <tr>
+                <td colspan="3" align="center">
+                    <button class="botones"  id="btnRegistrar" name="btnRegistrar" disabled>Registrar</button>
+                    <button class="botones" id="btnLimpiar" name="btnLimpiar">Limpiar</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <script src="./script/ej10_expreg.js"></script>
+</body>
+</html>

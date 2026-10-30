@@ -1,0 +1,107 @@
+Lo puedes crear dentro de `PROFESOR`, donde ya tienes `ej10_expreg.html` y `ej10_expreg.js`. Estos pasos dejan el CSV fuera de la carpeta pública para que no se pueda descargar desde el navegador.
+
+**1. Inicializa el proyecto e instala Express**
+
+En la terminal de PowerShell, desde la raíz del workspace:
+
+```powershell
+cd "JAVASCRIPT_NIVEL_1\PROFESOR"
+npm init -y
+npm install express
+npm pkg set scripts.start="node server.js"
+```
+
+**2. Organiza los archivos**
+
+Crea una carpeta `public` y coloca dentro el HTML y sus recursos. Por ejemplo:
+
+```text
+PROFESOR/
+  server.js
+  archivos/                 <- el servidor guardará aquí usuarios.csv
+  public/
+    ej10_expreg.html
+    script/
+      ej10_expreg.js
+    style/
+      ej10_expreg.css
+  package.json
+```
+
+Mantén `archivos` fuera de `public`. Puedes mover tus archivos actuales a `public`; las rutas relativas del HTML (`./script/...` y `./style/...`) seguirán funcionando si conservas esa estructura.
+
+**3. Cambia el formulario**
+
+En el HTML, configura el envío al servidor:
+
+```html
+<form action="/usuarios" method="POST">
+```
+
+Los campos ya tienen atributos `name`, que Express usará para recibir sus valores.
+
+**4. Crea `server.js`**
+
+Este ejemplo crea el directorio, escribe los encabezados la primera vez y agrega cada registro al CSV. Guarda nombre, apellido y correo; no guarda la contraseña.
+
+```js
+const express = require("express");
+const fs = require("node:fs/promises");
+const path = require("node:path");
+
+const app = express();
+const puerto = 3000;
+const directorio = path.join(__dirname, "archivos");
+const archivoCsv = path.join(directorio, "usuarios.csv");
+
+app.use(express.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, "public")));
+
+function campoCsv(valor) {
+    return `"${String(valor ?? "").trim().replace(/"/g, '""')}"`;
+}
+
+app.post("/usuarios", async (req, res) => {
+    try {
+        const { nombre, apellido, correo } = req.body;
+
+        if (!nombre || !apellido || !correo) {
+            return res.status(400).send("Completa nombre, apellido y correo.");
+        }
+
+        await fs.mkdir(directorio, { recursive: true });
+
+        try {
+            await fs.access(archivoCsv);
+        } catch {
+            await fs.writeFile(
+                archivoCsv,
+                "nombre,apellido,correo\r\n",
+                "utf8"
+            );
+        }
+
+        const fila = [nombre, apellido, correo].map(campoCsv).join(",");
+        await fs.appendFile(archivoCsv, `${fila}\r\n`, "utf8");
+
+        res.status(201).send("Usuario guardado correctamente.");
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("No se pudo guardar el usuario.");
+    }
+});
+
+app.listen(puerto, () => {
+    console.log(`Servidor disponible en http://localhost:${puerto}/ej10_expreg.html`);
+});
+```
+
+**5. Inicia el servidor y prueba el formulario**
+
+```powershell
+npm start
+```
+
+Abre la dirección que aparece en la consola, llena el formulario y envíalo. El servidor creará `archivos/usuarios.csv` al primer registro y añadirá una fila por cada envío.
+
+La validación que haces en JavaScript mejora la experiencia, pero también conviene repetir las reglas en el servidor: el usuario puede saltarse las validaciones del navegador. Además, para una aplicación real, no guardes contraseñas en un CSV ni en texto plano; usa una base de datos y almacena únicamente su hash.

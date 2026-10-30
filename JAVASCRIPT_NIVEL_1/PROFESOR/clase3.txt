@@ -1,0 +1,60 @@
+Una **expresión regular** (comúnmente abreviada como **RegEx** o *Regular Expression*) es una secuencia de caracteres que forma un **patrón de búsqueda**. Este patrón se utiliza para buscar, hacer coincidir, validar, extraer o manipular textos complejos dentro de cadenas de caracteres (*strings*) de manera rápida y precisa.
+
+En lugar de buscar palabras o números exactos, una expresión regular te permite definir **reglas flexibles** sobre cómo debe verse el texto.
+
+---
+
+### ¿Para qué se utilizan?
+
+* **Validación de datos:** Comprobar que un correo electrónico, un número de teléfono, una contraseña o una cédula tengan el formato correcto.
+* **Búsqueda avanzada:** Encontrar ocurrencias específicas dentro de miles de líneas de código o documentos de texto (por ejemplo, buscar todas las direcciones IP o URLs).
+* **Extracción de información:** Aislar datos concretos de un texto más grande (como extraer fechas, códigos postales o precios de una factura).
+* **Reemplazo y refactorización:** Buscar un patrón en archivos de código o texto y modificarlo masivamente (por ejemplo, cambiar el formato de una fecha en todo un script).
+
+---
+
+### Componentes básicos de una RegEx
+
+Una expresión regular combina caracteres literales con metacaracteres especiales que indican reglas:
+
+1. **Caracteres literales:** Buscan el texto exacto tal cual lo escribes (ej. `casa` busca la palabra exacta).
+2. **Metacaracteres (Comodines y operadores):**
+* `.` : Coincide con cualquier carácter (excepto saltos de línea).
+* `\d` : Coincide con cualquier dígito numérico (`0-9`).
+* `\w` : Coincide con cualquier carácter alfanumérico (letras, números y guion bajo).
+* `\s` : Coincide con cualquier espacio en blanco (espacios, tabulaciones, saltos de línea).
+
+
+3. **Cuantificadores (Indican cuántas veces se repite algo):**
+* `*` : Cero o más veces.
+* `+` : Una o más veces.
+* `?` : Cero o una vez (opcional).
+* `{n,m}` : Entre $n$ y $m$ veces.
+
+
+4. **Anclas (Posición dentro del texto):**
+* `^` : Inicio de la línea o cadena.
+* `$` : Fin de la línea o cadena.
+
+
+
+---
+
+### Ejemplo práctico
+
+Imagina que quieres validar un código de producto que consta de **3 letras mayúsculas**, un guion, y **4 números** (por ejemplo: `ABC-1234`). La expresión regular sería:
+
+```regex
+^[A-Z]{3}-\d{4}$
+
+```
+
+* **`^`** : Indica el inicio de la cadena.
+* **`[A-Z]{3}`** : Busca exactamente 3 letras mayúsculas consecutivas.
+* **`-`** : Busca el carácter de guion literal.
+* **`\d{4}`** : Busca exactamente 4 dígitos numéricos.
+* **`$`** : Indica el final de la cadena.
+
+---
+
+¿Te gustaría ver cómo se aplica este concepto en algún lenguaje de programación en particular o necesitas resolver un patrón específico para tu proyecto?
