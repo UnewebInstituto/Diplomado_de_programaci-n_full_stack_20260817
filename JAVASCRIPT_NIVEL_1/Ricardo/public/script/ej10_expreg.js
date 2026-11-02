@@ -98,10 +98,68 @@ function verificarCampos(){
     }
 }
 
+// Declaración arrow function
+
+const cambiarOjoClave1 = (imgClave1) =>{
+    let clave1 = document.getElementById("clave1");
+    if (ctrlOjoClave1){
+        imgClave1.src="./imagenes/ojo.png";
+        clave1.type = "text";
+        ctrlOjoClave1 = false;
+    }else{
+        imgClave1.src="./imagenes/ojocerrado.png";
+        clave1.type = "password";
+        ctrlOjoClave1 = true;
+    }
+}
+
+const cambiarOjoClave2 = (imgClave2) =>{
+    let clave2 = document.getElementById("clave2");
+    if (ctrlOjoClave2){
+        imgClave2.src="./imagenes/ojo.png";
+        clave2.type = "text";
+        ctrlOjoClave2 = false;
+    }else{
+        imgClave2.src="./imagenes/ojocerrado.png";
+        clave2.type = "password";
+        ctrlOjoClave2 = true;
+    }
+}
+
 // Declaración
-var ctrlNombre, ctrlApellido, ctrlCorreo, ctrlClave1, ctrlClave2;
+var ctrlNombre, ctrlApellido, ctrlCorreo, ctrlClave1, ctrlClave2, ctrlOjoClave1, ctrlOjoClave2 = true;
+const formularioUsuarios = document.getElementById("formUsuarios");
+const mensajeResultado = document.getElementById("mensajeResultado");
+
+
 
 // Inicialización
 ctrlNombre = ctrlApellido = ctrlCorreo = ctrlClave1 = ctrlClave2 = false;
+ctrlOjoClave1 = true;
+ctrlOjoClave2 = true;
+
+formularioUsuarios.addEventListener("submit", async (evento) => {
+    evento.preventDefault();
+    mensajeResultado.textContent = "";
+
+    try {
+        const respuesta = await fetch(formularioUsuarios.action, {
+            method: formularioUsuarios.method,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: new URLSearchParams(
+                new FormData(formularioUsuarios)
+            ).toString()
+        });
+
+        const texto = await respuesta.text();
+        mensajeResultado.textContent = texto;
+    } catch (error) {
+        console.error(error);
+        mensajeResultado.textContent = "No se pudo conectar con el servidor.";
+    }
+});
+
 
 

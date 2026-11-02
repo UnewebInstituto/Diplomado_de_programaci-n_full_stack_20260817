@@ -1,0 +1,177 @@
+Voy a revisar el `server.js` que tienes abierto y te explicaré sus instrucciones en orden, agrupando solo las líneas que forman una misma operación.
+
+Read 
+
+En `server.js`, el servidor recibe datos de un formulario y los guarda en un archivo CSV.
+
+**Preparación**
+- `const express = require("express");` carga Express, que permite crear el servidor y definir rutas.
+- `const fs = require("node:fs/promises");` carga las operaciones de archivos de Node.js en formato asíncrono, para poder usar `await`.
+- `const path = require("node:path");` carga utilidades para construir rutas de archivos compatibles con el sistema operativo.
+- El bloque de comentarios con nombres y puertos es informativo; no ejecuta ninguna instrucción.
+- `const app = express();` crea la aplicación del servidor.
+- `const puerto = 3000;` define el puerto donde escuchará.
+- `const directorio = ...` construye la ruta a la carpeta `archivos`, ubicada junto a `server.js`.
+- `const archivoCsv = ...` construye la ruta completa al archivo `usuarios.csv` dentro de esa carpeta.
+
+**Configuración de Express**
+- `app.use(express.urlencoded({ extended: false }));` permite leer los datos enviados por formularios con codificación URL y dejarlos disponibles en `req.body`. `extended: false` usa un formato sencillo para esos datos.
+- `app.use(express.static(...))` publica los archivos de la carpeta `public`, como páginas HTML, CSS o JavaScript del navegador.
+
+**Preparación de valores CSV**
+- `function campoCsv(valor) { ... }` convierte un valor en un campo válido de CSV:
+  - `String(valor ?? "")` lo convierte a texto; si es `null` o `undefined`, usa una cadena vacía.
+  - `.trim()` quita espacios al principio y al final.
+  - `.replace(/"/g, '""')` duplica las comillas internas, como requiere el formato CSV.
+  - Las comillas exteriores (`"..."`) protegen el campo, por ejemplo, si contiene comas.
+
+**Ruta para guardar usuarios**
+- `app.post("/usuarios", async (req, res) => { ... })` registra una ruta que responde a solicitudes `POST` enviadas a `/usuarios`. Es `async` porque realiza operaciones de archivos que se esperan con `await`.
+- `const { nombre, apellido, correo } = req.body;` extrae esos tres valores de los datos del formulario.
+- `if (!nombre || !apellido || !correo)` comprueba que los tres estén presentes. Si falta alguno, responde con estado `400` (solicitud incompleta) y el mensaje indicado. `return` detiene el resto del manejador.
+- `await fs.mkdir(directorio, { recursive: true });` crea la carpeta `archivos` si aún no existe. `recursive: true` evita un error si ya existe.
+- `await fs.access(archivoCsv);` comprueba si el CSV ya está disponible.
+- El `catch` interior se ejecuta si esa comprobación falla; entonces `fs.writeFile(...)` crea el archivo con la fila de encabezados `nombre,apellido,correo`. La opción `"utf8"` indica la codificación del texto.
+- `const fila = ...` procesa los tres valores con `campoCsv` y los une con comas para formar una fila CSV.
+- `await fs.appendFile(...)` agrega esa fila al final del archivo. `\r\n` añade un salto de línea compatible con el formato usado habitualmente en Windows.
+- `res.status(201).send(...)` responde que el usuario se guardó correctamente. El estado `201` indica que se creó un recurso.
+- El `catch` exterior captura errores al crear carpetas o escribir el archivo. `console.error(error)` muestra el detalle en la terminal y `res.status(500).send(...)` informa al cliente que ocurrió un error del servidor.
+
+**Inicio del servidor**
+- `app.listen(puerto, () => { ... })` pone el servidor a escuchar en el puerto `3000`.
+- `console.log(...)` muestra en la terminal la dirección sugerida para abrir en el navegador. Esa página se sirve desde `public` gracias al middleware estático; el mensaje por sí solo no crea la página.
+
+FORMATO: application/x-www-form-urlencoded
+
+curl.exe -X POST "http://localhost:3000/usuarios" -H "Content-Type: application/x-www-form-urlencoded" --data-urlencode "nombre=Ana" --data-urlencode "apellido=García" --data-urlencode "correo=ana@example.com"
+
+FORMATO: application/json
+
+curl.exe -X POST "http://localhost:3000/usuarios" -H "Content-Type: application/json" -d '{"nombre":"Ana","apellido":"García","correo":"ana@example.com"}'
+
+Se obtuvo este error:PS E:\.PROFESORES\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817> curl.exe -X POST "http://localhost:3000/usuarios" -H "Content-Type: application/json" -d '{"nombre":"Ana","apellido":"García","correo":"ana@example.com"}'
+No se pudo guardar el usuario.
+
+
+Ese mensaje corresponde a la respuesta `500` del bloque `catch`. Voy a comprobar el middleware actual de `server.js`; lo más probable es que el servidor no esté interpretando el cuerpo JSON antes de leer `req.body`.
+
+Read 
+
+Confirmado: solo está habilitado `express.urlencoded`, que no parsea JSON. Voy a añadir el middleware `express.json()` junto a ese configurador; luego tendrás que reiniciar el servidor para que el proceso cargue el cambio.
+
+Generating patch (7 lines) in 
+
+
+```
+
+```
+
+
+Checked , no problems found
+
+El servidor solo tenía habilitado el parser de formularios. Sin el parser JSON, `req.body` no está disponible y el manejador devuelve el error `500`.
+
+Añadí `app.use(express.json());` antes de las rutas en `server.js`. No se encontraron errores en el archivo. **Reinicia el servidor** (`Ctrl+C` y vuelve a ejecutar el comando con que lo iniciaste) y prueba de nuevo el mismo `curl.exe`.
+
+Made changes.
+
+Generó el siguiente error:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Error</title>
+</head>
+<body>
+<pre>SyntaxError: Expected property name or &#39;}&#39; in JSON at position 1 (line 1 column 2)<br> &nbsp; &nbsp;at JSON.parse (&lt;anonymous&gt;)<br> &nbsp; &nbsp;at parse (E:\.PROFESORES\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817\JAVASCRIPT_NIVEL_1\PROFESOR\node_modules\body-parser\lib\types\json.js:93:21)<br> &nbsp; &nbsp;at E:\.PROFESORES\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817\JAVASCRIPT_NIVEL_1\PROFESOR\node_modules\body-parser\lib\read.js:194:18<br> &nbsp; &nbsp;at AsyncResource.runInAsyncScope (node:async_hooks:214:14)<br> &nbsp; &nbsp;at invokeCallback (E:\.PROFESORES\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817\JAVASCRIPT_NIVEL_1\PROFESOR\node_modules\raw-body\index.js:238:16)<br> &nbsp; &nbsp;at done (E:\.PROFESORES\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817\JAVASCRIPT_NIVEL_1\PROFESOR\node_modules\raw-body\index.js:227:7)<br> &nbsp; &nbsp;atIncomingMessage.onEnd (E:\.PROFESORES\HENRY_DUQUE\Diplomado_de_programaci-n_full_stack_20260817\JAVASCRIPT_NIVEL_1\PROFESOR\node_modules\raw-body\index.js:287:7)<br> &nbsp; &nbsp;at IncomingMessage.emit (node:events:508:28)<br> &nbsp; &nbsp;at endReadableNT (node:internal/streams/readable:1701:12)<br> &nbsp; &nbsp;at process.processTicksAndRejections (node:internal/process/task_queues:89:21)</pre>
+</body>
+</html>
+
+Ese error significa que `express.json()` ya está recibiendo la petición, pero el cuerpo que llega no es JSON válido. Probablemente PowerShell alteró las comillas del comando; el nombre de cada propiedad debe conservar comillas dobles, como `"nombre"`.
+
+Construye el JSON con PowerShell y pásalo a `curl.exe` así:
+
+```powershell
+$json = @{ nombre = "Ana"; apellido = "García"; correo = "ana@example.com" } | ConvertTo-Json -Compress
+curl.exe -X POST "http://localhost:3000/usuarios" -H "Content-Type: application/json" --data-raw $json
+```
+
+`ConvertTo-Json` genera el texto JSON con las comillas correctas y evita tener que escaparlas manualmente.
+
+
+Volvamos al punto de la solución web, sin usar curl. Genera un mensaje al completar la operación con éxito, que es el siguiente: "Usuario guardado correctamente.". Este mensaje se quiiere que aparezca en el formulario, una vez que se complete la operación. Describe el procediemiento y espera mi confirmación para modificar el código.
+
+Voy a localizar el formulario y el JavaScript que lo envía para describirte un procedimiento concreto, sin tocar archivos. Después me detengo y espero tu confirmación antes de modificar el código.
+
+Searched for files matching `**/JAVASCRIPT_NIVEL_1/PROFESOR/**/*.{html,js}`, 20 matches
+
+Searched for regex `usuarios|fetch\(|<form|onsubmit` (`**/JAVASCRIPT_NIVEL_1/PROFESOR/**`), 4 results
+
+El formulario encontrado envía un `POST` tradicional a `/usuarios`, así que ahora voy a revisar su marcado para precisar cómo mostrar la respuesta en la misma página y qué cambio de comportamiento implica.
+
+Read 
+
+Searched for files matching `**/JAVASCRIPT_NIVEL_1/PROFESOR/public/**`, 5 matches
+
+Read 
+
+El servidor ya devuelve exactamente `Usuario guardado correctamente.` cuando guarda el usuario. El formulario actual hace un envío tradicional, que reemplaza la página por la respuesta; para mostrar el mensaje **dentro del formulario**, el procedimiento sería:
+
+1. En `ej10_expreg.html`, añadir un elemento vacío cerca del formulario para mostrar el resultado, por ejemplo, un párrafo con un identificador.
+2. En `ej10_expreg.js`, escuchar el evento `submit` del formulario y evitar la navegación normal con `preventDefault()`.
+3. Enviar los campos mediante `fetch` a `/usuarios`, codificándolos como formulario URL-encoded. Así se conserva la compatibilidad con el middleware `express.urlencoded` que ya usa el servidor.
+4. Si la respuesta del servidor indica que la operación fue exitosa, colocar su texto en el elemento del formulario usando `textContent`. En caso de error, mostrar el mensaje de error en ese mismo lugar.
+
+No sería necesario cambiar el servidor ni usar `curl`. No he modificado ningún archivo; espero tu confirmación antes de hacerlo.
+
+
+De acuerdo, no haré cambios. Para implementarlo manualmente, modifica estos fragmentos:
+
+En `ej10_expreg.html`, añade un identificador al formulario y coloca el espacio del mensaje dentro de él:
+
+```html
+<form id="formUsuarios" action="/usuarios" method="post">
+    <!-- Conserva aquí los campos y la tabla existentes -->
+
+    <p id="mensajeResultado" role="status" aria-live="polite"></p>
+</form>
+```
+
+Asegúrate también de indicar el tipo de cada botón. Así, **Limpiar** no enviará el formulario:
+
+```html
+<button class="botones" id="btnRegistrar" name="btnRegistrar" type="submit" disabled>Registrar</button>
+<button class="botones" id="btnLimpiar" name="btnLimpiar" type="reset">Limpiar</button>
+```
+
+Al final de `ej10_expreg.js`, después del código existente, agrega:
+
+```javascript
+const formularioUsuarios = document.getElementById("formUsuarios");
+const mensajeResultado = document.getElementById("mensajeResultado");
+
+formularioUsuarios.addEventListener("submit", async (evento) => {
+    evento.preventDefault();
+    mensajeResultado.textContent = "";
+
+    try {
+        const respuesta = await fetch(formularioUsuarios.action, {
+            method: formularioUsuarios.method,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: new URLSearchParams(
+                new FormData(formularioUsuarios)
+            ).toString()
+        });
+
+        const texto = await respuesta.text();
+        mensajeResultado.textContent = texto;
+    } catch (error) {
+        console.error(error);
+        mensajeResultado.textContent = "No se pudo conectar con el servidor.";
+    }
+});
+```
+
+El envío usa `application/x-www-form-urlencoded`, que coincide con `express.urlencoded(...)` del servidor. Cuando la respuesta sea exitosa, el texto `Usuario guardado correctamente.` aparecerá en el párrafo del formulario.

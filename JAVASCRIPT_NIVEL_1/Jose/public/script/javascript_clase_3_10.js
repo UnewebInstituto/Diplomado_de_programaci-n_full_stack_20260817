@@ -120,6 +120,9 @@ function validarPassword2(){
 	
     let password1 = inputPassword1.value;
     let password2 = inputPassword2.value;
+
+console.log("password1", password1);
+console.log("password2", password2);
 	
     mensajePassword2.style.fontSize = "8px";
 	
@@ -158,7 +161,13 @@ function verificarCampos(){
 
     let botonRegistrar = document.getElementById('btnRegistrar');
 
-    if (controlNombre && controlApellido && controlEmail && controlPassword1 && inputPassword2){
+console.log("controlNombre", controlNombre);
+console.log("controlApellido", controlApellido);
+console.log("controlEmail", controlEmail);
+console.log("controlPassword1", controlPassword1);
+console.log("controlPassword2", controlPassword2);
+
+    if (controlNombre && controlApellido && controlEmail && controlPassword1 && controlPassword2){
 
         botonRegistrar.disabled = false;
         
@@ -168,3 +177,61 @@ function verificarCampos(){
     }
 
 }
+
+const togglePassword1 = document.getElementById('password1');
+const togglePassword2 = document.getElementById('password2');
+const toggleIcon = document.getElementById('toggleIcon');
+
+toggleIcon.addEventListener('click', function () {
+  // Toggle the type attribute
+  if (togglePassword1.type === 'password') {
+    togglePassword1.type = 'text';
+    togglePassword2.type = 'text';
+    toggleIcon.textContent = '(hide)👁️'; // Optional: Change icon to indicate hidden state
+  } else {
+    togglePassword1.type = 'password'; 
+    togglePassword2.type = 'password';
+    toggleIcon.textContent = '(show)🔒'; // Change back to open eye
+  }
+});
+
+let revealStatus2;
+revealStatus2 = true;
+
+const revelarClave2 = (revealClave2) =>{
+    if (revealStatus2){
+        revealClave2.src="./img/eyeopen.png";
+        togglePassword2.type = "text";
+        revealStatus2 = false;
+    }else{
+        revealClave2.src="./img/eyeclose.png"; 
+        togglePassword2.type = "password";
+        revealStatus2 = true;
+    }
+}
+
+const formSendUser = document.getElementById("formUsuario");
+const mensajeResultado = document.getElementById("mensajeResultado");
+
+formSendUser.addEventListener("submit", async (evento) => {
+    evento.preventDefault();
+    mensajeResultado.textContent = "";
+
+    try {
+        const respuesta = await fetch(formSendUser.action, {
+            method: formSendUser.method,
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: new URLSearchParams(
+                new FormData(formSendUser)
+            ).toString()
+        });
+
+        const texto = await respuesta.text();
+        mensajeResultado.textContent = texto;
+    } catch (error) {
+        console.error(error);
+        mensajeResultado.textContent = "No se pudo conectar con el servidor.";
+    }
+});

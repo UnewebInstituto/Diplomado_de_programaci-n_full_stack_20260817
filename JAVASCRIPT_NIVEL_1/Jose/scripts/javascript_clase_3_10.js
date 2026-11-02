@@ -158,7 +158,7 @@ function verificarCampos(){
 
     let botonRegistrar = document.getElementById('btnRegistrar');
 
-    if (controlNombre && controlApellido && controlEmail && controlPassword1 && inputPassword2){
+    if (controlNombre && controlApellido && controlEmail && controlPassword1 && controlPassword2){
 
         botonRegistrar.disabled = false;
         

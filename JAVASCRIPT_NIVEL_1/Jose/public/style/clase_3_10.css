@@ -13,6 +13,28 @@ table{
     text-align: center;
     color: blue;
 }
+
+.password-container {
+  position: relative;
+  display: inline-block;
+}
+
+.password-container input {
+  padding-right: 30px; /* Make room so text doesn't overlap the icon */
+}
+
+.toggle-password {
+  cursor: pointer;
+  user-select: none;
+}
+img{
+    width: 20px;
+    height: 20px;
+}
+img:hover{
+    cursor: pointer;
+}
+
 /*
 [id*='btn']{
     text-align: center;
