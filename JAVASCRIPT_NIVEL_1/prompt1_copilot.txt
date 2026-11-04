@@ -1,0 +1,15 @@
+COPILOT PROMPT 1:
+Se quiere desarrollar un solución donde se cargue inicialmente ej11_index.html, el cual debe conttener ej11_encabezado.html y ej11_pie.html, al seleccionar ingresar, este debe llamar a componente nodejs, que guarde el regitro que corresponde a la siguiente definición de la tabla contactos:
+create table contactos(
+    id serial primary key,
+    cedula varchar(10),
+    nombre varchar(80),
+    apellido varchar(80),
+    telefono varchar(15),
+    correo_electronico text,
+    direccion text,
+    unique(cedula),
+    unique(correo_electronico)
+);
+La base de datos se llama db_profesor. Se requiere conexión a la base de datos, así como la operación de regitros al transmitir. Una vez guardado el registro, se debe mostrar el mensaje de confirmación o error en la sección de pie de pagina, identificada como mensajes. Todas las funcionalidades se llaman desde el menu, el cual debe consolidarse en ej11_index.html.
+Describe paso a paso, sin construir el código.

@@ -1,0 +1,36 @@
+## Propuesta paso a paso, sin código
+
+1. **Definir la estructura del proyecto**
+   - Mantener `ej11_index.html` como página principal.
+   - Usar `ej11_encabezado.html` y `ej11_pie.html` como fragmentos compartidos. El navegador no inserta fragmentos HTML automáticamente: Node.js deberá servir una plantilla que los componga, o el JavaScript del navegador deberá cargarlos.
+   - Reorganizar `ej11_ingresar.html`: en vez de ser otro documento completo, su formulario debe mostrarse dentro del contenido de `ej11_index.html`, conservando el encabezado, el menú y el pie.
+
+2. **Consolidar la navegación en `ej11_index.html`**
+   - El menú será el punto de acceso a las funcionalidades.
+   - «Ingresar» mostrará el formulario. Los demás elementos del menú podrán activar sus respectivas vistas cuando se implementen.
+   - El área `#mensajes` del pie quedará disponible para informar el resultado de las operaciones.
+
+3. **Preparar la base de datos**
+   - Crear la base `db_profesor` y la tabla `contactos` con la definición indicada.
+   - Verificar que `cedula` y `correo_electronico` sean únicos. Un intento de duplicarlos debe producir un error controlado que la aplicación pueda comunicar.
+
+4. **Configurar el servidor Node.js**
+   - Crear un servidor, por ejemplo con Express, que entregue la página y sus recursos estáticos.
+   - Configurar la conexión a PostgreSQL mediante una biblioteca como `pg`.
+   - Guardar las credenciales en variables de entorno; no incluirlas en archivos públicos ni en el JavaScript del navegador.
+
+5. **Crear la operación de ingreso**
+   - El formulario debe incluir cédula, nombre, apellido, teléfono, correo electrónico y dirección.
+   - Al enviarlo, el navegador debe transmitir los datos a una ruta de la API de Node.js mediante una solicitud HTTP.
+   - El servidor validará los datos y ejecutará la inserción con una consulta parametrizada. No debe construir la consulta concatenando los valores recibidos.
+
+6. **Mostrar el resultado**
+   - El navegador recibirá la respuesta del servidor sin recargar la página.
+   - Si el registro se guarda, mostrará una confirmación en `#mensajes`.
+   - Si ocurre un error de validación, conexión o duplicación, mostrará un mensaje comprensible en esa misma sección.
+
+7. **Probar el flujo completo**
+   - Iniciar el servidor y abrir `ej11_index.html` desde la dirección que sirve Node.js.
+   - Probar un ingreso válido, campos incorrectos y valores repetidos para comprobar tanto la persistencia como los mensajes.
+
+Conviene no abrir el HTML directamente desde el disco: debe servirse desde Node.js para que las solicitudes a la API funcionen correctamente.

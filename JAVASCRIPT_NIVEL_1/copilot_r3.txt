@@ -1,0 +1,1 @@
+El archivo del punto 5 debe llamarse **`app.js`** y ubicarse en `public`.

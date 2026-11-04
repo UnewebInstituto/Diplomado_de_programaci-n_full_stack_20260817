@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejemplo 11</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="container">
+        <h1>Ejemplo 11</h1>
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+            <div class="container-fluid">
+                <span class="navbar-brand">Contactos</span>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="mynavbar">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item"><a class="nav-link" href="#" data-opcion="ingresar">Ingresar</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#" data-opcion="consultar">Consultar</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#" data-opcion="actualizar">Actualizar</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#" data-opcion="borrar">Borrar</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#" data-opcion="reporte">Reporte</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main id="contenido" class="container mt-4"></main>
+    <footer class="container mt-4">
+        <div id="mensajes" role="status" aria-live="polite"></div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const contenido = document.getElementById("contenido");
+        const mensajes = document.getElementById("mensajes");
+
+        function mostrarMensaje(texto, tipo = "info") {
+            mensajes.className = tipo === "error" ? "alert alert-danger mt-3" : "alert alert-success mt-3";
+            mensajes.textContent = texto;
+        }
+
+        async function cargarFormulario() {
+            mensajes.textContent = "";
+            mensajes.className = "";
+            const respuesta = await fetch("/ej11_ingresar.html");
+            const html = await respuesta.text();
+            const documento = new DOMParser().parseFromString(html, "text/html");
+            contenido.replaceChildren(...documento.body.children);
+            configurarFormulario();
+        }
+
+        function configurarFormulario() {
+            const formulario = contenido.querySelector("form");
+            if (!formulario) return;
+
+            formulario.addEventListener("submit", async evento => {
+                evento.preventDefault();
+                mostrarMensaje("Guardando contacto...");
+
+                try {
+                    const respuesta = await fetch("/contactos", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(Object.fromEntries(new FormData(formulario)))
+                    });
+                    const resultado = await respuesta.json();
+                    mostrarMensaje(resultado.mensaje, respuesta.ok ? "success" : "error");
+                    if (respuesta.ok) formulario.reset();
+                } catch (error) {
+                    mostrarMensaje("No fue posible comunicar el servidor.", "error");
+                }
+            });
+        }
+
+        document.querySelectorAll("[data-opcion]").forEach(opcion => {
+            opcion.addEventListener("click", evento => {
+                evento.preventDefault();
+                if (opcion.dataset.opcion === "ingresar") {
+                    cargarFormulario();
+                } else {
+                    contenido.innerHTML = "";
+                    mostrarMensaje(`La opción ${opcion.dataset.opcion} todavía no está implementada.`, "error");
+                }
+            });
+        });
+
+        cargarFormulario();
+    </script>
+</body>
+</html>
+

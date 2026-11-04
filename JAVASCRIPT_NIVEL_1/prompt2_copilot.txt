@@ -1,0 +1,23 @@
+Es una base de datos postgreSQL, la base de datos se llama db_profesor, los atributos de conexión a la base de datos son: 
+Sevidor:  localhost
+Database:  db_profesor
+Port: 5432
+Username: postgres
+Password:  123456
+La tabla se llama: contactos y su descripción es la siguiente:
+db_profesor=# \d contactos;
+                                           Tabla ½public.contactos╗
+      Columna       |         Tipo          | Ordenamiento | Nulable  |              Por omisi¾n      
+--------------------+-----------------------+--------------+----------+---------------------------------------
+ id                 | integer               |              | not null | nextval('contactos_id_seq'::regclass)
+ cedula             | character varying(10) |              |          |
+ nombre             | character varying(80) |              |          |
+ apellido           | character varying(80) |              |          |
+ telefono           | character varying(15) |              |          |
+ correo_electronico | text                  |              |          |
+ direccion          | text                  |              |          |
+═ndices:
+    "contactos_pkey" PRIMARY KEY, btree (id)
+    "contactos_cedula_key" UNIQUE CONSTRAINT, btree (cedula)
+    "contactos_correo_electronico_key" UNIQUE CONSTRAINT, btree (correo_electronico)
+Procede con el plan sugerido

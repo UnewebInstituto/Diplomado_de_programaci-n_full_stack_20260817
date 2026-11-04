@@ -1,0 +1,41 @@
+https://www.w3schools.com/bootstrap5/index.php
+
+https://getbootstrap.com/docs/5.0/getting-started/introduction/
+
+
+Aquí tienes un recorrido rápido por la evolución de Bootstrap y su estado actual en el ecosistema de desarrollo web:
+
+---
+
+### 🌐 Breve Reseña Histórica
+
+Bootstrap nació en **2011** en las entrañas de Twitter (creado originalmente por Mark Otto y Jacob Thornton bajo el nombre de *Twitter Blueprint*) con el propósito de unificar y dar consistencia al diseño de sus herramientas internas. Poco después fue liberado como código abierto, convirtiéndose rápidamente en el framework CSS más popular del mundo.
+
+* **Bootstrap 2 (2012):** Introdujo formalmente el diseño responsivo (*responsive design*) y el sistema de rejilla de 12 columnas adaptable a pantallas móviles.
+* **Bootstrap 3 (2013):** Adoptó la filosofía *mobile-first* (diseñar primero para pantallas pequeñas) y renovó por completo su estética plana (*flat design*).
+* **Bootstrap 4 (2018):** Marcó una reescritura profunda al incorporar **Flexbox** por defecto y migrar a **Sass**, ofreciendo un control de diseño mucho más moderno y flexible.
+* **Bootstrap 5 (2021):** Supuso un punto de inflexión histórico al **eliminar la dependencia de jQuery** para pasar a JavaScript nativo (ES modules), incorporar variables CSS nativas (*Custom Properties*) y añadir soporte nativo para modo oscuro y RTL (de derecha a izquierda).
+
+---
+
+### 🚀 Situación Actual
+
+* **La versión estable de producción:** Actualmente, la rama más madura, probada y utilizada en entornos de producción es **Bootstrap 5.3.8** (lanzada a mediados de 2025), la cual consolidó el sistema de temas dinámicos, mejoras en accesibilidad (WCAG) y correcciones de rendimiento.
+* **La gran novedad (Bootstrap 6):** El proyecto ha dado un salto generacional importante con el lanzamiento oficial de **Bootstrap 6.0.0-alpha.1**. Esto abre oficialmente las puertas a la próxima gran versión mayor del framework.
+
+---
+
+### 🔮 Pronóstico de Actualización y Futuro
+
+* **Fase de pruebas (Alpha):** Al encontrarse en su primera fase alfa, Bootstrap 6 invita a la comunidad a probar sus nuevas entrañas (`npm install bootstrap@next` o `@6.0.0-alpha.1`).
+* **Cambios clave en el horizonte de la v6:** Se está apostando fuertemente por una arquitectura más limpia acorde a los estándares modernos: plugins de JavaScript **100% basados en módulos ESM** (requiriendo la etiqueta `type="module"`), transición completa hacia módulos modernos de Sass (`@use` / `@forward` en lugar de `@import`), y una adopción más profunda de propiedades lógicas CSS para mejorar de forma nativa la adaptabilidad internacional.
+* **¿Cuándo habrá una versión estable de la v6?** El equipo de desarrollo no ha fijado una fecha exacta de lanzamiento para la versión estable definitiva. Tienen por delante un ciclo habitual de múltiples iteraciones alfa, fases de beta y candidatos a lanzamiento (*Release Candidates*). Asimismo, se prevé soporte y algún parche menor adicional en la línea 5 antes de un cierre definitivo de ciclo.
+
+**Recomendación práctica:** Si estás arrancando un proyecto corporativo o comercial a corto plazo, **Bootstrap 5.3.8** sigue siendo la opción más segura y predecible. No obstante, si estás diseñando productos a mediano/largo plazo, ya es el momento ideal para empezar a experimentar con las alfas de Bootstrap 6 y familiarizarte con sus cambios de arquitectura.
+
+
+FORMULARIOS:
+
+https://www.w3schools.com/bootstrap5/bootstrap_forms.php
+
+

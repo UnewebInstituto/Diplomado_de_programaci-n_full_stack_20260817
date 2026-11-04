@@ -1,53 +1,105 @@
-const express = require("express");
-const fs = require("node:fs/promises");
-const path = require("node:path");
-/**
- * José 
- */
+    require('dotenv').config();
 
-const app = express();
-const puerto = 3001;
-const directorio = path.join(__dirname, "archivos");
-const archivoCsv = path.join(directorio, "usuarios.csv");
+    const express = require('express');
+    const path = require('path');
+    const { Pool } = require('pg');
 
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
-app.use(express.static(path.join(__dirname, "public")));
+    const app = express();
+    const pool = new Pool({
+    host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT),
+    database: process.env.DB_NAME,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD
+    });
 
-function campoCsv(valor) {
-    return `"${String(valor ?? "").trim().replace(/"/g, '""')}"`;
-}
+    app.use(express.json({ limit: '20kb' }));
+    app.use(express.static(path.join(__dirname, 'public')));
 
-app.post("/usuarios", async (req, res) => {
-    try {
-        const { nombre, apellido, email } = req.body;
+    app.post('/api/contactos', async (req, res) => {
+    const campos = [
+        'cedula',
+        'nombre',
+        'apellido',
+        'telefono',
+        'email',
+        'direccion'
+    ];
 
-        if (!nombre || !apellido || !email) {
-            return res.status(400).send("Completa nombre, apellido y email.");
+    const contacto = {};
+
+    for (const campo of campos) {
+        const valor = req.body?.[campo];
+
+        if (typeof valor !== 'string' || !valor.trim()) {
+        return res.status(400).json({
+            mensaje: `El campo ${campo} es obligatorio.`
+        });
         }
 
-        await fs.mkdir(directorio, { recursive: true });
-
-        try {
-            await fs.access(archivoCsv);
-        } catch {
-            await fs.writeFile(
-                archivoCsv,
-                "nombre,apellido,email\r\n",
-                "utf8"
-            );
-        }
-
-        const fila = [nombre, apellido, email].map(campoCsv).join(",");
-        await fs.appendFile(archivoCsv, `${fila}\r\n`, "utf8");
-
-        res.status(201).send("Usuario guardado correctamente.");
-    } catch (error) {
-        console.error(error);
-        res.status(500).send("No se pudo guardar el usuario.");
+        contacto[campo] = valor.trim();
     }
-});
 
-app.listen(puerto, () => {
-    console.log(`Servidor disponible en http://localhost:${puerto}/javascript_clase_3_10.html`);
-});
+    const limites = {
+        cedula: 10,
+        nombre: 80,
+        apellido: 80,
+        telefono: 15
+    };
+
+    for (const [campo, limite] of Object.entries(limites)) {
+        if (contacto[campo].length > limite) {
+        return res.status(400).json({
+            mensaje: `El campo ${campo} no puede superar ${limite} caracteres.`
+        });
+        }
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contacto.email)) {
+        return res.status(400).json({ mensaje: 'El correo electrónico no es válido.' });
+    }
+
+    try {
+        const resultado = await pool.query(
+        `INSERT INTO contactos
+            (cedula, nombre, apellido, telefono, email, direccion)
+        VALUES ($1, $2, $3, $4, $5, $6)
+        RETURNING id`,
+        [
+            contacto.cedula,
+            contacto.nombre,
+            contacto.apellido,
+            contacto.telefono,
+            contacto.email,
+            contacto.direccion
+        ]
+        );
+
+        return res.status(201).json({
+        mensaje: `Contacto guardado correctamente. ID: ${resultado.rows[0].id}.`
+        });
+    } catch (error) {
+        if (error.code === '23505') {
+        const campo = error.constraint === 'contactos_cedula_key'
+            ? 'La cédula'
+            : error.constraint === 'contactos_email_key'
+            ? 'El correo electrónico'
+            : 'El dato';
+
+        return res.status(409).json({
+            mensaje: `${campo} ya está registrado.`
+        });
+        }
+
+        console.error('Error al guardar el contacto:', error.message);
+        return res.status(500).json({
+        mensaje: 'No se pudo guardar el contacto. Verifica la conexión con la base de datos.'
+        });
+    }
+    });
+
+    const puerto = Number(process.env.PORT) || 3000;
+
+    app.listen(puerto, () => {
+    console.log(`Servidor disponible en http://localhost:${puerto}`);
+    });
