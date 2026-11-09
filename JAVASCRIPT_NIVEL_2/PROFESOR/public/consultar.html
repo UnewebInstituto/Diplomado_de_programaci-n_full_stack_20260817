@@ -1,0 +1,36 @@
+<h2>Consultar contacto</h2>
+<form id="form-consultar">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="mb-3">
+        <label for="cedula" class="form-label">Cédula:</label>
+        <input class="form-control" id="cedula" name="cedula" maxlength="10" required>
+      </div>
+      <div class="mb-3">
+        <label for="nombre" class="form-label">Nombre:</label>
+        <input class="form-control" id="nombre" name="nombre" maxlength="80" disabled>
+      </div>
+      <div class="mb-3">
+        <label for="apellido" class="form-label">Apellido:</label>
+        <input class="form-control" id="apellido" name="apellido" maxlength="80" disabled>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="mb-3">
+        <label for="telefono" class="form-label">Teléfono:</label>
+        <input class="form-control" id="telefono" name="telefono" maxlength="15" disabled>
+      </div>
+      <div class="mb-3">
+        <label for="correo_electronico" class="form-label">Correo electrónico:</label>
+        <input class="form-control" type="email" id="correo_electronico"
+          name="correo_electronico" disabled>
+      </div>
+      <div class="mb-3">
+        <label for="direccion" class="form-label" >Dirección:</label>
+        <textarea class="form-control" id="direccion" name="direccion" disabled style="resize: none;"></textarea>
+      </div>
+    </div>
+  </div>
+  <button class="btn btn-primary" type="submit">Consultar</button>
+  <button class="btn btn-secondary" type="reset">Limpiar</button>
+</form>

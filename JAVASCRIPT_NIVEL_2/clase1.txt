@@ -1,0 +1,14 @@
+
+-- Creación del archivo package.json
+npm init -y
+
+-- Instalar las dependencias del proyecto
+npm install express pg dotenv
+
+-- Verificación de la instalación
+npm list 
+
+
+
+CONSULTA POR MÉTODO GET:
+http://localhost:3000/api/contactos/V1234
