@@ -1,0 +1,785 @@
+Prompt 1:
+La acción siguiente no la vayas a ejecutar sobre el código, muestra una descripción paso a paso de los cambios.
+Se requiere el desarrollo de la funcionalidad de reporte, el cual se accede a través de esta opción del menú. Debe mostrar el detalle de todos los campos para cada registro, se presentará a través de una tabla con clases bootstrap. 
+
+RESPUESTA:
+No haré cambios en el código. Estos serían los pasos para desarrollar **Reporte** con la arquitectura actual:
+
+1. **Crear la vista del reporte**  
+   Añadir `reporte.html` dentro de `public`. La vista tendrá un título y una tabla Bootstrap que muestre todos los campos de cada contacto: `id`, cédula, nombre, apellido, teléfono, correo electrónico y dirección. Usar `table`, `table-striped`, `table-hover` y `table-responsive` para que la tabla se adapte a pantallas pequeñas.
+
+2. **Conectar la opción del menú**  
+   El menú ya tiene la opción **Reporte** con `data-feature="Reporte"`. En `app.js`, agregar el tratamiento de esa opción para cargar `reporte.html` dentro del área `#contenido`, siguiendo el patrón existente para «Consultar».
+
+3. **Añadir la ruta de consulta general en Node.js**  
+   En `server.js`, crear una ruta `GET /api/contactos` que consulte todos los registros de la tabla y devuelva una respuesta JSON con una lista, por ejemplo, bajo la propiedad `contactos`. Esta ruta es distinta de `GET /api/contactos/:cedula`, que consulta un registro específico.
+
+4. **Solicitar los datos desde `app.js`**  
+   Al cargar la vista del reporte, `app.js` solicitará `GET /api/contactos` y generará las filas de la tabla con la respuesta. Conviene insertar los valores como texto, no como HTML, para evitar que datos almacenados se interpreten como contenido de página.
+
+5. **Atender estados vacíos y errores**  
+   Si no existen registros, mostrar una fila o mensaje que indique que el reporte no tiene datos. Si falla la solicitud o la base de datos, informar el error en la sección `#mensajes` del pie.
+
+6. **Probar el flujo**  
+   Reiniciar el servidor, seleccionar **Reporte** y verificar que se presenten todos los contactos y campos. También probar la vista con la tabla vacía y comprobar el mensaje si el servidor no está disponible.
+
+
+   No modifiqué ningún archivo. Aquí tienes el código para integrar el reporte en los archivos existentes y crear la vista.
+
+Solicitud:
+Genera el código descrito, sin realizar cambios
+
+**Vista HTML**  
+Crea la vista `reporte.html` dentro de `public`:
+
+````html
+<h2>Reporte de contactos</h2>
+<div class="table-responsive">
+  <table class="table table-striped table-hover table-bordered align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Cédula</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellido</th>
+        <th scope="col">Teléfono</th>
+        <th scope="col">Correo electrónico</th>
+        <th scope="col">Dirección</th>
+      </tr>
+    </thead>
+    <tbody id="tabla-contactos"></tbody>
+  </table>
+</div>
+````
+
+**JavaScript del navegador**  
+En `app.js`, agrega esta función. Crea las celdas con `textContent` para que los datos se muestren como texto:
+
+````javascript
+async function cargarReporte() {
+  const cuerpoTabla = document.getElementById('tabla-contactos');
+  const respuesta = await fetch('/api/contactos');
+  const resultado = await respuesta.json();
+
+  if (!respuesta.ok) {
+    throw new Error(resultado.mensaje || 'No se pudo cargar el reporte.');
+  }
+
+  if (!Array.isArray(resultado.contactos)) {
+    throw new Error('El servidor devolvió un reporte no válido.');
+  }
+
+  cuerpoTabla.replaceChildren();
+
+  if (resultado.contactos.length === 0) {
+    const fila = document.createElement('tr');
+    const celda = document.createElement('td');
+    celda.colSpan = 7;
+    celda.textContent = 'No hay contactos registrados.';
+    fila.appendChild(celda);
+    cuerpoTabla.appendChild(fila);
+    mostrarMensaje('No hay contactos registrados.', 'info');
+    return;
+  }
+
+  const campos = [
+    'id',
+    'cedula',
+    'nombre',
+    'apellido',
+    'telefono',
+    'correo_electronico',
+    'direccion'
+  ];
+
+  for (const contacto of resultado.contactos) {
+    const fila = document.createElement('tr');
+
+    for (const campo of campos) {
+      const celda = document.createElement('td');
+      celda.textContent = contacto[campo] ?? '';
+      fila.appendChild(celda);
+    }
+
+    cuerpoTabla.appendChild(fila);
+  }
+
+  mostrarMensaje(`Reporte cargado: ${resultado.contactos.length} contacto(s).`, 'success');
+}
+````
+
+En el manejador de clics existente, reemplaza el bloque que trata `enlacePendiente` por este:
+
+````javascript
+if (enlacePendiente) {
+  evento.preventDefault();
+  const opcion = enlacePendiente.dataset.feature.toLowerCase();
+
+  try {
+    if (opcion === 'consultar') {
+      await mostrarVista('consultar.html');
+    } else if (opcion === 'reporte') {
+      await mostrarVista('reporte.html');
+      await cargarReporte();
+    } else {
+      mostrarMensaje(
+        `La opción "${enlacePendiente.dataset.feature}" aún no está implementada.`,
+        'warning'
+      );
+    }
+  } catch (error) {
+    mostrarMensaje(error.message, 'danger');
+  }
+}
+````
+
+**Ruta de Node.js**  
+En `server.js`, añade esta ruta. Devuelve todos los campos en la propiedad `contactos` y ordena los registros por ID:
+
+````javascript
+app.get('/api/contactos', async (req, res) => {
+  try {
+    const resultado = await pool.query(
+      `SELECT id, cedula, nombre, apellido, telefono, correo_electronico, direccion
+       FROM contactos
+       ORDER BY id`
+    );
+
+    return res.json({ contactos: resultado.rows });
+  } catch (error) {
+    console.error('Error al generar el reporte:', error.message);
+    return res.status(500).json({
+      mensaje: 'No se pudo generar el reporte de contactos.'
+    });
+  }
+});
+````
+
+**Paso a paso:** la opción «Reporte» carga la vista dentro de `#contenido`; luego `app.js` solicita `GET /api/contactos`; Node.js consulta PostgreSQL y devuelve el arreglo `contactos`; finalmente, el navegador construye una fila por registro. Si no hay registros, muestra el aviso en la tabla y en `#mensajes`.
+
+Prompt 2:
+La acción siguiente no la vayas a ejecutar sobre el código, muestra una descripción paso a paso de los cambios.
+Se requiere el desarrollo de la funcionalidad de borrar, el cual se accede a través de esta opción del menú. Debe mostrar el detalle de todos los campos para cada registro, se presentará a través de una tabla con clases bootstrap, e incluirá una columna, identificada como Acción, donde cada registro contendrá un botón alusivo a la acción borrar.
+
+
+RESPUESTA:
+No ejecutaré cambios en el código. Para implementar **Borrar** en la opción del menú, los cambios serían:
+
+1. **Crear `borrar.html` en `public`**  
+   Incluir una tabla Bootstrap responsive con todos los campos del contacto: ID, cédula, nombre, apellido, teléfono, correo electrónico y dirección. Añadir una última columna titulada **Acción**, con un botón **Borrar** en cada fila.
+
+2. **Conectar la opción del menú en `app.js`**  
+   Cuando se seleccione el elemento con `data-feature="Borrar"`, cargar `borrar.html` en el área principal y solicitar la lista de contactos a `GET /api/contactos`. Esa ruta puede ser la misma que usa el reporte.
+
+3. **Construir las filas de la tabla**  
+   Por cada contacto recibido, mostrar todos sus campos y asociar el botón de esa fila con el `id` del registro. Insertar los valores como texto para evitar que se interpreten como HTML.
+
+4. **Solicitar confirmación antes de borrar**  
+   Al pulsar el botón, mostrar una confirmación indicando qué contacto se eliminará. Si el usuario cancela, no se realiza ninguna solicitud.
+
+5. **Añadir la ruta de borrado en `server.js`**  
+   Crear `DELETE /api/contactos/:id`. El servidor validará el ID y ejecutará la eliminación en PostgreSQL mediante una consulta parametrizada. Si no encuentra el registro, responderá con `404`; si lo elimina, confirmará la operación.
+
+6. **Actualizar la vista y los mensajes**  
+   Si el servidor confirma el borrado, quitar esa fila de la tabla y mostrar el resultado en `#mensajes`. Si ya no quedan registros, presentar el estado de tabla vacía. Ante un error, conservar la fila y mostrar el mensaje correspondiente.
+
+7. **Probar el flujo**  
+   Verificar que «Borrar» cargue los contactos, que cancelar la confirmación no los elimine, y que confirmar quite el registro de la base de datos y de la tabla.
+
+   Genera el código descrito, sin realizar cambios
+
+   A continuación tienes los fragmentos para implementar **Borrar**. No modifiqué archivos. La solución reutiliza `GET /api/contactos` para llenar la tabla y añade `DELETE /api/contactos/:id` para eliminar por clave primaria.
+
+### 1. Vista `public/borrar.html`
+
+````html
+<h2>Borrar contacto</h2>
+<div class="table-responsive">
+  <table class="table table-striped table-hover table-bordered align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Cédula</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellido</th>
+        <th scope="col">Teléfono</th>
+        <th scope="col">Correo electrónico</th>
+        <th scope="col">Dirección</th>
+        <th scope="col">Acción</th>
+      </tr>
+    </thead>
+    <tbody id="tabla-borrar-contactos"></tbody>
+  </table>
+</div>
+````
+
+### 2. Carga de contactos en `public/app.js`
+
+Agrega estas funciones. Las celdas y los botones se crean con la API del DOM; los datos se escriben como texto.
+
+````javascript
+function mostrarTablaBorrarVacia(cuerpoTabla) {
+  const fila = document.createElement('tr');
+  const celda = document.createElement('td');
+
+  celda.colSpan = 8;
+  celda.className = 'text-center';
+  celda.textContent = 'No hay contactos registrados.';
+  fila.appendChild(celda);
+  cuerpoTabla.appendChild(fila);
+}
+
+async function cargarContactosParaBorrar() {
+  const cuerpoTabla = document.getElementById('tabla-borrar-contactos');
+  const respuesta = await fetch('/api/contactos');
+  const resultado = await respuesta.json();
+
+  if (!respuesta.ok) {
+    throw new Error(resultado.mensaje || 'No se pudieron cargar los contactos.');
+  }
+
+  if (!Array.isArray(resultado.contactos)) {
+    throw new Error('El servidor devolvió una lista de contactos no válida.');
+  }
+
+  cuerpoTabla.replaceChildren();
+
+  if (resultado.contactos.length === 0) {
+    mostrarTablaBorrarVacia(cuerpoTabla);
+    mostrarMensaje('No hay contactos registrados.', 'info');
+    return;
+  }
+
+  const campos = [
+    'id',
+    'cedula',
+    'nombre',
+    'apellido',
+    'telefono',
+    'correo_electronico',
+    'direccion'
+  ];
+
+  for (const contacto of resultado.contactos) {
+    const fila = document.createElement('tr');
+    fila.dataset.contactoId = contacto.id;
+
+    for (const campo of campos) {
+      const celda = document.createElement('td');
+      celda.textContent = contacto[campo] ?? '';
+      fila.appendChild(celda);
+    }
+
+    const celdaAccion = document.createElement('td');
+    const boton = document.createElement('button');
+    boton.type = 'button';
+    boton.className = 'btn btn-danger btn-sm';
+    boton.textContent = 'Borrar';
+    boton.dataset.borrarId = contacto.id;
+    boton.dataset.cedula = contacto.cedula ?? '';
+    boton.setAttribute('aria-label', `Borrar contacto con cédula ${contacto.cedula ?? ''}`);
+
+    celdaAccion.appendChild(boton);
+    fila.appendChild(celdaAccion);
+    cuerpoTabla.appendChild(fila);
+  }
+
+  mostrarMensaje(`Contactos cargados: ${resultado.contactos.length}.`, 'info');
+}
+````
+
+### 3. Conectar la opción del menú
+
+En el manejador de clics que ya procesa `data-feature`, agrega el caso `borrar` a su cadena de condiciones. Este ejemplo conserva la navegación existente para consultar y reporte:
+
+````javascript
+if (opcion === 'consultar') {
+  await mostrarVista('consultar.html');
+} else if (opcion === 'reporte') {
+  await mostrarVista('reporte.html');
+  await cargarReporte();
+} else if (opcion === 'borrar') {
+  await mostrarVista('borrar.html');
+  await cargarContactosParaBorrar();
+} else {
+  mostrarMensaje(
+    `La opción "${enlacePendiente.dataset.feature}" aún no está implementada.`,
+    'warning'
+  );
+}
+````
+
+### 4. Enviar la eliminación desde `app.js`
+
+Agrega un manejador de clics delegado. La confirmación evita borrar accidentalmente; si el servidor responde con error, la fila se conserva.
+
+````javascript
+document.addEventListener('click', async (evento) => {
+  const boton = evento.target.closest('[data-borrar-id]');
+  if (!boton) return;
+
+  const id = boton.dataset.borrarId;
+  const cedula = boton.dataset.cedula;
+
+  if (!window.confirm(`¿Deseas borrar el contacto con cédula ${cedula}?`)) {
+    return;
+  }
+
+  boton.disabled = true;
+
+  try {
+    const respuesta = await fetch(`/api/contactos/${encodeURIComponent(id)}`, {
+      method: 'DELETE'
+    });
+    const resultado = await respuesta.json();
+
+    if (!respuesta.ok) {
+      throw new Error(resultado.mensaje || 'No se pudo borrar el contacto.');
+    }
+
+    const fila = boton.closest('tr');
+    const cuerpoTabla = document.getElementById('tabla-borrar-contactos');
+    fila.remove();
+
+    if (cuerpoTabla.querySelectorAll('tr[data-contacto-id]').length === 0) {
+      mostrarTablaBorrarVacia(cuerpoTabla);
+    }
+
+    mostrarMensaje(resultado.mensaje, 'success');
+  } catch (error) {
+    mostrarMensaje(error.message || 'No se pudo contactar al servidor.', 'danger');
+  } finally {
+    if (boton.isConnected) boton.disabled = false;
+  }
+});
+````
+
+### 5. Ruta DELETE en `server.js`
+
+Añádela junto a las otras rutas de la API. Valida el ID y usa parámetros en la consulta SQL.
+
+````javascript
+app.delete('/api/contactos/:id', async (req, res) => {
+  const id = req.params.id;
+
+  if (!/^[1-9]\d*$/.test(id) || Number(id) > 2147483647) {
+    return res.status(400).json({ mensaje: 'El ID del contacto no es válido.' });
+  }
+
+  try {
+    const resultado = await pool.query(
+      `DELETE FROM contactos
+       WHERE id = $1
+       RETURNING id, cedula`,
+      [Number(id)]
+    );
+
+    if (resultado.rowCount === 0) {
+      return res.status(404).json({
+        mensaje: 'El contacto ya no existe o no fue encontrado.'
+      });
+    }
+
+    return res.json({
+      mensaje: `Se borró el contacto con cédula ${resultado.rows[0].cedula}.`
+    });
+  } catch (error) {
+    console.error('Error al borrar el contacto:', error.message);
+    return res.status(500).json({
+      mensaje: 'No se pudo borrar el contacto.'
+    });
+  }
+});
+````
+
+### Flujo
+
+Al seleccionar **Borrar**, `app.js` carga la vista y pide los contactos al servidor. Cada fila incluye un botón asociado al ID del registro. Al confirmar, el navegador envía el DELETE; si PostgreSQL confirma la eliminación, se quita la fila y se informa el resultado en `#mensajes`.
+
+
+DESCRIPCIÓN DE ACCIÓN DE BORRAR (DELETE)
+
+`app.delete()` de Express registra una ruta para atender solicitudes HTTP **DELETE**. En este caso, la ruta `'/api/contactos/:id'` permite solicitar la eliminación de un contacto según su ID.
+
+El flujo del manejador es:
+
+1. **Obtiene el ID** desde `req.params.id`. Por ejemplo, al solicitar `DELETE /api/contactos/15`, el valor es `"15"`.
+2. **Valida el formato y rango**: exige un entero positivo que quepa en la columna `id` de PostgreSQL. Si no es válido, responde con estado `400`.
+3. **Elimina el registro** con una consulta SQL parametrizada. `RETURNING` permite saber si se borró una fila y recuperar sus datos para el mensaje.
+4. **Responde según el resultado**:
+   - Si no se encontró ningún contacto, devuelve `404`.
+   - Si se eliminó, devuelve `200` con un mensaje de confirmación.
+   - Si falla la operación de base de datos, devuelve `500`.
+
+El navegador envía esa solicitud cuando el usuario confirma el borrado. Se usa `DELETE` porque expresa que se quiere eliminar el recurso, en vez de actualizarlo o crear uno nuevo.
+
+Prompt 3:
+La acción siguiente no la vayas a ejecutar sobre el código, muestra una descripción paso a paso de los cambios.
+Se requiere el desarrollo de la funcionalidad de Actualizar, el cual se accede a través de esta opción del menú. Debe mostrar el detalle de todos los campos para cada registro, se presentará a través de una tabla con clases bootstrap. Debe incluir una columna de Acción, cuyo contenido por cada regsitro será el botón Actualizar, una vez seleccionado, el contenido del registro se mostrará con su respectivo detalle, donde los campos cédula y correo electrónico se mantendran protegidos, dado que son campos clave. Una vez efectuados los cambios en los cambios que si lo permiten, al oprimir Guardar, estos se actualizan en la tabla Contactos y el flujo de aplicación, se debe dirigir a la pantalla de actualizar con la consulta general de todos los registros con los cambios actualizados.
+
+RESPUESTA:
+No realizaré cambios en el código. Para implementar **Actualizar**, estos serían los pasos:
+
+1. **Crear la vista de listado `actualizar.html`**  
+   Mostrar todos los contactos en una tabla Bootstrap responsive. Incluir ID, cédula, nombre, apellido, teléfono, correo electrónico y dirección, además de una columna **Acción** con un botón **Actualizar** en cada fila.
+
+2. **Conectar la opción del menú**  
+   En `app.js`, al seleccionar **Actualizar**, cargar `actualizar.html` y consultar los registros mediante `GET /api/contactos`. Mostrar los resultados en la tabla. Si no hay contactos o falla la solicitud, informar el estado en `#mensajes`.
+
+3. **Mostrar el formulario del registro elegido**  
+   Al pulsar **Actualizar** en una fila, presentar un formulario con los datos de ese contacto. Cédula y correo electrónico deben aparecer protegidos y no ser editables. El ID también debe conservarse sin edición, pues identifica el registro que se actualizará.
+
+4. **Limitar los campos modificables**  
+   Permitir editar únicamente nombre, apellido, teléfono y dirección. Aunque cédula y correo estén protegidos en la interfaz, el servidor también debe rechazar cambios a esos campos; la protección del navegador por sí sola no es suficiente.
+
+5. **Añadir la ruta de actualización en `server.js`**  
+   Crear una ruta, por ejemplo `PATCH /api/contactos/:id`, que valide el ID y los campos permitidos, y actualice el registro con una consulta SQL parametrizada. Responder con `404` si el contacto no existe, `400` ante datos inválidos y un mensaje de éxito cuando se actualice.
+
+6. **Guardar y volver al listado**  
+   Al enviar el formulario, `app.js` realizará la solicitud PATCH. Si se completa correctamente, mostrará la confirmación y volverá a cargar el listado mediante `GET /api/contactos`, para que la pantalla muestre los datos actualizados. Si falla, mantendrá el formulario y mostrará el error en `#mensajes`.
+
+7. **Probar el flujo completo**  
+   Verificar que se listen todos los contactos, que el botón abra el registro correcto, que cédula y correo no puedan modificarse, y que guardar actualice los campos permitidos y devuelva al listado actualizado.
+
+   Prompt 4:
+  Genera el código descrito, sin realizar cambios.
+
+Respuesta:
+A continuación tienes los fragmentos para implementar **Actualizar**. No realicé cambios en los archivos. El flujo conserva cédula y correo electrónico como campos protegidos; el servidor solo permite modificar nombre, apellido, teléfono y dirección.
+
+### 1. Vista de listado: `public/actualizar.html`
+
+````html
+<h2>Actualizar contactos</h2>
+<div class="table-responsive">
+  <table class="table table-striped table-hover table-bordered align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Cédula</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellido</th>
+        <th scope="col">Teléfono</th>
+        <th scope="col">Correo electrónico</th>
+        <th scope="col">Dirección</th>
+        <th scope="col">Acción</th>
+      </tr>
+    </thead>
+    <tbody id="tabla-actualizar-contactos"></tbody>
+  </table>
+</div>
+````
+
+### 2. Carga del listado y formulario en `public/app.js`
+
+Declara la lista en el ámbito global del archivo:
+
+````javascript
+let contactosParaActualizar = [];
+````
+
+Agrega estas funciones. El formulario se crea con una estructura fija; los valores de la base se asignan con `.value`, no se interpolan dentro de HTML.
+
+````javascript
+async function cargarContactosParaActualizar() {
+  const cuerpoTabla = document.getElementById('tabla-actualizar-contactos');
+  const respuesta = await fetch('/api/contactos');
+  const resultado = await respuesta.json();
+
+  if (!respuesta.ok) {
+    throw new Error(resultado.mensaje || 'No se pudieron cargar los contactos.');
+  }
+
+  if (!Array.isArray(resultado.contactos)) {
+    throw new Error('El servidor devolvió una lista de contactos no válida.');
+  }
+
+  contactosParaActualizar = resultado.contactos;
+  cuerpoTabla.replaceChildren();
+
+  if (contactosParaActualizar.length === 0) {
+    const fila = document.createElement('tr');
+    const celda = document.createElement('td');
+    celda.colSpan = 8;
+    celda.className = 'text-center';
+    celda.textContent = 'No hay contactos registrados.';
+    fila.appendChild(celda);
+    cuerpoTabla.appendChild(fila);
+    mostrarMensaje('No hay contactos registrados.', 'info');
+    return;
+  }
+
+  const campos = [
+    'id',
+    'cedula',
+    'nombre',
+    'apellido',
+    'telefono',
+    'correo_electronico',
+    'direccion'
+  ];
+
+  for (const contacto of contactosParaActualizar) {
+    const fila = document.createElement('tr');
+
+    for (const campo of campos) {
+      const celda = document.createElement('td');
+      celda.textContent = contacto[campo] ?? '';
+      fila.appendChild(celda);
+    }
+
+    const celdaAccion = document.createElement('td');
+    const boton = document.createElement('button');
+    boton.type = 'button';
+    boton.className = 'btn btn-warning btn-sm';
+    boton.textContent = 'Actualizar';
+    boton.dataset.actualizarId = contacto.id;
+    boton.setAttribute(
+      'aria-label',
+      `Actualizar contacto con cédula ${contacto.cedula ?? ''}`
+    );
+
+    celdaAccion.appendChild(boton);
+    fila.appendChild(celdaAccion);
+    cuerpoTabla.appendChild(fila);
+  }
+
+  mostrarMensaje(`Contactos cargados: ${contactosParaActualizar.length}.`, 'info');
+}
+
+function mostrarFormularioActualizacion(contacto) {
+  contenido.innerHTML = `
+    <h2>Actualizar contacto</h2>
+    <form id="form-actualizar-contacto" data-contacto-id="">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="actualizar-cedula" class="form-label">Cédula:</label>
+            <input class="form-control" id="actualizar-cedula" name="cedula" readonly>
+          </div>
+          <div class="mb-3">
+            <label for="actualizar-nombre" class="form-label">Nombre:</label>
+            <input class="form-control" id="actualizar-nombre" name="nombre" maxlength="80" required>
+          </div>
+          <div class="mb-3">
+            <label for="actualizar-apellido" class="form-label">Apellido:</label>
+            <input class="form-control" id="actualizar-apellido" name="apellido" maxlength="80" required>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="mb-3">
+            <label for="actualizar-telefono" class="form-label">Teléfono:</label>
+            <input class="form-control" id="actualizar-telefono" name="telefono" maxlength="15" required>
+          </div>
+          <div class="mb-3">
+            <label for="actualizar-correo" class="form-label">Correo electrónico:</label>
+            <input class="form-control" type="email" id="actualizar-correo" name="correo_electronico" readonly>
+          </div>
+          <div class="mb-3">
+            <label for="actualizar-direccion" class="form-label">Dirección:</label>
+            <textarea class="form-control" id="actualizar-direccion" name="direccion" required></textarea>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-primary" type="submit">Guardar</button>
+      <button class="btn btn-secondary" type="button" data-cancelar-actualizacion>
+        Volver
+      </button>
+    </form>
+  `;
+
+  const formulario = document.getElementById('form-actualizar-contacto');
+  formulario.dataset.contactoId = contacto.id;
+  formulario.elements.cedula.value = contacto.cedula ?? '';
+  formulario.elements.nombre.value = contacto.nombre ?? '';
+  formulario.elements.apellido.value = contacto.apellido ?? '';
+  formulario.elements.telefono.value = contacto.telefono ?? '';
+  formulario.elements.correo_electronico.value = contacto.correo_electronico ?? '';
+  formulario.elements.direccion.value = contacto.direccion ?? '';
+
+  mostrarMensaje('');
+}
+````
+
+### 3. Conectar el menú y los botones de la tabla
+
+En el manejador existente de `[data-feature]`, agrega la opción `actualizar`:
+
+````javascript
+} else if (opcion === 'actualizar') {
+  await mostrarVista('actualizar.html');
+  await cargarContactosParaActualizar();
+````
+
+Agrega también estos manejadores delegados para seleccionar un contacto o volver al listado:
+
+````javascript
+document.addEventListener('click', async (evento) => {
+  const botonActualizar = evento.target.closest('[data-actualizar-id]');
+  const botonVolver = evento.target.closest('[data-cancelar-actualizacion]');
+
+  if (botonActualizar) {
+    const contacto = contactosParaActualizar.find(
+      (item) => String(item.id) === botonActualizar.dataset.actualizarId
+    );
+
+    if (contacto) {
+      mostrarFormularioActualizacion(contacto);
+    }
+
+    return;
+  }
+
+  if (botonVolver) {
+    try {
+      await mostrarVista('actualizar.html');
+      await cargarContactosParaActualizar();
+    } catch (error) {
+      mostrarMensaje(error.message, 'danger');
+    }
+  }
+});
+````
+
+### 4. Enviar cambios desde `app.js`
+
+Agrega un manejador de envío para el formulario de actualización. El objeto enviado contiene únicamente campos editables:
+
+````javascript
+document.addEventListener('submit', async (evento) => {
+  if (evento.target.id !== 'form-actualizar-contacto') return;
+
+  evento.preventDefault();
+
+  const formulario = evento.target;
+  const boton = formulario.querySelector('[type="submit"]');
+  const id = formulario.dataset.contactoId;
+  boton.disabled = true;
+
+  const cambios = {
+    nombre: formulario.elements.nombre.value.trim(),
+    apellido: formulario.elements.apellido.value.trim(),
+    telefono: formulario.elements.telefono.value.trim(),
+    direccion: formulario.elements.direccion.value.trim()
+  };
+
+  try {
+    const respuesta = await fetch(`/api/contactos/${encodeURIComponent(id)}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(cambios)
+    });
+
+    const resultado = await respuesta.json();
+
+    if (!respuesta.ok) {
+      throw new Error(resultado.mensaje || 'No se pudo actualizar el contacto.');
+    }
+
+    await mostrarVista('actualizar.html');
+    await cargarContactosParaActualizar();
+    mostrarMensaje(resultado.mensaje || 'Contacto actualizado correctamente.', 'success');
+  } catch (error) {
+    mostrarMensaje(error.message || 'No se pudo contactar al servidor.', 'danger');
+  } finally {
+    if (boton.isConnected) boton.disabled = false;
+  }
+});
+````
+
+### 5. Ruta PATCH en `server.js`
+
+Añade esta ruta junto a las demás rutas de la API. No modifica cédula ni correo electrónico, incluso si alguien intenta incluirlos manualmente en la solicitud.
+
+````javascript
+app.patch('/api/contactos/:id', async (req, res) => {
+  const id = req.params.id;
+
+  if (!/^[1-9]\d*$/.test(id) || Number(id) > 2147483647) {
+    return res.status(400).json({ mensaje: 'El ID del contacto no es válido.' });
+  }
+
+  const campos = ['nombre', 'apellido', 'telefono', 'direccion'];
+  const cambios = {};
+
+  for (const campo of campos) {
+    const valor = req.body?.[campo];
+
+    if (typeof valor !== 'string' || !valor.trim()) {
+      return res.status(400).json({
+        mensaje: `El campo ${campo} es obligatorio.`
+      });
+    }
+
+    cambios[campo] = valor.trim();
+  }
+
+  const limites = {
+    nombre: 80,
+    apellido: 80,
+    telefono: 15
+  };
+
+  for (const [campo, limite] of Object.entries(limites)) {
+    if (cambios[campo].length > limite) {
+      return res.status(400).json({
+        mensaje: `El campo ${campo} no puede superar ${limite} caracteres.`
+      });
+    }
+  }
+
+  try {
+    const resultado = await pool.query(
+      `UPDATE contactos
+       SET nombre = $1,
+           apellido = $2,
+           telefono = $3,
+           direccion = $4
+       WHERE id = $5
+       RETURNING id`,
+      [
+        cambios.nombre,
+        cambios.apellido,
+        cambios.telefono,
+        cambios.direccion,
+        Number(id)
+      ]
+    );
+
+    if (resultado.rowCount === 0) {
+      return res.status(404).json({
+        mensaje: 'No se encontró el contacto que se desea actualizar.'
+      });
+    }
+
+    return res.json({
+      mensaje: 'Contacto actualizado correctamente.'
+    });
+  } catch (error) {
+    console.error('Error al actualizar el contacto:', error.message);
+    return res.status(500).json({
+      mensaje: 'No se pudo actualizar el contacto.'
+    });
+  }
+});
+````
+
+**Flujo:** al elegir **Actualizar**, se muestra la tabla; el botón de una fila abre su formulario; **Guardar** envía los cuatro campos permitidos mediante PATCH; al tener éxito, se vuelve al listado y se consulta nuevamente la tabla para mostrar los cambios.
+
+BBDD www.alwaysdata.net 
+hduque-test_db_profesor
+
+USUARIO:
+hduque-test
+
+create table contactos(
+    id serial primary key,
+    cedula varchar(10),
+    nombre varchar(80),
+    apellido varchar(80),
+    telefono varchar(15),
+    correo_electronico text,
+    direccion text,
+    unique(cedula),
+    unique(correo_electronico)
+);
