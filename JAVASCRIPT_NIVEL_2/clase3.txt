@@ -1,0 +1,476 @@
+Find files matching `**/{assets,activos}/**`
+
+Read , lines 1 to 200
+Completed with input: {
+  "path": "E:\\.PROFESORES\\HENRY_DUQUE\\Diplomado_de_programaci-n_full_stack_20260817",
+  "view_range": [
+    1,
+    200
+  ]
+}
+
+Read , lines 1 to 250
+Completed with input: {
+  "path": "E:\\.PROFESORES\\HENRY_DUQUE\\Diplomado_de_programaci-n_full_stack_20260817\\JAVASCRIPT_NIVEL_2\\PROFESOR",
+  "view_range": [
+    1,
+    250
+  ]
+}
+
+Read , lines 1 to 250
+Completed with input: {
+  "path": "E:\\.PROFESORES\\HENRY_DUQUE\\Diplomado_de_programaci-n_full_stack_20260817\\JAVASCRIPT_NIVEL_2\\PROFESOR\\public",
+  "view_range": [
+    1,
+    250
+  ]
+}
+
+Read , lines 1 to 200
+Completed with input: {
+  "path": "E:\\.PROFESORES\\HENRY_DUQUE\\Diplomado_de_programaci-n_full_stack_20260817\\JAVASCRIPT_NIVEL_2\\PROFESOR\\package.json",
+  "view_range": [
+    1,
+    200
+  ]
+}
+
+Read , lines 1 to 200
+Completed with input: {
+  "path": "E:\\.PROFESORES\\HENRY_DUQUE\\Diplomado_de_programaci-n_full_stack_20260817\\JAVASCRIPT_NIVEL_2\\PROFESOR\\public\\script",
+  "view_range": [
+    1,
+    200
+  ]
+}
+
+Read , lines 1 to 200
+Completed with input: {
+  "path": "E:\\.PROFESORES\\HENRY_DUQUE\\Diplomado_de_programaci-n_full_stack_20260817\\JAVASCRIPT_NIVEL_2\\PROFESOR\\public\\style",
+  "view_range": [
+    1,
+    200
+  ]
+}
+
+Read , lines 1 to 220
+Completed with input: {
+  "path": "E:\\.PROFESORES\\HENRY_DUQUE\\Diplomado_de_programaci-n_full_stack_20260817\\JAVASCRIPT_NIVEL_2\\PROFESOR\\server.js",
+  "view_range": [
+    1,
+    220
+  ]
+}
+
+Read , lines 1 to 260
+Completed with input: {
+  "path": "E:\\.PROFESORES\\HENRY_DUQUE\\Diplomado_de_programaci-n_full_stack_20260817\\JAVASCRIPT_NIVEL_2\\PROFESOR\\public\\app.js",
+  "view_range": [
+    1,
+    260
+  ]
+}
+
+Read , lines 1 to 220
+Completed with input: {
+  "path": "E:\\.PROFESORES\\HENRY_DUQUE\\Diplomado_de_programaci-n_full_stack_20260817\\JAVASCRIPT_NIVEL_2\\PROFESOR\\public\\index.html",
+  "view_range": [
+    1,
+    220
+  ]
+}
+
+Read , lines 1 to 180
+Completed with input: {
+  "path": "E:\\.PROFESORES\\HENRY_DUQUE\\Diplomado_de_programaci-n_full_stack_20260817\\JAVASCRIPT_NIVEL_2\\PROFESOR\\public\\consultar.html",
+  "view_range": [
+    1,
+    180
+  ]
+}
+
+He revisado el contenido estático del directorio actual y, en este caso, no hay una carpeta llamada “assets” en `JAVASCRIPT_NIVEL_2/PROFESOR`. Los activos del proyecto están alojados en `public`.
+
+Resumen de lo que encontré:
+- `public/index.html`: página principal del sistema; carga Bootstrap CDN y el script principal.
+- `public/app.js`: lógica del frontend para gestionar contactos (ingresar, consultar, actualizar, borrar y reporte).
+- `public/ingresar.html`, `public/consultar.html`, `public/actualizar.html`, `public/borrar.html`, `public/reporte.html`: vistas de la aplicación.
+- `public/encabezado.html` y `public/pie.html`: fragmentos reutilizados del layout.
+- `public/favicon.ico`: icono de la app.
+
+Observaciones:
+- Las carpetas `public/script` y `public/style` aparecen vacías o sin uso.
+- El proyecto es principalmente web con HTML + JS + Bootstrap, y su backend está en `server.js`, que expone API REST con PostgreSQL.
+- No hay imágenes, videos ni archivos multimedia complejos dentro de estos activos; la mayor parte del contenido es de interfaz y lógica de gestión de contactos.
+
+Si quieres, puedo hacer una segunda pasada más específica: revisar si hay errores de estructura, archivos vacíos, o si conviene reorganizar estos “activos” en una carpeta assets/ más convencional.
+
+
+
+Sí. Aquí tienes la secuencia exacta, sin ejecutar ninguna instrucción, para desplegar el proyecto actual en alwaysdata.net bajo la estructura www/js.
+
+1. Verifica que el proyecto está listo para producción
+- Debe tener una estructura mínima funcional:
+  - archivo principal del servidor (en tu caso, server.js)
+  - package.json con dependencias
+  - carpeta public o archivos estáticos
+  - variables de entorno para la base de datos
+- En este proyecto, como estás usando Express + PostgreSQL, conviene dejarlo como aplicación Node.js, no solo como sitio estático.
+
+2. Revisa la ruta final que usará alwaysdata
+- La carpeta raíz en el servidor será algo así:
+  - /home/<usuario>/www/js
+- Eso significa que, en la web, normalmente quedará accesible como:
+  - https://<usuario>.alwaysdata.net/js/
+- Si tienes un dominio personalizado, también puede apuntar a esa misma estructura.
+
+3. Prepara la carpeta del proyecto en tu equipo
+- Lleva a una carpeta limpia la versión final que quieres subir.
+- Asegúrate de que contenga:
+  - package.json
+  - server.js
+  - public/
+  - .env (si lo usas; en muchos casos se configura en el panel del hosting)
+  - archivos necesarios para que la app funcione
+- Si el proyecto tiene node_modules, normalmente no se sube a producción, porque el servidor los reinstala.
+
+4. Crea el sitio en alwaysdata
+- Ingresa a tu panel de alwaysdata.
+- Crea o configura tu sitio/web.
+- Define la ruta del proyecto como:
+  - /www/js
+- Si tu plan lo permite, configura la app Node.js o el entorno de ejecución.
+- Si no, usa FTP/SFTP para subir los archivos a esa carpeta.
+
+5. Sube la aplicación a la carpeta /www/js
+- Conecta por FTP/SFTP.
+- Crea la estructura:
+  - /www/js/
+    - package.json
+    - server.js
+    - public/
+    - .env
+- Si usas nodos de archivos, mantén la estructura interna del proyecto.
+- No mezcles la carpeta js con otros proyectos; todo debe quedar dentro de esa ruta.
+
+6. Configura las variables de entorno
+- En el panel de alwaysdata o en el archivo .env, define:
+  - DB_HOST
+  - DB_PORT
+  - DB_NAME
+  - DB_USER
+  - DB_PASSWORD
+- Asegúrate de que la app use esas variables al iniciar.
+- Si el proyecto está en producción, no dejes secretos en rutas públicas ni archivos visibles por navegador.
+
+7. Asegúrate de que la app escuche el puerto correcto
+- Para alwaysdata, normalmente la app debe escuchar un puerto asignado por el entorno, o un valor por defecto seguro.
+- El código debe estar preparado para usar:
+  - un puerto que tome de variables de entorno
+  - o un valor por defecto si no llega uno
+- En proyectos Express, lo normal es que el servidor escuche en una variable como PORT o en 3000 si no existe.
+
+8. Instala dependencias en el servidor
+- Desde el panel de alwaysdata o mediante la terminal del servicio, entra a la carpeta:
+  - /www/js
+- Ejecuta la instalación de dependencias del proyecto.
+- Esto normalmente se hace con npm install, usando package.json.
+- La intención es que el servidor prepare los módulos necesarios para Express, PostgreSQL, dotenv, etc.
+
+9. Arranca la aplicación
+- Luego de instalar dependencias, inicia la app del proyecto.
+- Si usas un proceso de Node, debe quedar corriendo en la carpeta /www/js.
+- La aplicación debe quedar accesible desde la URL de alwaysdata o desde tu dominio asociado.
+- La carpeta public debe servir las páginas HTML, CSS y JS del front-end.
+
+10. Verifica la ruta de acceso
+- Prueba la URL principal del sitio.
+- Comprueba que la interfaz carga correctamente.
+- Revisa que las rutas del backend también funcionen.
+- Si el proyecto tiene API REST, prueba también los endpoints de registro, consulta, actualización, eliminación y reporte.
+
+11. Verifica la base de datos
+- Confirma que la app puede conectarse a PostgreSQL.
+- Comprueba que las tablas y datos esperados existan.
+- Si la base de datos está en otro servicio, asegúrate de que siempredata tenga acceso y que las credenciales sean correctas.
+
+12. Flujo recomendado para este proyecto concreto
+Dado que tu proyecto tiene:
+- Express
+- PostgreSQL
+- archivos en public
+- un servidor principal con API REST
+
+La estructura recomendada en alwaysdata es:
+
+- /www/js/
+  - package.json
+  - server.js
+  - .env
+  - public/
+    - index.html
+    - ingresar.html
+    - consultar.html
+    - actualizar.html
+    - borrar.html
+    - reporte.html
+    - app.js
+    - encabezado.html
+    - pie.html
+    - favicon.ico
+    - style/
+    - script/
+
+13. Recomendación final
+- Si quieres un despliegue estable, sube solo lo necesario para ejecutar el sitio.
+- No dependas de archivos locales de tu equipo.
+- Mantén la variable de entorno y la base de datos configuradas en el servidor.
+- Si las claves o credenciales de la BD son sensibles, no las publiques ni las dejes en archivos accesibles por la web.
+
+Si quieres, puedo darte la siguiente parte sin ejecutar nada: una versión exacta de cómo dejaría la estructura de archivos y la configuración de despliegue para este proyecto en alwaysdata, lista para copiar tal cual.
+
+Para conectarte vía SSH a un servidor alwaysdata, normalmente el proceso es este:
+
+1. Revisa tus credenciales de acceso
+Debes tener:
+- usuario del hosting
+- contraseña o clave SSH
+- host del servidor
+- puerto SSH (en general es 22, pero en algunos casos puede configurarse distinto)
+
+En alwaysdata, normalmente el acceso se hace con:
+- usuario: tu usuario de alwaysdata
+- host: el nombre de tu dominio o el host asignado por el proveedor
+- puerto: 22
+
+2. Verifica si tu cuenta tiene acceso SSH activado
+- Entra al panel de control de alwaysdata.
+- Busca la sección de SSH o acceso al servidor.
+- Confirma que la cuenta o el dominio tiene habilitado el acceso SSH.
+
+3. Usa una terminal local
+En Windows, puedes abrir:
+- PowerShell
+- Git Bash
+- Windows Terminal
+- o una terminal del sistema
+
+4. Comando básico para conectarte
+La forma general es:
+
+ssh usuario@host
+
+Ejemplo:
+
+ssh [miusuario@miusuario.alwaysdata.net](mailto:miusuario@miusuario.alwaysdata.net)
+
+Si el puerto no es el estándar 22:
+
+ssh -p 22 [miusuario@miusuario.alwaysdata.net](mailto:miusuario@miusuario.alwaysdata.net)
+
+5. Si solicita contraseña
+- Escribe la contraseña de tu cuenta o la clave SSH configurada.
+- Si usas clave SSH, normalmente se te conectará directamente si la clave está registrada.
+
+6. Si quieres usar una clave SSH
+Puedes generar una clave localmente con:
+
+ssh-keygen
+
+Luego la publicas en alwaysdata en la sección de SSH/keys. Después te conectas con:
+
+ssh -i ~/.ssh/id_rsa usuario@host
+
+7. Si quieres conectarte a la carpeta del proyecto
+Cuando ya estés dentro del servidor, normalmente tendrás algo como:
+
+cd /home/tuusuario/www/js
+
+o según el hosting:
+
+cd /home/tuusuario/www
+
+8. Comando para comprobar que estás conectad
+Puedes ejecutar:
+
+pwd
+ls -la
+
+Si te muestra una ruta del servidor y la estructura del directorio, ya estás dentro.
+
+9. Recomendación de seguridad
+- Usa SSH con clave pública en lugar de contraseña si es posible.
+- No compartas la clave ni la contraseña.
+- Evita usar usuarios root si no es necesario.
+
+10. Si el acceso no funciona
+Revisa:
+- que el usuario sea correcto
+- que el host sea el correcto
+- que SSH esté habilitado en tu cuenta
+- que el puerto sea 22 o el que te asignen
+- que la clave pública esté bien cargada
+
+Ejemplo de conexión completa:
+
+ssh -p 22 [usuario@dominio.alwaysdata.net](mailto:usuario@dominio.alwaysdata.net)
+
+Si quieres, te puedo dejar también:
+- un ejemplo exacto para tu usuario/servidor si me dices el nombre que usas en alwaysdata
+- o una guía paso a paso para subir el proyecto por SFTP y luego conectarte vía SSH para arrancarlo.
+El error no es del proyecto ni de Node, sino de cómo estás configurando la dirección en Alwaysdata.
+
+Qué está pasando:
+- En SSH, tu proyecto está en:
+  - ~/www/js
+- Pero en el panel de Alwaysdata, en la sección “Addresses”, no se aceptan rutas del sistema de archivos como:
+  - /www/js/
+  - /home/usuario/www/js
+- Ese campo exige una dirección web válida, por ejemplo:
+  - tuusuario.alwaysdata.net
+  - miapp.alwaysdata.net
+  - un dominio personalizado
+- Por eso aparece:
+  - “These domains have an invalid format”
+  - porque /www/js/ no es un dominio válido
+
+La solución correcta:
+1. No uses la ruta SSH como dirección web.
+   - ~/www/js es la ubicación física del proyecto en el servidor.
+   - No es la URL pública.
+
+2. En Alwaysdata, crea o configura una dirección válida.
+   - Ejemplo:
+     - hduque-test.alwaysdata.net
+     - o tu dominio personalizado
+   - Nunca:
+     - /www/js/
+     - /home/hduque-test/www/js
+
+3. Asigna esa dirección al sitio que apunta a la carpeta de tu proyecto.
+   - La carpeta real puede seguir siendo:
+     - /home/hduque-test/www/js
+   - Pero la URL pública será algo como:
+     - https://hduque-test.alwaysdata.net
+     - o https://hduque-test.alwaysdata.net/js si ese es el esquema que definas en el hosting
+
+4. Si quieres que el proyecto quede en una ruta tipo /js:
+   - No lo escribas como dirección en “Addresses”
+   - Debes configurar la URL del sitio o la estructura del sitio según lo que soporte Alwaysdata para subdirectorios
+   - La key es: dominio válido + carpeta del sitio correcta
+
+En resumen:
+- Tu carpeta del servidor está bien:
+  - ~/www/js
+- El problema es la configuración de la dirección web:
+  - Estás poniendo una ruta del servidor en lugar de un dominio
+- Debes poner un dominio adecuado, no /www/js/
+
+Ejemplo correcto de configuración:
+- Dominio:
+  - hduque-test.alwaysdata.net
+- Carpeta del proyecto:
+  - /home/hduque-test/www/js
+
+Y si quieres acceder como:
+- https://hduque-test.alwaysdata.net
+entonces ese dominio debe estar asociado al sitio, no la ruta /www/js/.
+
+Si quieres, te puedo decir exactamente qué debes poner en Alwaysdata paso a paso para dejarlo funcionando con:
+- dominio automatico `hduque-test.alwaysdata.net`
+- o con un subdirectorio `/js`
+- sin tocar la lógica del proyecto.
+
+
+Para que la URL pública sea **`https://hduque-test.alwaysdata.net/js`**, hay que configurar dos cosas distintas: la dirección del sitio en Alwaysdata y cómo Express atiende ese prefijo.
+
+1. En Alwaysdata, edita el sitio y en **Addresses** coloca la dirección completa:
+   `hduque-test.alwaysdata.net/js`
+
+   No pongas `~/www/js` ni `/www/js/` en ese campo: esos son datos de ruta del servidor, no una dirección web.
+
+2. En la configuración del sitio Node.js, conserva el directorio de trabajo:
+   `~/www/js`
+
+   y el comando de inicio:
+   `npm start`.
+
+3. Comprueba cómo Alwaysdata reenvía las peticiones de esa dirección a Node.js. Si reenvía `/js` conservando ese prefijo, el Express actual no está preparado para responder a él: en `server.js` los archivos estáticos y las rutas de la API están definidos desde `/`, no desde `/js`.
+
+4. Ajusta la aplicación para atender bajo `/js`:
+   - Redirige `/js` a `/js/`, para que las rutas relativas de archivos estáticos funcionen correctamente.
+   - Sirve `public` bajo `/js`.
+   - Haz que los endpoints de la API estén disponibles bajo `/js/api/...`.
+   - Actualiza las llamadas `fetch` de `public/app.js` para que usen `/js/api/...`. Ahora usan rutas desde la raíz, como `/api/contactos`.
+
+Otra opción es configurar Alwaysdata para que quite el prefijo `/js` antes de enviar cada petición a Express; así la aplicación podría seguir recibiendo `/` y `/api/...`. En ese caso, confirma también que las llamadas del navegador a `/api/...` lleguen al mismo sitio Node.js y no a otra configuración web.
+
+Los logs muestran que Node.js inicia y escucha en el puerto asignado por Alwaysdata (`8105`); no muestran por sí solos un error de arranque. La línea posterior de Apache tampoco prueba que el sitio esté mal configurado. El `404` anterior se debía a que Express no tenía una ruta `/js`.
+
+**Nota de seguridad:** la contraseña de PostgreSQL que aparece en el `.env` compartido debe cambiarse y actualizarse en la configuración del servidor.
+
+Con esos cambios, las rutas están coherentes: `/js` debería redirigir a `/js/`, la carpeta `public` debería servirse bajo `/js` y las llamadas de API que muestras en `app.js` coinciden con las rutas `/js/api/...` de `server.js`.
+
+**Si aún aparece `Cannot GET /js`, el proceso que responde no está ejecutando ese `server.js` actualizado**, o el sitio de Alwaysdata apunta a otra aplicación. Con el código mostrado, Express sí tiene una ruta `GET /js`; esa respuesta no debería ser un 404 de Express.
+
+Comprueba lo siguiente:
+
+1. En SSH, verifica que los cambios estén realmente en el servidor:
+   ```bash
+   cd ~/www/js
+   grep -n "app.get('/js'" server.js
+   grep -n "app.use('/js', express.static" server.js
+   ```
+   También confirma que existe `public/index.html`.
+
+2. En la configuración del sitio Node.js de Alwaysdata, revisa que el directorio de trabajo sea `~/www/js` y el comando de inicio sea `npm start`.
+
+3. Reinicia el sitio desde el panel de Alwaysdata para que arranque el archivo actualizado.
+
+4. Prueba primero `https://hduque-test.alwaysdata.net/js` y luego `https://hduque-test.alwaysdata.net/js/`. Lo esperado es una redirección de la primera URL a la segunda, y después la carga de la página. Si persiste el error, revisa los logs de acceso de esa nueva petición para confirmar que llega al sitio Node.js correcto.
+
+El montaje de `express.static` antes de las rutas API no parece ser la causa: si no encuentra un archivo estático para `/js/api/...`, Express continúa hacia las rutas API.
+
+**Seguridad:** los logs compartidos contienen una contraseña de base de datos. Cámbiala y actualiza la credencial en Alwaysdata.
+
+
+El error cambió: ya no es un `404`, sino un **bucle de redirecciones**. La causa más probable está en esta ruta de `server.js`:
+
+```js
+app.get('/js', (req, res) => res.redirect('/js/'));
+```
+
+Por defecto, Express considera que la ruta `'/js'` también coincide con `'/js/'`. Así, al redirigir `/js` a `/js/`, la misma ruta vuelve a ejecutarse y redirige otra vez a `/js/`, una y otra vez. Eso provoca `ERR_TOO_MANY_REDIRECTS`.
+
+**Corrige el manejador para redirigir solo cuando falta la barra final:**
+
+```js
+app.get('/js', (req, res, next) => {
+  if (req.path === '/js') {
+    return res.redirect(302, '/js/');
+  }
+
+  next();
+});
+
+app.use('/js', express.static(path.join(__dirname, 'public')));
+```
+
+También puedes quitar por completo el manejador y probar directamente la URL con barra final: `https://hduque-test.alwaysdata.net/js/`.
+
+Después de guardar el cambio, reinicia la aplicación en Alwaysdata. Prueba con **HTTPS** y, si el navegador conserva la redirección anterior, vuelve a probar en una ventana privada. La respuesta esperada es una sola redirección de `/js` a `/js/` y luego la carga de la página.
+
+
+app.get('/js', (req, res, next) => {
+  if (req.path === '/js') {
+    return res.redirect(302, '/js/');
+  }
+  next();
+});
+app.use('/js', express.static(path.join(__dirname, 'public')));
+
+
+
+
+
