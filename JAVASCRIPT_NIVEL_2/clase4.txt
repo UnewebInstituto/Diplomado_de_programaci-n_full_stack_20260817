@@ -1,0 +1,27 @@
+https://www.typescriptlang.org/
+https://www.typescriptlang.org/docs/handbook/intro.html
+https://www.typescriptlang.org/docs/handbook/typescript-in-5-minutes.html
+
+COMPILACIÓN:;
+https://www.typescriptlang.org/docs/handbook/compiler-options.html#compiler-options
+
+npx tsc ej01_introduccion.ts
+
+
+
+Creación de un proyecto express
+npm init -y
+
+Instalación de dependencias de Typescript 
+npm install typescript --save-dev
+
+Realizar en ts (typescript) verificar que compile
+la lectura a través de consola de los siguientes
+valores: nombre, apellido, correo, telefono, direccion
+y id. Una vez cargado el dato, que este sea impreso en 
+pantalla.
+Consideraciones stdin, stdout
+
+
+
+
