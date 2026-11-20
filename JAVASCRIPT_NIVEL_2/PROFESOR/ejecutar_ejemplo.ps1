@@ -1,0 +1,1 @@
+node ejemplo_stdin_stdout.js

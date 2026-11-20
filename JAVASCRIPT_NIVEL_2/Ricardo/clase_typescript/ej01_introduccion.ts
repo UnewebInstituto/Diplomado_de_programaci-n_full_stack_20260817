@@ -1,4 +1,4 @@
-let helloWorld: string = "Hello World";
+let helloWorld: string;
 helloWorld = "Hello World";
 /*
 Este tipo de asignación no es posible, ya que helloWorld es de tipo string y no se le puede asignar un valor de tipo number.
@@ -20,11 +20,22 @@ const user: User = {
     id:0,
 };
 
+const user1: User = {
+    name:'Yolanda Tortoza',
+    id:1,
+};
+
 console.log(typeof(user));
 console.log(typeof(user.name));
 console.log("Usuario: " + user.name);
 console.log(typeof(user.id));
 console.log("Id: " + user.id);
+console.log("-------------------------------");
+console.log(typeof(user1));
+console.log(typeof(user1.name));
+console.log("Usuario 1: " + user1.name);
+console.log(typeof(user1.id));
+console.log("Id: " + user1.id);
 
 /**
  * 

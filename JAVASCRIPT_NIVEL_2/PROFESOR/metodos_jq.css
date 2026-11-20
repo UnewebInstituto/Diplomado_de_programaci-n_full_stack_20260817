@@ -1,0 +1,13 @@
+.cajas{
+    width:100px;
+    height:100px;
+}
+#caja1{
+    background-color: red;
+}
+#caja2{
+    background-color: green;
+}
+#caja3{
+    background-color: blue;
+}

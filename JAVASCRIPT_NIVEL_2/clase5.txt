@@ -1,0 +1,61 @@
+1)Instalar la siguiente dependencia:
+npm install --save-dev @types/node
+
+Voy a revisar el material de la clase actual para adaptar el ejemplo al lenguaje y estilo que están usando allí.
+
+Read 
+
+En TypeScript con Node.js, `stdin` y `stdout` son flujos, no funciones. Puedes crear funciones con esos nombres para leer y mostrar datos:
+
+```ts
+import { createInterface } from "node:readline/promises";
+import { stdin as entrada, stdout as salida } from "node:process";
+
+const lector = createInterface({ input: entrada, output: salida });
+
+function stdout(texto: string): void {
+  salida.write(texto + "\n");
+}
+
+async function stdin(pregunta: string): Promise<string> {
+  return (await lector.question(pregunta)).trim();
+}
+
+async function main(): Promise<void> {
+  try {
+    const nombre = await stdin("Ingrese su nombre: ");
+    const apellido = await stdin("Ingrese su apellido: ");
+
+    stdout(`Nombre: ${nombre}`);
+    stdout(`Apellido: ${apellido}`);
+  } finally {
+    lector.close();
+  }
+}
+
+main();
+```
+
+Guárdalo, por ejemplo, como `captura.ts`. Para compilar y ejecutar:
+
+```bash
+
+COMPILACIÓN:
+npx tsc ej04_stdin_stdout.ts --target ES2020 --module commonjs --types node
+
+EJECUCIÓN:
+node ej04_stdin_stdout.js
+```
+
+`stdin()` captura cada respuesta y `stdout()` imprime los datos en la consola.
+
+
+
+MINIFICAR CÓDIGO:
+https://www.npmjs.com/package/minify
+
+INSTALACIÓN:
+npm i minify -g
+
+COMANDO DE EJECUCIÓN:
+minify galeria.js > galeria.min.js
